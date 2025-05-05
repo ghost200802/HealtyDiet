@@ -31,6 +31,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
 const RecipePlanner = ({ user }) => {
+  console.log('RecipePlanner user对象:', user);
   const [foods, setFoods] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,7 +39,7 @@ const RecipePlanner = ({ user }) => {
   const [success, setSuccess] = useState('');
   const [tabValue, setTabValue] = useState(0);
   const [showRecipeSelector, setShowRecipeSelector] = useState(false);
-  const [weeklyPlan, setWeeklyPlan] = useState([null, null, null, null, null, null, null]); // 一周7天的食谱计划
+  const [weeklyPlan, setWeeklyPlan] = useState([null]);
   
   // 新食谱状态
   const [recipeName, setRecipeName] = useState('');
@@ -323,9 +324,12 @@ const RecipePlanner = ({ user }) => {
   };
   
   // 选择食谱添加到周计划中
-  const handleSelectRecipeForPlan = (recipe, index) => {
+  const handleSelectRecipeForPlan = (selectedRecipe, planIndex) => {
     const newPlan = [...weeklyPlan];
-    newPlan[index] = recipe;
+    newPlan[planIndex] = selectedRecipe;
+    if (planIndex === weeklyPlan.length - 1) {
+      newPlan.push(null);
+    }
     setWeeklyPlan(newPlan);
     setShowRecipeSelector(false);
   };
@@ -346,7 +350,7 @@ const RecipePlanner = ({ user }) => {
       return (
         <Card 
           sx={{ 
-            height: 350, 
+            height: 500,  // 调整卡片高度为500
             display: 'flex', 
             justifyContent: 'center', 
             alignItems: 'center',
@@ -421,24 +425,24 @@ const RecipePlanner = ({ user }) => {
             营养成分:
           </Typography>
           <Grid container spacing={1} sx={{ mb: 2, px: 1 }}>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <Typography variant="body2" sx={{ fontSize: '0.8rem' }}>
                 热量: {recipe.nutrition?.calories || 0} 千卡
               </Typography>
             </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body2" sx={{ fontSize: '0.8rem' }}>
-                蛋白质: {recipe.nutrition?.protein || 0} g
+            <Grid item xs={4}>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: user?.protein ? (recipe.nutrition?.protein > user.protein ? 'error.main' : 'success.main') : 'inherit' }}>
+                蛋白质: {recipe.nutrition?.protein || 0} / {user?.protein || '--'} g
               </Typography>
             </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body2" sx={{ fontSize: '0.8rem' }}>
-                碳水: {recipe.nutrition?.carbs || 0} g
+            <Grid item xs={4}>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: user?.carbs ? (recipe.nutrition?.carbs > user.carbs ? 'error.main' : 'success.main') : 'inherit' }}>
+                碳水: {recipe.nutrition?.carbs || 0} / {user?.carbs || '--'} g
               </Typography>
             </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body2" sx={{ fontSize: '0.8rem' }}>
-                脂肪: {recipe.nutrition?.fat || 0} g
+            <Grid item xs={4}>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: user?.fat ? (recipe.nutrition?.fat > user.fat ? 'error.main' : 'success.main') : 'inherit' }}>
+                脂肪: {recipe.nutrition?.fat || 0} / {user?.fat || '--'} g
               </Typography>
             </Grid>
           </Grid>
@@ -505,11 +509,26 @@ const RecipePlanner = ({ user }) => {
                   本周食谱规划
                 </Typography>
                 <Grid container spacing={2}>
-                  {weeklyPlan.map((recipe, index) => (
-                    <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                      {renderRecipeCard(recipe, index)}
-                    </Grid>
-                  ))}
+                  {weeklyPlan
+                    .filter((recipe, idx) => recipe || idx === weeklyPlan.length - 1)
+                    .map((recipe, index) => (
+                      <Grid item xs={12} sm={4} md={4} lg={4} key={index}>
+                        {index === weeklyPlan.length - 1 ? (
+                          <Card 
+                            sx={{ 
+                              height: 500,
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              cursor: 'pointer'
+                            }}
+                            onClick={() => handleOpenRecipeSelector(index)}
+                          >
+                            <AddIcon sx={{ fontSize: 60, color: 'text.secondary' }} />
+                          </Card>
+                        ) : renderRecipeCard(recipe, index)}
+                      </Grid>
+                    ))}
                 </Grid>
               </Box>
             ) : (

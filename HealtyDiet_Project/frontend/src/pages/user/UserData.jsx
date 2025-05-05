@@ -99,7 +99,7 @@ const getBMICategory = (bmi) => {
   return { category: '肥胖', color: '#f44336' };
 };
 
-const UserData = ({ user }) => {
+const UserData = ({ user, onNutritionDataUpdate }) => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -182,14 +182,27 @@ const UserData = ({ user }) => {
     const proteinCoefficient = activityLevel ? activityLevel.proteinCoefficient : 1.0;
     
     // 计算蛋白质需求
-    setProtein(Math.round(profileData.weight * proteinCoefficient));
+    const proteinValue = Math.round(profileData.weight * proteinCoefficient);
+    setProtein(proteinValue);
     // 脂肪(25% TDEE, 9千卡/克)
-    setFat(Math.round(adjustedTdee * 0.25 / 9));
+    const fatValue = Math.round(adjustedTdee * 0.25 / 9);
+    setFat(fatValue);
     
     // 计算碳水化合物需求 (TDEE - (蛋白质*4 + 脂肪*9)) / 4
-    const proteinCalories = protein * 4;
-    const fatCalories = fat * 9;
-    setCarbs(Math.round((adjustedTdee - proteinCalories - fatCalories) / 4));
+    const proteinCalories = proteinValue * 4;
+    const fatCalories = fatValue * 9;
+    const carbsValue = Math.round((adjustedTdee - proteinCalories - fatCalories) / 4);
+    setCarbs(carbsValue);
+    
+    // 如果有回调函数，将营养数据传递给父组件
+    if (onNutritionDataUpdate) {
+      onNutritionDataUpdate({
+        protein: proteinValue,
+        carbs: carbsValue,
+        fat: fatValue,
+        tdee: adjustedTdee
+      });
+    }
   };
   
   // 处理用户数据更新
