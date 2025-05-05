@@ -43,7 +43,11 @@ const UserDataSchema = Yup.object().shape({
     .nullable(),
   activityLevel: Yup.string()
     .oneOf(['sedentary', 'light', 'moderate', 'active', 'very_active'], '请选择有效的活动水平')
-    .required('活动水平不能为空')
+    .required('活动水平不能为空'),
+  calorieDeficit: Yup.number()
+    .min(0, '热量缺口不能为负数')
+    .max(2000, '热量缺口不能超过2000千卡')
+    .nullable()
 });
 
 // 活动水平选项
@@ -167,7 +171,11 @@ const UserData = ({ user }) => {
     
     // 计算TDEE (总能量消耗)
     const tdeeValue = calculatedBMR ? Math.round(calculatedBMR * multiplier) : 0;
-    setTdee(tdeeValue);
+    
+    // 获取热量缺口值（默认500千卡）
+    const calorieDeficit = profileData.calorieDeficit || 0;
+    const adjustedTdee = Math.max(tdeeValue - calorieDeficit, 1200); // 确保不低于基础代谢
+    setTdee(adjustedTdee);
     
     // 计算每日营养素推荐摄入量  
     // 根据活动水平确定蛋白质系数
@@ -176,13 +184,12 @@ const UserData = ({ user }) => {
     // 计算蛋白质需求
     setProtein(Math.round(profileData.weight * proteinCoefficient));
     // 脂肪(25% TDEE, 9千卡/克)
-    setFat(Math.round(tdeeValue * 0.25 / 9));
+    setFat(Math.round(adjustedTdee * 0.25 / 9));
     
     // 计算碳水化合物需求 (TDEE - (蛋白质*4 + 脂肪*9)) / 4
     const proteinCalories = protein * 4;
     const fatCalories = fat * 9;
-    setCarbs(Math.round((tdeeValue - proteinCalories - fatCalories) / 4));
-         
+    setCarbs(Math.round((adjustedTdee - proteinCalories - fatCalories) / 4));
   };
   
   // 处理用户数据更新
@@ -295,7 +302,8 @@ const UserData = ({ user }) => {
               height: userData?.height || '',
               weight: userData?.weight || '',
               bodyFat: userData?.bodyFat || '',
-              activityLevel: userData?.activityLevel || 'moderate'
+              activityLevel: userData?.activityLevel || 'moderate',
+              calorieDeficit: userData?.calorieDeficit || ''
             }}
             validationSchema={UserDataSchema}
             onSubmit={handleSubmit}
@@ -397,6 +405,22 @@ const UserData = ({ user }) => {
                   </Grid>
                   
                   <Grid item xs={12} sm={6}>
+                    <Field name="calorieDeficit">
+                      {({ field }) => (
+                        <TextField
+                          {...field}
+                          fullWidth
+                          id="calorieDeficit"
+                          label="热量缺口 (千卡)"
+                          type="number"
+                          error={touched.calorieDeficit && Boolean(errors.calorieDeficit)}
+                          helperText={touched.calorieDeficit && errors.calorieDeficit}
+                        />
+                      )}
+                    </Field>
+                  </Grid>
+                  
+                  <Grid item xs={12} sm={6}>
                     <Field name="activityLevel">
                       {({ field }) => (
                         <TextField
@@ -445,79 +469,138 @@ const UserData = ({ user }) => {
               </Typography>
               
               <Grid container spacing={3} sx={{ mt: 2 }}>
-                <Grid item xs={12} md={4}>
-                  <Card>
-                    <CardContent>
-                      <Typography variant="h6" gutterBottom align="center">
-                        基础代谢率 (BMR)
-                      </Typography>
-                      <Typography variant="h4" align="center" color="primary">
-                        {bmr} 千卡/天
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
-                        身体在完全静息状态下维持基本生命活动所需的能量
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                
-                <Grid item xs={12} md={4}>
-                  <Card>
-                    <CardContent>
-                      <Typography variant="h6" gutterBottom align="center">
-                        每日总能量消耗 (TDEE)
-                      </Typography>
-                      <Typography variant="h4" align="center" color="secondary">
-                        {tdee} 千卡/天
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
-                        考虑活动水平后的每日总能量消耗
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                
-                <Grid item xs={12} md={4}>
-                  <Card>
-                    <CardContent>
-                      <Typography variant="h6" gutterBottom align="center">
-                        体质指数 (BMI)
-                      </Typography>
-                      <Typography variant="h4" align="center" sx={{ color: bmiCategory.color }}>
-                        {bmi}
-                      </Typography>
-                      <Typography variant="body1" align="center" sx={{ color: bmiCategory.color, fontWeight: 'bold', mt: 1 }}>
-                        {bmiCategory.category}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
-                        BMI = 体重(kg) / 身高(m)²
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                
-                <Grid item xs={12} md={4}>
-                  <Card>
-                    <CardContent>
-                      <Typography variant="h6" gutterBottom align="center">
-                        营养素推荐摄入量
-                      </Typography>
-                      <Typography variant="body1" align="center">
-                        蛋白质: {protein}克
-                      </Typography>
-                      <Typography variant="body1" align="center">
-                        碳水化合物: {carbs}克
-                      </Typography>
-                      <Typography variant="body1" align="center">
-                        脂肪: {fat}克
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
-                        基于TDEE计算
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              </Grid>
+  {/* BMI单独一行 */}
+  <Grid item xs={12}>
+    <Card sx={{ height: '100%' }}>
+      <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <Typography variant="h6" gutterBottom align="center">
+          体质指数 (BMI)
+        </Typography>
+        <Typography variant="h4" align="center" sx={{ color: bmiCategory.color }}>
+          {bmi}
+        </Typography>
+        <Typography variant="body1" align="center" sx={{ color: bmiCategory.color, fontWeight: 'bold', mt: 1 }}>
+          {bmiCategory.category}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
+          BMI = 体重(kg) / 身高(m)²
+        </Typography>
+      </CardContent>
+    </Card>
+  </Grid>
+
+  {/* 能量指标分组 */}
+  <Grid item xs={12}>
+    <Typography variant="h6" gutterBottom sx={{ mt: 3, mb: 2 }}>
+      能量指标
+    </Typography>
+    <Grid container spacing={3}>
+      <Grid item xs={12} md={4}>
+        <Card sx={{ height: '100%' }}>
+          <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Typography variant="h6" gutterBottom align="center">
+              基础代谢率 (BMR)
+            </Typography>
+            <Typography variant="h4" align="center" color="primary">
+              {bmr} 千卡/天
+            </Typography>
+            <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
+              身体在完全静息状态下维持基本生命活动所需的能量
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+
+      <Grid item xs={12} md={4}>
+        <Card sx={{ height: '100%' }}>
+          <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Typography variant="h6" gutterBottom align="center">
+              每日总能量消耗 (TDEE)
+            </Typography>
+            <Typography variant="h4" align="center" color="secondary">
+              {tdee} 千卡/天
+            </Typography>
+            <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
+              考虑活动水平后的每日总能量消耗
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+
+      <Grid item xs={12} md={4}>
+        <Card sx={{ height: '100%' }}>
+          <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Typography variant="h6" gutterBottom align="center">
+              热量缺口
+            </Typography>
+            <Typography variant="h4" align="center" color="primary">
+              {userData?.calorieDeficit || 0} 千卡/天
+            </Typography>
+            <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
+              每日建议减少的热量摄入
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
+  </Grid>
+
+  {/* 营养素分组 */}
+  <Grid item xs={12}>
+    <Typography variant="h6" gutterBottom sx={{ mt: 3, mb: 2 }}>
+      营养素摄入
+    </Typography>
+    <Grid container spacing={3}>
+      <Grid item xs={12} md={4}>
+        <Card sx={{ height: '100%' }}>
+          <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Typography variant="h6" gutterBottom align="center">
+              蛋白质
+            </Typography>
+            <Typography variant="h4" align="center" color="primary">
+              {protein}克
+            </Typography>
+            <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
+              基于TDEE计算
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+
+      <Grid item xs={12} md={4}>
+        <Card sx={{ height: '100%' }}>
+          <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Typography variant="h6" gutterBottom align="center">
+              碳水化合物
+            </Typography>
+            <Typography variant="h4" align="center" color="secondary">
+              {carbs}克
+            </Typography>
+            <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
+              基于TDEE计算
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+
+      <Grid item xs={12} md={4}>
+        <Card sx={{ height: '100%' }}>
+          <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Typography variant="h6" gutterBottom align="center">
+              脂肪
+            </Typography>
+            <Typography variant="h4" align="center" sx={{ color: '#ed6c02' }}>
+              {fat}克
+            </Typography>
+            <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
+              基于TDEE计算
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
+  </Grid>
+</Grid>
               
               <Box sx={{ mt: 4 }}>
                 <Typography variant="h6" gutterBottom>

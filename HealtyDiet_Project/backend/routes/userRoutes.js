@@ -65,7 +65,8 @@ router.post('/register', async (req, res) => {
         gender: null,
         height: null,
         weight: null,
-        bodyFatPercentage: null
+        bodyFatPercentage: null,
+        calorieDeficit: null
       }
     };
     
