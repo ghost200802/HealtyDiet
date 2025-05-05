@@ -48,11 +48,11 @@ const UserDataSchema = Yup.object().shape({
 
 // 活动水平选项
 const activityLevels = [
-  { value: 'sedentary', label: '久坐不动 (几乎不运动)', multiplier: 1.2 },
-  { value: 'light', label: '轻度活动 (每周运动1-3天)', multiplier: 1.375 },
-  { value: 'moderate', label: '中度活动 (每周运动3-5天)', multiplier: 1.55 },
-  { value: 'active', label: '积极活动 (每周运动6-7天)', multiplier: 1.725 },
-  { value: 'very_active', label: '非常活跃 (每天高强度运动)', multiplier: 1.9 }
+  { value: 'sedentary', label: '久坐不动 (几乎不运动)', multiplier: 1.2, proteinCoefficient: 1.2 },
+  { value: 'light', label: '轻度活动 (每周运动1-3天)', multiplier: 1.375, proteinCoefficient: 1.5 },
+  { value: 'moderate', label: '中度活动 (每周运动3-5天)', multiplier: 1.55, proteinCoefficient: 1.8 },
+  { value: 'active', label: '积极活动 (每周运动6-7天)', multiplier: 1.725, proteinCoefficient: 2.2 },
+  { value: 'very_active', label: '非常活跃 (每天高强度运动)', multiplier: 1.9, proteinCoefficient: 2.5 }
 ];
 
 // 计算年龄
@@ -105,6 +105,9 @@ const UserData = ({ user }) => {
   const [bmi, setBmi] = useState(0);
   const [bmiCategory, setBmiCategory] = useState({ category: '', color: '' });
   const [age, setAge] = useState(0);
+  const [protein, setProtein] = useState(0);
+  const [carbs, setCarbs] = useState(0);
+  const [fat, setFat] = useState(0);
   
   // 获取用户数据
   useEffect(() => {
@@ -159,10 +162,27 @@ const UserData = ({ user }) => {
     
     // 查找活动水平乘数
     const activityLevel = activityLevels.find(level => level.value === profileData.activityLevel);
+    console.log('当前活动水平:', activityLevel);
     const multiplier = activityLevel ? activityLevel.multiplier : 1.2;
     
     // 计算TDEE (总能量消耗)
-    setTdee(calculatedBMR ? Math.round(calculatedBMR * multiplier) : 0);
+    const tdeeValue = calculatedBMR ? Math.round(calculatedBMR * multiplier) : 0;
+    setTdee(tdeeValue);
+    
+    // 计算每日营养素推荐摄入量  
+    // 根据活动水平确定蛋白质系数
+    const proteinCoefficient = activityLevel ? activityLevel.proteinCoefficient : 1.0;
+    
+    // 计算蛋白质需求
+    setProtein(Math.round(profileData.weight * proteinCoefficient));
+    // 脂肪(25% TDEE, 9千卡/克)
+    setFat(Math.round(tdeeValue * 0.25 / 9));
+    
+    // 计算碳水化合物需求 (TDEE - (蛋白质*4 + 脂肪*9)) / 4
+    const proteinCalories = protein * 4;
+    const fatCalories = fat * 9;
+    setCarbs(Math.round((tdeeValue - proteinCalories - fatCalories) / 4));
+         
   };
   
   // 处理用户数据更新
@@ -471,6 +491,28 @@ const UserData = ({ user }) => {
                       </Typography>
                       <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
                         BMI = 体重(kg) / 身高(m)²
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                
+                <Grid item xs={12} md={4}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h6" gutterBottom align="center">
+                        营养素推荐摄入量
+                      </Typography>
+                      <Typography variant="body1" align="center">
+                        蛋白质: {protein}克
+                      </Typography>
+                      <Typography variant="body1" align="center">
+                        碳水化合物: {carbs}克
+                      </Typography>
+                      <Typography variant="body1" align="center">
+                        脂肪: {fat}克
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
+                        基于TDEE计算
                       </Typography>
                     </CardContent>
                   </Card>

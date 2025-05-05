@@ -26,6 +26,9 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 
 const RecipePlanner = ({ user }) => {
   const [foods, setFoods] = useState([]);
@@ -34,6 +37,8 @@ const RecipePlanner = ({ user }) => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [tabValue, setTabValue] = useState(0);
+  const [showRecipeSelector, setShowRecipeSelector] = useState(false);
+  const [weeklyPlan, setWeeklyPlan] = useState([null, null, null, null, null, null, null]); // 一周7天的食谱计划
   
   // 新食谱状态
   const [recipeName, setRecipeName] = useState('');
@@ -107,7 +112,7 @@ const RecipePlanner = ({ user }) => {
     recipeItems.forEach(item => {
       const food = foods.find(f => f.id === item.foodId);
       if (food) {
-        const ratio = item.amount / food.servingSize;
+        const ratio = item.amount / (food.servingSize || 100); // 默认以100g为标准份量
         totals.calories += food.calories * ratio;
         totals.protein += food.protein * ratio;
         totals.carbs += food.carbs * ratio;
@@ -122,6 +127,46 @@ const RecipePlanner = ({ user }) => {
     
     setTotalNutrition(totals);
   }, [recipeItems, foods]);
+  
+  // 确保周计划中的食谱有正确的营养成分数据
+  useEffect(() => {
+    if (!weeklyPlan.some(recipe => recipe) || foods.length === 0) return;
+    
+    const updatedPlan = weeklyPlan.map(recipe => {
+      if (!recipe) return null;
+      
+      // 如果食谱已经有营养成分数据，则不需要重新计算
+      if (recipe.nutrition && recipe.nutrition.calories > 0) return recipe;
+      
+      // 计算食谱的营养成分
+      const nutrition = {
+        calories: 0,
+        protein: 0,
+        carbs: 0,
+        fat: 0
+      };
+      
+      recipe.items.forEach(item => {
+        const food = foods.find(f => f.id === item.foodId);
+        if (food) {
+          const ratio = item.amount / (food.servingSize || 100);
+          nutrition.calories += food.calories * ratio;
+          nutrition.protein += food.protein * ratio;
+          nutrition.carbs += food.carbs * ratio;
+          nutrition.fat += food.fat * ratio;
+        }
+      });
+      
+      // 四舍五入到一位小数
+      Object.keys(nutrition).forEach(key => {
+        nutrition[key] = Math.round(nutrition[key] * 10) / 10;
+      });
+      
+      return { ...recipe, nutrition };
+    });
+    
+    setWeeklyPlan(updatedPlan);
+  }, [weeklyPlan, foods]);
   
   // 处理标签切换
   const handleTabChange = (event, newValue) => {
@@ -277,6 +322,157 @@ const RecipePlanner = ({ user }) => {
     }
   };
   
+  // 选择食谱添加到周计划中
+  const handleSelectRecipeForPlan = (recipe, index) => {
+    const newPlan = [...weeklyPlan];
+    newPlan[index] = recipe;
+    setWeeklyPlan(newPlan);
+    setShowRecipeSelector(false);
+  };
+
+  // 打开食谱选择器
+  const handleOpenRecipeSelector = (index) => {
+    // 记录当前要修改的计划索引
+    setCurrentPlanIndex(index);
+    setShowRecipeSelector(true);
+  };
+
+  // 当前正在编辑的计划索引
+  const [currentPlanIndex, setCurrentPlanIndex] = useState(null);
+
+  // 渲染食谱卡片
+  const renderRecipeCard = (recipe, index) => {
+    if (!recipe) {
+      return (
+        <Card 
+          sx={{ 
+            height: 350, 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            cursor: 'pointer'
+          }}
+          onClick={() => handleOpenRecipeSelector(index)}
+        >
+          <AddIcon sx={{ fontSize: 60, color: 'text.secondary' }} />
+        </Card>
+      );
+    }
+
+    // 计算食物占比数据
+    const calculateFoodPercentages = (recipe) => {
+      const foodPercentages = {};
+      
+      // 计算每种食物的热量贡献
+      recipe.items.forEach(item => {
+        const food = foods.find(f => f.id === item.foodId);
+        if (food) {
+          const ratio = item.amount / food.servingSize;
+          const calories = food.calories * ratio;
+          foodPercentages[food.name] = (foodPercentages[food.name] || 0) + calories;
+        }
+      });
+      
+      // 转换为饼图数据格式
+      return Object.keys(foodPercentages).map(name => ({
+        name,
+        value: foodPercentages[name]
+      }));
+    };
+
+    const foodPercentages = calculateFoodPercentages(recipe);
+
+    return (
+      <Card sx={{ height: 350, display: 'flex', flexDirection: 'column' }}>
+        <CardHeader 
+          title={recipe.name} 
+          titleTypographyProps={{ variant: 'h6' }}
+          action={
+            <IconButton onClick={() => {
+              const newPlan = [...weeklyPlan];
+              newPlan[index] = null;
+              setWeeklyPlan(newPlan);
+            }}>
+              <DeleteIcon />
+            </IconButton>
+          }
+        />
+        <Divider />
+        <CardContent sx={{ flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column', p: 1 }}>
+          {/* 食物清单模块 */}
+          <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 'bold', pl: 1 }}>
+            食物清单:
+          </Typography>
+          <Box component="ul" sx={{ pl: 3, mb: 2, mt: 0 }}>
+            {recipe.items.map((item, idx) => {
+              const food = foods.find(f => f.id === item.foodId);
+              return (
+                <Box component="li" key={idx} sx={{ fontSize: '0.8rem' }}>
+                  <Typography variant="body2" noWrap>
+                    {food ? food.name : item.foodId} - {item.amount} {food ? food.unit : 'g'}
+                  </Typography>
+                </Box>
+              );
+            })}
+          </Box>
+          
+          {/* 营养成分模块 */}
+          <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 'bold', pl: 1 }}>
+            营养成分:
+          </Typography>
+          <Grid container spacing={1} sx={{ mb: 2, px: 1 }}>
+            <Grid item xs={6}>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem' }}>
+                热量: {recipe.nutrition?.calories || 0} 千卡
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem' }}>
+                蛋白质: {recipe.nutrition?.protein || 0} g
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem' }}>
+                碳水: {recipe.nutrition?.carbs || 0} g
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem' }}>
+                脂肪: {recipe.nutrition?.fat || 0} g
+              </Typography>
+            </Grid>
+          </Grid>
+          
+          {/* 食物占比模块 - 简化版，实际项目中可以使用饼图组件 */}
+          <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 'bold', pl: 1 }}>
+            食物热量占比:
+          </Typography>
+          <Box sx={{ px: 1 }}>
+            {foodPercentages.map((item, idx) => (
+              <Box key={idx} sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                <Box 
+                  sx={{ 
+                    width: 10, 
+                    height: 10, 
+                    borderRadius: '50%', 
+                    bgcolor: `hsl(${idx * 137.5 % 360}, 70%, 50%)`,
+                    mr: 1 
+                  }} 
+                />
+                <Typography variant="caption" noWrap sx={{ flex: 1 }}>
+                  {item.name}
+                </Typography>
+                <Typography variant="caption">
+                  {Math.round(item.value / recipe.nutrition?.calories * 100)}%
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        </CardContent>
+      </Card>
+    );
+  };
+
   return (
     <Container maxWidth="lg">
       <Box sx={{ mt: 4, mb: 4 }}>
@@ -302,6 +498,63 @@ const RecipePlanner = ({ user }) => {
           </Box>
         ) : (
           <>
+            {!showRecipeSelector ? (
+              // 显示周计划视图
+              <Box sx={{ mb: 4 }}>
+                <Typography variant="h5" gutterBottom>
+                  本周食谱规划
+                </Typography>
+                <Grid container spacing={2}>
+                  {weeklyPlan.map((recipe, index) => (
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                      {renderRecipeCard(recipe, index)}
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            ) : (
+              // 显示食谱选择器
+              <Box sx={{ mb: 4 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                  <Typography variant="h5">
+                    选择食谱
+                  </Typography>
+                  <Button 
+                    variant="outlined" 
+                    startIcon={<AddIcon />}
+                    onClick={() => {
+                      setTabValue(0);
+                      setShowRecipeSelector(false);
+                    }}
+                  >
+                    创建新食谱
+                  </Button>
+                </Box>
+                <List>
+                  {recipes.map((recipe) => (
+                    <ListItem 
+                      key={recipe.id}
+                      button
+                      onClick={() => handleSelectRecipeForPlan(recipe, currentPlanIndex)}
+                    >
+                      <ListItemText 
+                        primary={recipe.name}
+                        secondary={`热量: ${recipe.nutrition?.calories || 0} 千卡 | 蛋白质: ${recipe.nutrition?.protein || 0}g | 碳水: ${recipe.nutrition?.carbs || 0}g | 脂肪: ${recipe.nutrition?.fat || 0}g`}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                  <Button 
+                    variant="outlined" 
+                    onClick={() => setShowRecipeSelector(false)}
+                  >
+                    返回
+                  </Button>
+                </Box>
+              </Box>
+            )}
+            
             <Paper sx={{ mb: 4 }}>
               <Tabs
                 value={tabValue}
