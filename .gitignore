@@ -1,0 +1,69 @@
+# 依赖目录
+node_modules/
+
+# 环境变量文件
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# 日志文件
+*.log
+logs/
+
+# 编辑器目录和文件
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 构建输出目录
+dist/
+build/
+
+# 调试文件
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 本地数据库文件
+*.db
+
+# 测试覆盖率
+coverage/
+
+# 前端开发缓存
+.cache/
+
+# 包管理器文件
+yarn.lock
+package-lock.json
+
+# 操作系统文件
+*.bak
+*.swp
+
+# 临时文件
+*.tmp
+*.temp
+
+# 开发工具生成的文件
+.sass-cache/
+
+# 自动生成的文件
+*.js.map
+*.css.map
+
+# 用户上传文件
+uploads/
+
+# 本地开发配置
+local.json
