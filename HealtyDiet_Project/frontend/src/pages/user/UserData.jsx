@@ -224,43 +224,22 @@ const UserData = ({ user, onNutritionDataUpdate }) => {
       );
       console.log('API响应数据:', response.data);
       
-      // 更新成功
-      setUserData(prev => {
-        updateHealthMetrics(response.data.profile);
-        return response.data;
-      });
+      // 获取响应中的用户资料数据
+      const profileData = response.data.profile;
+      
+      // 更新用户数据状态
+      setUserData(profileData);
+      
+      // 使用updateHealthMetrics函数更新所有健康指标
+      updateHealthMetrics(profileData);
+      
+      // 设置成功消息
       setSuccess('用户数据更新成功！');
-      
-      // 重新计算BMR、TDEE和BMI
-      const calculatedAge = calculateAge(values.birthDate);
-      setAge(calculatedAge);
-      
-      const calculatedBMI = calculateBMI(values.weight, values.height);
-      setBmi(calculatedBMI);
-      setBmiCategory(getBMICategory(calculatedBMI));
-      
-      const calculatedBMR = calculateBMR(
-        values.weight,
-        values.height,
-        calculatedAge,
-        values.gender
-      );
-      setBmr(calculatedBMR);
-      
-      // 查找活动水平乘数
-      const activityLevel = activityLevels.find(level => level.value === values.activityLevel);
-      const multiplier = activityLevel ? activityLevel.multiplier : 1.2;
-      
-      // 计算TDEE (总能量消耗)
-      setTdee(Math.round(calculatedBMR * multiplier));
       
       // 3秒后清除成功消息
       setTimeout(() => {
         setSuccess('');
       }, 3000);
-      
-      const profileData = response.data.profile;
-      setUserData(profileData);
       
     } catch (err) {
       if (err.response && err.response.data) {
