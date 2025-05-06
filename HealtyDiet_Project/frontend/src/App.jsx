@@ -57,7 +57,7 @@ function App() {
       protein: data.protein,
       carbs: data.carbs,
       fat: data.fat,
-      tdee: data.tdee
+      dci: data.dci
     }));
   };
   
@@ -155,18 +155,18 @@ function App() {
     
     // 获取热量缺口值（默认0千卡）
     const calorieDeficit = profileData.calorieDeficit || 0;
-    const adjustedTdee = Math.max(tdeeValue - calorieDeficit, 1200); // 确保不低于基础代谢
+    const dciValue = Math.max(tdeeValue - calorieDeficit, 1200); // 确保不低于基础代谢
     
     // 计算蛋白质需求
     const proteinValue = Math.round(profileData.weight * proteinCoefficient);
     
     // 脂肪(25% TDEE, 9千卡/克)
-    const fatValue = Math.round(adjustedTdee * 0.25 / 9);
+    const fatValue = Math.round(dciValue * 0.25 / 9);
     
     // 计算碳水化合物需求 (TDEE - (蛋白质*4 + 脂肪*9)) / 4
     const proteinCalories = proteinValue * 4;
     const fatCalories = fatValue * 9;
-    const carbsValue = Math.round((adjustedTdee - proteinCalories - fatCalories) / 4);
+    const carbsValue = Math.round((dciValue - proteinCalories - fatCalories) / 4);
     
     // 更新用户对象，添加营养数据
     setUser(prevUser => ({
@@ -174,7 +174,7 @@ function App() {
       protein: proteinValue,
       carbs: carbsValue,
       fat: fatValue,
-      tdee: adjustedTdee
+      dci: dciValue
     }));
     
     // 更新营养数据状态
@@ -182,7 +182,7 @@ function App() {
       protein: proteinValue,
       carbs: carbsValue,
       fat: fatValue,
-      tdee: adjustedTdee
+      dci: dciValue
     });
   };
   

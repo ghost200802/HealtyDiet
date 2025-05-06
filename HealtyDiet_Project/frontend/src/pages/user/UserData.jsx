@@ -144,10 +144,12 @@ const UserData = ({ user, onNutritionDataUpdate }) => {
     };
     
     fetchUserData();
-  }, [user]);
+  }, [user?.id]);
   
   // 更新健康指标
   const updateHealthMetrics = (profileData) => {
+    if (!profileData) return;
+    
     const calculatedAge = calculateAge(profileData.birthDate);
     setAge(calculatedAge);
     
@@ -313,18 +315,13 @@ const UserData = ({ user, onNutritionDataUpdate }) => {
                           setFieldValue('birthDate', newValue);
                         }}
                         format="yyyy-MM-dd"
-                        renderInput={(params) => (
-                          <Field name="birthDate">
-                            {() => (
-                              <TextField
-                                {...params}
-                                fullWidth
-                                error={touched.birthDate && Boolean(errors.birthDate)}
-                                helperText={touched.birthDate && errors.birthDate}
-                              />
-                            )}
-                          </Field>
-                        )}
+                        slotProps={{
+                          textField: {
+                            fullWidth: true,
+                            error: touched.birthDate && Boolean(errors.birthDate),
+                            helperText: touched.birthDate && errors.birthDate
+                          }
+                        }}
                       />
                     </LocalizationProvider>
                   </Grid>

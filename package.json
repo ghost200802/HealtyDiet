@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@emotion/styled": "^11.14.0",
+    "@mui/x-charts": "^8.2.0"
+  }
+}
