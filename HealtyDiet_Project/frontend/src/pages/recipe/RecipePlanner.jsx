@@ -29,6 +29,7 @@ import Tab from '@mui/material/Tab';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import HorizontalBarChart from '../../components/charts/HorizontalBarChart';
 
 const RecipePlanner = ({ user }) => {
   console.log('RecipePlanner user对象:', user);
@@ -728,120 +729,128 @@ const RecipePlanner = ({ user }) => {
                   <CardContent>
                     <Grid container spacing={2}>
                       <Grid item xs={6} sm={3}>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary" gutterBottom>
                           热量
                         </Typography>
-                        <Typography variant="h6">
+                        <Typography variant="h6" sx={{ mb: 1 }}>
                           {totalNutrition.calories} 千卡
                           <Typography variant="caption" display="block" color="text.secondary">
                             推荐: {user?.dci || 0} 千卡
                           </Typography>
-                          {recipeItems
-                            .map(item => {
-                              const food = foods.find(f => f.id === item.foodId);
-                              if (!food) return null;
-                              const ratio = item.amount / (food.servingSize || 100);
-                              return {
-                                name: item.name,
-                                value: food.calories * ratio,
-                                percent: ((food.calories * ratio) / totalNutrition.calories * 100).toFixed(1)
-                              };
-                            })
-                            .filter(Boolean)
-                            .sort((a, b) => b.value - a.value)
-                            .map((item, index) => (
-                              <Typography key={index} variant="caption" display="block" color="text.secondary">
-                                {item.name}: {item.percent}% ({item.value.toFixed(1)}千卡)
-                              </Typography>
-                            ))}
                         </Typography>
+                        {totalNutrition.calories > 0 && (
+                          <HorizontalBarChart 
+                            data={recipeItems
+                              .map(item => {
+                                const food = foods.find(f => f.id === item.foodId);
+                                if (!food) return null;
+                                const ratio = item.amount / (food.servingSize || 100);
+                                return {
+                                  name: item.name,
+                                  value: food.calories * ratio,
+                                  percent: Math.min(((food.calories * ratio) / totalNutrition.calories * 100), 100)
+                                };
+                              })
+                              .filter(Boolean)
+                              .sort((a, b) => b.value - a.value)
+                            }
+                            unit="千卡"
+                            type="calories"
+                          />
+                        )}
                       </Grid>
                       <Grid item xs={6} sm={3}>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary" gutterBottom>
                           蛋白质
                         </Typography>
-                        <Typography variant="h6">
+                        <Typography variant="h6" sx={{ mb: 1 }}>
                           {totalNutrition.protein} g
                           <Typography variant="caption" display="block" color="text.secondary">
                             推荐: {user?.protein || 0} g
                           </Typography>
-                          {recipeItems
-                            .map(item => {
-                              const food = foods.find(f => f.id === item.foodId);
-                              if (!food) return null;
-                              const ratio = item.amount / (food.servingSize || 100);
-                              return {
-                                name: item.name,
-                                value: food.protein * ratio,
-                                percent: ((food.protein * ratio) / totalNutrition.protein * 100).toFixed(1)
-                              };
-                            })
-                            .filter(Boolean)
-                            .sort((a, b) => b.value - a.value)
-                            .map((item, index) => (
-                              <Typography key={index} variant="caption" display="block" color="text.secondary">
-                                {item.name}: {item.percent}% ({item.value.toFixed(1)}g)
-                              </Typography>
-                            ))}
                         </Typography>
+                        {totalNutrition.protein > 0 && (
+                          <HorizontalBarChart 
+                            data={recipeItems
+                              .map(item => {
+                                const food = foods.find(f => f.id === item.foodId);
+                                if (!food) return null;
+                                const ratio = item.amount / (food.servingSize || 100);
+                                return {
+                                  name: item.name,
+                                  value: food.protein * ratio,
+                                  percent: Math.min(((food.protein * ratio) / totalNutrition.protein * 100), 100)
+                                };
+                              })
+                              .filter(Boolean)
+                              .sort((a, b) => b.value - a.value)
+                            }
+                            unit="g"
+                            type="protein"
+                          />
+                        )}
                       </Grid>
                       <Grid item xs={6} sm={3}>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary" gutterBottom>
                           碳水化合物
                         </Typography>
-                        <Typography variant="h6">
+                        <Typography variant="h6" sx={{ mb: 1 }}>
                           {totalNutrition.carbs} g
                           <Typography variant="caption" display="block" color="text.secondary">
                             推荐: {user?.carbs || 0} g
                           </Typography>
-                          {recipeItems
-                            .map(item => {
-                              const food = foods.find(f => f.id === item.foodId);
-                              if (!food) return null;
-                              const ratio = item.amount / (food.servingSize || 100);
-                              return {
-                                name: item.name,
-                                value: food.carbs * ratio,
-                                percent: ((food.carbs * ratio) / totalNutrition.carbs * 100).toFixed(1)
-                              };
-                            })
-                            .filter(Boolean)
-                            .sort((a, b) => b.value - a.value)
-                            .map((item, index) => (
-                              <Typography key={index} variant="caption" display="block" color="text.secondary">
-                                {item.name}: {item.percent}% ({item.value.toFixed(1)}g)
-                              </Typography>
-                            ))}
                         </Typography>
+                        {totalNutrition.carbs > 0 && (
+                          <HorizontalBarChart 
+                            data={recipeItems
+                              .map(item => {
+                                const food = foods.find(f => f.id === item.foodId);
+                                if (!food) return null;
+                                const ratio = item.amount / (food.servingSize || 100);
+                                return {
+                                  name: item.name,
+                                  value: food.carbs * ratio,
+                                  percent: Math.min(((food.carbs * ratio) / totalNutrition.carbs * 100), 100)
+                                };
+                              })
+                              .filter(Boolean)
+                              .sort((a, b) => b.value - a.value)
+                            }
+                            unit="g"
+                            type="carbs"
+                          />
+                        )}
                       </Grid>
                       <Grid item xs={6} sm={3}>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary" gutterBottom>
                           脂肪
                         </Typography>
-                        <Typography variant="h6">
+                        <Typography variant="h6" sx={{ mb: 1 }}>
                           {totalNutrition.fat} g
                           <Typography variant="caption" display="block" color="text.secondary">
                             推荐: {user?.fat || 0} g
                           </Typography>
-                          {recipeItems
-                            .map(item => {
-                              const food = foods.find(f => f.id === item.foodId);
-                              if (!food) return null;
-                              const ratio = item.amount / (food.servingSize || 100);
-                              return {
-                                name: item.name,
-                                value: food.fat * ratio,
-                                percent: ((food.fat * ratio) / totalNutrition.fat * 100).toFixed(1)
-                              };
-                            })
-                            .filter(Boolean)
-                            .sort((a, b) => b.value - a.value)
-                            .map((item, index) => (
-                              <Typography key={index} variant="caption" display="block" color="text.secondary">
-                                {item.name}: {item.percent}% ({item.value.toFixed(1)}g)
-                              </Typography>
-                            ))}
                         </Typography>
+                        {totalNutrition.fat > 0 && (
+                          <HorizontalBarChart 
+                            data={recipeItems
+                              .map(item => {
+                                const food = foods.find(f => f.id === item.foodId);
+                                if (!food) return null;
+                                const ratio = item.amount / (food.servingSize || 100);
+                                return {
+                                  name: item.name,
+                                  value: food.fat * ratio,
+                                  percent: Math.min(((food.fat * ratio) / totalNutrition.fat * 100), 100)
+                                };
+                              })
+                              .filter(Boolean)
+                              .sort((a, b) => b.value - a.value)
+                            }
+                            unit="g"
+                            type="fat"
+                          />
+                        )}
                       </Grid>
                     </Grid>
                   </CardContent>
