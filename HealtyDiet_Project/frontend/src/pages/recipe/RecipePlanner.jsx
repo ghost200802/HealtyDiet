@@ -733,6 +733,9 @@ const RecipePlanner = ({ user }) => {
                         </Typography>
                         <Typography variant="h6">
                           {totalNutrition.calories} 千卡
+                          <Typography variant="caption" display="block" color="text.secondary">
+                            推荐: {user?.dci || 0} 千卡
+                          </Typography>
                         </Typography>
                       </Grid>
                       <Grid item xs={6} sm={3}>
@@ -741,6 +744,9 @@ const RecipePlanner = ({ user }) => {
                         </Typography>
                         <Typography variant="h6">
                           {totalNutrition.protein} g
+                          <Typography variant="caption" display="block" color="text.secondary">
+                            推荐: {user?.protein || 0} g
+                          </Typography>
                         </Typography>
                       </Grid>
                       <Grid item xs={6} sm={3}>
@@ -749,6 +755,9 @@ const RecipePlanner = ({ user }) => {
                         </Typography>
                         <Typography variant="h6">
                           {totalNutrition.carbs} g
+                          <Typography variant="caption" display="block" color="text.secondary">
+                            推荐: {user?.carbs || 0} g
+                          </Typography>
                         </Typography>
                       </Grid>
                       <Grid item xs={6} sm={3}>
@@ -757,6 +766,9 @@ const RecipePlanner = ({ user }) => {
                         </Typography>
                         <Typography variant="h6">
                           {totalNutrition.fat} g
+                          <Typography variant="caption" display="block" color="text.secondary">
+                            推荐: {user?.fat || 0} g
+                          </Typography>
                         </Typography>
                       </Grid>
                     </Grid>
