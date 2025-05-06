@@ -690,7 +690,19 @@ const RecipePlanner = ({ user }) => {
                         {recipeItems.map((item, index) => (
                           <TableRow key={index}>
                             <TableCell>{item.name}</TableCell>
-                            <TableCell align="right">{item.amount} {item.unit}</TableCell>
+                            <TableCell align="right">
+                              <TextField
+                                type="number"
+                                value={item.amount}
+                                onChange={(e) => {
+                                  const newItems = [...recipeItems];
+                                  newItems[index].amount = parseFloat(e.target.value) || 0;
+                                  setRecipeItems(newItems);
+                                }}
+                                size="small"
+                                sx={{ width: 80 }}
+                              /> {item.unit}
+                            </TableCell>
                             <TableCell align="right">
                               <IconButton
                                 size="small"
