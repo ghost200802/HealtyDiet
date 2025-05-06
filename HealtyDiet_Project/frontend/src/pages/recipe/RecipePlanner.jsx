@@ -736,6 +736,24 @@ const RecipePlanner = ({ user }) => {
                           <Typography variant="caption" display="block" color="text.secondary">
                             推荐: {user?.dci || 0} 千卡
                           </Typography>
+                          {recipeItems
+                            .map(item => {
+                              const food = foods.find(f => f.id === item.foodId);
+                              if (!food) return null;
+                              const ratio = item.amount / (food.servingSize || 100);
+                              return {
+                                name: item.name,
+                                value: food.calories * ratio,
+                                percent: ((food.calories * ratio) / totalNutrition.calories * 100).toFixed(1)
+                              };
+                            })
+                            .filter(Boolean)
+                            .sort((a, b) => b.value - a.value)
+                            .map((item, index) => (
+                              <Typography key={index} variant="caption" display="block" color="text.secondary">
+                                {item.name}: {item.percent}% ({item.value.toFixed(1)}千卡)
+                              </Typography>
+                            ))}
                         </Typography>
                       </Grid>
                       <Grid item xs={6} sm={3}>
@@ -747,6 +765,24 @@ const RecipePlanner = ({ user }) => {
                           <Typography variant="caption" display="block" color="text.secondary">
                             推荐: {user?.protein || 0} g
                           </Typography>
+                          {recipeItems
+                            .map(item => {
+                              const food = foods.find(f => f.id === item.foodId);
+                              if (!food) return null;
+                              const ratio = item.amount / (food.servingSize || 100);
+                              return {
+                                name: item.name,
+                                value: food.protein * ratio,
+                                percent: ((food.protein * ratio) / totalNutrition.protein * 100).toFixed(1)
+                              };
+                            })
+                            .filter(Boolean)
+                            .sort((a, b) => b.value - a.value)
+                            .map((item, index) => (
+                              <Typography key={index} variant="caption" display="block" color="text.secondary">
+                                {item.name}: {item.percent}% ({item.value.toFixed(1)}g)
+                              </Typography>
+                            ))}
                         </Typography>
                       </Grid>
                       <Grid item xs={6} sm={3}>
@@ -758,6 +794,24 @@ const RecipePlanner = ({ user }) => {
                           <Typography variant="caption" display="block" color="text.secondary">
                             推荐: {user?.carbs || 0} g
                           </Typography>
+                          {recipeItems
+                            .map(item => {
+                              const food = foods.find(f => f.id === item.foodId);
+                              if (!food) return null;
+                              const ratio = item.amount / (food.servingSize || 100);
+                              return {
+                                name: item.name,
+                                value: food.carbs * ratio,
+                                percent: ((food.carbs * ratio) / totalNutrition.carbs * 100).toFixed(1)
+                              };
+                            })
+                            .filter(Boolean)
+                            .sort((a, b) => b.value - a.value)
+                            .map((item, index) => (
+                              <Typography key={index} variant="caption" display="block" color="text.secondary">
+                                {item.name}: {item.percent}% ({item.value.toFixed(1)}g)
+                              </Typography>
+                            ))}
                         </Typography>
                       </Grid>
                       <Grid item xs={6} sm={3}>
@@ -769,6 +823,24 @@ const RecipePlanner = ({ user }) => {
                           <Typography variant="caption" display="block" color="text.secondary">
                             推荐: {user?.fat || 0} g
                           </Typography>
+                          {recipeItems
+                            .map(item => {
+                              const food = foods.find(f => f.id === item.foodId);
+                              if (!food) return null;
+                              const ratio = item.amount / (food.servingSize || 100);
+                              return {
+                                name: item.name,
+                                value: food.fat * ratio,
+                                percent: ((food.fat * ratio) / totalNutrition.fat * 100).toFixed(1)
+                              };
+                            })
+                            .filter(Boolean)
+                            .sort((a, b) => b.value - a.value)
+                            .map((item, index) => (
+                              <Typography key={index} variant="caption" display="block" color="text.secondary">
+                                {item.name}: {item.percent}% ({item.value.toFixed(1)}g)
+                              </Typography>
+                            ))}
                         </Typography>
                       </Grid>
                     </Grid>
