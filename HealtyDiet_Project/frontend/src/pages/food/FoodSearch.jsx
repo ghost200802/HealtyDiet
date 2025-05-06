@@ -30,6 +30,8 @@ const FoodSearch = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedFood, setSelectedFood] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedFood, setEditedFood] = useState(null);
 
   // 获取所有食物（初始加载）
   useEffect(() => {
@@ -98,6 +100,42 @@ const FoodSearch = () => {
   // 关闭食物详情
   const handleCloseDetails = () => {
     setSelectedFood(null);
+    setIsEditing(false);
+  };
+
+  // 处理营养数值变化
+  const handleNutrientChange = (nutrientType, key, value) => {
+    setEditedFood(prev => {
+      const newFood = {...prev};
+      if (nutrientType === 'vitamins') {
+        newFood.vitamins = {...newFood.vitamins, [key]: parseFloat(value)};
+      } else if (nutrientType === 'minerals') {
+        newFood.minerals = {...newFood.minerals, [key]: parseFloat(value)};
+      } else {
+        newFood[key] = parseFloat(value);
+      }
+      return newFood;
+    });
+  };
+
+  // 保存修改
+  const handleSaveChanges = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.put(`http://localhost:5000/api/foods/${editedFood.id}`, editedFood, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setSelectedFood(editedFood);
+      setIsEditing(false);
+      // 更新食物列表
+      const response = await axios.get('http://localhost:5000/api/foods');
+      setFoods(response.data);
+    } catch (err) {
+      console.error('保存食物数据失败:', err);
+      setError('保存食物数据失败，请重试');
+    }
   };
 
   return (
@@ -187,22 +225,66 @@ const FoodSearch = () => {
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} md={3}>
                       <Typography variant="body1">
-                        <strong>热量:</strong> {selectedFood.calories} 千卡
+                        <strong>热量:</strong> 
+                        {isEditing ? (
+                          <TextField
+                            type="number"
+                            value={editedFood?.calories || selectedFood.calories}
+                            onChange={(e) => handleNutrientChange(null, 'calories', e.target.value)}
+                            size="small"
+                            sx={{ width: '80px', ml: 1 }}
+                          />
+                        ) : (
+                          `${selectedFood.calories} 千卡`
+                        )}
                       </Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>
                       <Typography variant="body1">
-                        <strong>蛋白质:</strong> {selectedFood.protein}g
+                        <strong>蛋白质:</strong> 
+                        {isEditing ? (
+                          <TextField
+                            type="number"
+                            value={editedFood?.protein || selectedFood.protein}
+                            onChange={(e) => handleNutrientChange(null, 'protein', e.target.value)}
+                            size="small"
+                            sx={{ width: '80px', ml: 1 }}
+                          />
+                        ) : (
+                          `${selectedFood.protein}g`
+                        )}
                       </Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>
                       <Typography variant="body1">
-                        <strong>碳水化合物:</strong> {selectedFood.carbs}g
+                        <strong>碳水化合物:</strong> 
+                        {isEditing ? (
+                          <TextField
+                            type="number"
+                            value={editedFood?.carbs || selectedFood.carbs}
+                            onChange={(e) => handleNutrientChange(null, 'carbs', e.target.value)}
+                            size="small"
+                            sx={{ width: '80px', ml: 1 }}
+                          />
+                        ) : (
+                          `${selectedFood.carbs}g`
+                        )}
                       </Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>
                       <Typography variant="body1">
-                        <strong>脂肪:</strong> {selectedFood.fat}g
+                        <strong>脂肪:</strong> 
+                        {isEditing ? (
+                          <TextField
+                            type="number"
+                            value={editedFood?.fat || selectedFood.fat}
+                            onChange={(e) => handleNutrientChange(null, 'fat', e.target.value)}
+                            size="small"
+                            sx={{ width: '80px', ml: 1 }}
+                          />
+                        ) : (
+                          `${selectedFood.fat}g`
+                        )}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -266,6 +348,17 @@ const FoodSearch = () => {
                 </CardContent>
                 <CardActions>
                   <Button size="small" onClick={handleCloseDetails}>返回列表</Button>
+                  <Button size="small" onClick={() => {
+                    setIsEditing(!isEditing);
+                    setEditedFood({...selectedFood});
+                  }}>
+                    {isEditing ? '取消编辑' : '编辑'}
+                  </Button>
+                  {isEditing && (
+                    <Button size="small" onClick={handleSaveChanges} color="primary">
+                      保存
+                    </Button>
+                  )}
                 </CardActions>
               </Card>
             ) : (
