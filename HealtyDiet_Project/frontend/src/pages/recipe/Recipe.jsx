@@ -39,9 +39,11 @@ import {
   Save as SaveIcon,
   Delete as DeleteIcon,
   Info as InfoIcon,
-  CloudDownload as CloudDownloadIcon
+  CloudDownload as CloudDownloadIcon,
+  Visibility as VisibilityIcon
 } from '@mui/icons-material';
 import HorizontalBarChart from '../../components/charts/HorizontalBarChart';
+import FoodDetailDialog from '../../components/food/FoodDetailDialog';
 
 const Recipe = ({ user }) => {
   const navigate = useNavigate();
@@ -65,8 +67,10 @@ const Recipe = ({ user }) => {
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
   const [recipeDialogOpen, setRecipeDialogOpen] = useState(false);
   const [foodAddDialogOpen, setFoodAddDialogOpen] = useState(false);
+  const [foodDetailDialogOpen, setFoodDetailDialogOpen] = useState(false);
   const [selectedFood, setSelectedFood] = useState(null);
   const [foodAmount, setFoodAmount] = useState('');
+  const [foodToView, setFoodToView] = useState(null);
   
   // 食谱营养成分总计
   const [totalNutrition, setTotalNutrition] = useState({
@@ -367,6 +371,19 @@ const Recipe = ({ user }) => {
         <Typography variant="body2" color="text.secondary">
           蛋白质: {food.protein}g | 碳水: {food.carbs}g | 脂肪: {food.fat}g
         </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
+          <IconButton 
+            size="small" 
+            color="primary"
+            onClick={(e) => {
+              e.stopPropagation(); // 阻止事件冒泡，避免触发卡片的点击事件
+              setFoodToView(food);
+              setFoodDetailDialogOpen(true);
+            }}
+          >
+            <VisibilityIcon />
+          </IconButton>
+        </Box>
       </CardContent>
     </Card>
   );
@@ -501,6 +518,20 @@ const Recipe = ({ user }) => {
                     <TableCell align="right">{item.carbs.toFixed(1)}</TableCell>
                     <TableCell align="right">{item.fat.toFixed(1)}</TableCell>
                     <TableCell align="right">
+                      <IconButton 
+                        size="small" 
+                        color="primary"
+                        onClick={() => {
+                          const food = foods.find(f => f.id === item.foodId);
+                          if (food) {
+                            setFoodToView(food);
+                            setFoodDetailDialogOpen(true);
+                          }
+                        }}
+                        sx={{ mr: 1 }}
+                      >
+                        <VisibilityIcon />
+                      </IconButton>
                       <IconButton 
                         size="small" 
                         color="error"
@@ -784,6 +815,44 @@ const Recipe = ({ user }) => {
           </Button>
         </DialogActions>
       </Dialog>
+      
+      {/* 食物详情对话框 */}
+      <FoodDetailDialog
+        open={foodDetailDialogOpen}
+        onClose={() => setFoodDetailDialogOpen(false)}
+        food={foodToView}
+        onFoodUpdate={(updatedFood) => {
+          // 更新本地食物列表中的食物数据
+          setFoods(prevFoods => {
+            return prevFoods.map(food => {
+              if (food.id === updatedFood.id) {
+                return updatedFood;
+              }
+              return food;
+            });
+          });
+          
+          // 如果更新的食物在食谱中，也需要更新食谱项目
+          const foodInRecipe = recipeItems.find(item => item.foodId === updatedFood.id);
+          if (foodInRecipe) {
+            setRecipeItems(prevItems => {
+              return prevItems.map(item => {
+                if (item.foodId === updatedFood.id) {
+                  const ratio = item.amount / (updatedFood.servingSize || 100);
+                  return {
+                    ...item,
+                    calories: updatedFood.calories * ratio,
+                    protein: updatedFood.protein * ratio,
+                    carbs: updatedFood.carbs * ratio,
+                    fat: updatedFood.fat * ratio
+                  };
+                }
+                return item;
+              });
+            });
+          }
+        }}
+      />
     </Container>
   );
 };

@@ -16,6 +16,9 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import Avatar from '@mui/material/Avatar';
 
+// 导入食物详情对话框组件
+import FoodDetailDialog from '../../components/food/FoodDetailDialog';
+
 // 食物表单验证模式
 const FoodSchema = Yup.object().shape({
   name: Yup.string()
@@ -47,6 +50,8 @@ const FoodAdd = () => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [addedFood, setAddedFood] = useState(null);
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   
   // 处理食物添加
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -84,16 +89,15 @@ const FoodAdd = () => {
       };
       
       // 发送添加食物请求到后端API
-      await axios.post('http://localhost:5000/api/foods', foodData);
+      const response = await axios.post('http://localhost:5000/api/foods', foodData);
       
       // 添加成功
       setSuccess('食物添加成功！');
       resetForm();
       
-      // 3秒后跳转到食物搜索页面
-      setTimeout(() => {
-        navigate('/food-search');
-      }, 3000);
+      // 显示添加的食物详情
+      setAddedFood(response.data);
+      setDetailDialogOpen(true);
     } catch (err) {
       if (err.response && err.response.data) {
         setError(err.response.data.message || '添加食物失败，请重试');
@@ -105,15 +109,26 @@ const FoodAdd = () => {
     }
   };
   
+  // 关闭食物详情对话框
+  const handleCloseDetails = () => {
+    setDetailDialogOpen(false);
+  };
+
+  // 处理食物更新
+  const handleFoodUpdate = (updatedFood) => {
+    setAddedFood(updatedFood);
+  };
+
   return (
-    <Container maxWidth="md">
-      <Paper elevation={3} sx={{ p: 4, mt: 4, mb: 4 }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4 }}>
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main', width: 56, height: 56 }}>
-            <RestaurantIcon fontSize="large" />
-          </Avatar>
-          <Typography component="h1" variant="h4">
-            添加新食物
+    <>
+      <Container maxWidth="md">
+        <Paper elevation={3} sx={{ p: 4, mt: 4, mb: 4 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4 }}>
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main', width: 56, height: 56 }}>
+              <RestaurantIcon fontSize="large" />
+            </Avatar>
+            <Typography component="h1" variant="h4">
+              添加新食物
           </Typography>
         </Box>
         
@@ -454,6 +469,15 @@ const FoodAdd = () => {
         </Formik>
       </Paper>
     </Container>
+
+    {/* 食物详情对话框 */}
+    <FoodDetailDialog 
+      open={detailDialogOpen} 
+      onClose={handleCloseDetails}
+      food={addedFood}
+      onFoodUpdate={handleFoodUpdate}
+    />
+  </>
   );
 };
 
