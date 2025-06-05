@@ -231,7 +231,12 @@ const Recipe = ({ user }) => {
           foodId: item.foodId,
           amount: item.amount
         })),
-        nutrition: totalNutrition
+        nutrition: {
+          calories: totalNutrition.calories,
+          protein: totalNutrition.protein,
+          carbs: totalNutrition.carbs,
+          fat: totalNutrition.fat
+        }
       };
       
       // 检查是否已存在同名食谱

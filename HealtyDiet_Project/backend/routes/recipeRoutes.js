@@ -59,29 +59,22 @@ router.post('/', (req, res) => {
     const { name, userId, items, description } = req.body;
     
     if (!name || !userId || !items || !Array.isArray(items)) {
-      return res.status(400).json({ message: '必须提供食谱名称、用户ID和食物列表' });
+      return res.status(400).json({ message: '必须提供食谱名称、用户ID和食物项目' });
     }
-    
-    const recipeData = fs.readJsonSync(recipesFile);
-    const foodData = fs.readJsonSync(foodsFile);
     
     // 验证食物项目
     for (const item of items) {
       if (!item.foodId || !item.amount) {
         return res.status(400).json({ message: '每个食物项目必须包含foodId和amount' });
       }
-      
-      // 检查食物是否存在
-      const foodExists = foodData.foods.some(food => food.id === item.foodId);
-      if (!foodExists) {
-        return res.status(400).json({ message: `ID为${item.foodId}的食物不存在` });
-      }
     }
     
-    // 计算食谱的营养成分
+    const recipeData = fs.readJsonSync(recipesFile);
+    const foodData = fs.readJsonSync(foodsFile);
+    
+    // 计算营养成分
     const nutrition = calculateNutrition(items, foodData.foods);
     
-    // 创建新食谱
     const newRecipe = {
       id: uuidv4(),
       name,
@@ -191,24 +184,34 @@ function calculateNutrition(items, foods) {
   for (const item of items) {
     const food = foods.find(f => f.id === item.foodId);
     if (food) {
-      const ratio = item.amount / food.servingSize;
+      // 使用默认值100作为标准份量，避免除以0或undefined
+      const servingSize = food.servingSize || 100;
+      const ratio = item.amount / servingSize;
       
-      nutrition.calories += food.calories * ratio;
-      nutrition.protein += food.protein * ratio;
-      nutrition.carbs += food.carbs * ratio;
-      nutrition.fat += food.fat * ratio;
+      // 确保各营养素值存在，如果不存在则默认为0
+      const calories = food.calories || 0;
+      const protein = food.protein || 0;
+      const carbs = food.carbs || 0;
+      const fat = food.fat || 0;
+      
+      nutrition.calories += calories * ratio;
+      nutrition.protein += protein * ratio;
+      nutrition.carbs += carbs * ratio;
+      nutrition.fat += fat * ratio;
       
       // 累加维生素
       for (const vitamin in food.vitamins) {
         if (nutrition.vitamins[vitamin] !== undefined) {
-          nutrition.vitamins[vitamin] += food.vitamins[vitamin] * ratio;
+          const vitaminValue = food.vitamins[vitamin] || 0;
+          nutrition.vitamins[vitamin] += vitaminValue * ratio;
         }
       }
       
       // 累加矿物质
       for (const mineral in food.minerals) {
         if (nutrition.minerals[mineral] !== undefined) {
-          nutrition.minerals[mineral] += food.minerals[mineral] * ratio;
+          const mineralValue = food.minerals[mineral] || 0;
+          nutrition.minerals[mineral] += mineralValue * ratio;
         }
       }
     }
