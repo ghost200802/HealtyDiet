@@ -19,6 +19,10 @@ import RecipeDialog from './RecipeDialog';
 import FoodDetailDialog from '../../components/food/FoodDetailDialog';
 import FoodAddDialog from '../../components/food/FoodAddDialog';
 
+// 导入工具函数和服务
+import { calculateTotalNutrition } from './RecipeUtils';
+import { saveRecipe, deleteRecipe, getUserRecipes, getAllFoods, updateFoodInRecipe } from './RecipeService';
+
 const Recipe = ({ user }) => {
   const navigate = useNavigate();
   const [foods, setFoods] = useState([]);
@@ -57,26 +61,18 @@ const Recipe = ({ user }) => {
         setError('');
         
         // 获取所有食物
-        const foodsResponse = await axios.get('http://localhost:5000/api/foods');
-        setFoods(foodsResponse.data);
+        const foodsData = await getAllFoods();
+        setFoods(foodsData);
         
         // 提取食物分类
-        const uniqueCategories = ['全部', ...new Set(foodsResponse.data.map(food => food.category))];
+        const uniqueCategories = ['全部', ...new Set(foodsData.map(food => food.category))];
         setCategories(uniqueCategories);
-        setFilteredFoods(foodsResponse.data);
+        setFilteredFoods(foodsData);
         
         // 如果用户已登录，获取用户的食谱
         if (user && user.id) {
-          const token = localStorage.getItem('token');
-          const recipesResponse = await axios.get(
-            `http://localhost:5000/api/recipes/user/${user.id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
-            }
-          );
-          setRecipes(recipesResponse.data);
+          const userRecipes = await getUserRecipes(user);
+          setRecipes(userRecipes);
         }
       } catch (err) {
         console.error('获取数据失败:', err);
@@ -91,39 +87,7 @@ const Recipe = ({ user }) => {
   
   // 计算食谱的总营养成分
   useEffect(() => {
-    if (recipeItems.length === 0) {
-      setTotalNutrition({
-        calories: 0,
-        protein: 0,
-        carbs: 0,
-        fat: 0
-      });
-      return;
-    }
-    
-    const totals = {
-      calories: 0,
-      protein: 0,
-      carbs: 0,
-      fat: 0
-    };
-    
-    recipeItems.forEach(item => {
-      const food = foods.find(f => f.id === item.foodId);
-      if (food) {
-        const ratio = item.amount / (food.servingSize || 100); // 默认以100g为标准份量
-        totals.calories += food.calories * ratio;
-        totals.protein += food.protein * ratio;
-        totals.carbs += food.carbs * ratio;
-        totals.fat += food.fat * ratio;
-      }
-    });
-    
-    // 四舍五入到一位小数
-    Object.keys(totals).forEach(key => {
-      totals[key] = Math.round(totals[key] * 10) / 10;
-    });
-    
+    const totals = calculateTotalNutrition(recipeItems, foods);
     setTotalNutrition(totals);
   }, [recipeItems, foods]);
   
@@ -199,80 +163,23 @@ const Recipe = ({ user }) => {
   
   // 保存食谱
   const handleSaveRecipe = async () => {
-    if (!user || !user.id) {
-      setError('请先登录');
-      return;
-    }
-    
-    if (recipeItems.length === 0) {
-      setError('食谱中没有食物，请先添加食物');
-      return;
-    }
-    
     try {
-      const token = localStorage.getItem('token');
-      
-      const recipeData = {
+      const updatedRecipes = await saveRecipe({
         name: recipeName,
-        userId: user.id,
-        items: recipeItems.map(item => ({
-          foodId: item.foodId,
-          amount: item.amount
-        })),
-        nutrition: {
-          calories: totalNutrition.calories,
-          protein: totalNutrition.protein,
-          carbs: totalNutrition.carbs,
-          fat: totalNutrition.fat
-        },
-        mainIngredients: getMainIngredients()
-      };
+        user,
+        recipeItems,
+        totalNutrition,
+        recipes
+      });
       
-      // 检查是否已存在同名食谱
-      const existingRecipe = recipes.find(r => r.name === recipeName);
-      
-      if (existingRecipe) {
-        // 更新现有食谱
-        await axios.put(
-          `http://localhost:5000/api/recipes/${existingRecipe.id}`,
-          recipeData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          }
-        );
-      } else {
-        // 创建新食谱
-        await axios.post(
-          'http://localhost:5000/api/recipes',
-          recipeData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          }
-        );
-      }
-      
+      setRecipes(updatedRecipes);
       setSuccess('食谱保存成功');
-      
-      // 重新获取用户的食谱
-      const recipesResponse = await axios.get(
-        `http://localhost:5000/api/recipes/user/${user.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-      setRecipes(recipesResponse.data);
       
       // 3秒后清除成功消息
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       console.error('保存食谱失败:', err);
-      setError('保存食谱失败，请重试');
+      setError(err.message || '保存食谱失败，请重试');
     }
   };
   
@@ -306,21 +213,8 @@ const Recipe = ({ user }) => {
   
   // 删除食谱
   const handleDeleteRecipe = async (recipeId) => {
-    if (!user || !user.id) {
-      setError('请先登录');
-      return;
-    }
-    
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(
-        `http://localhost:5000/api/recipes/${recipeId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
+      await deleteRecipe(recipeId, user);
       
       // 更新本地食谱列表
       setRecipes(recipes.filter(recipe => recipe.id !== recipeId));
@@ -330,88 +224,17 @@ const Recipe = ({ user }) => {
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       console.error('删除食谱失败:', err);
-      setError('删除食谱失败，请重试');
+      setError(err.message || '删除食谱失败，请重试');
     }
   };
   
-  // 准备营养素数据用于图表显示
-  const prepareNutritionData = (type) => {
-    if (recipeItems.length === 0) return [];
-    
-    // 根据类型获取相应的营养素数据并按照占比从大到小排序
-    return recipeItems
-      .map(item => ({
-        name: item.foodName,
-        value: item[type],
-        percent: (item[type] / totalNutrition[type]) * 100
-      }))
-      .sort((a, b) => b.percent - a.percent);
-  };
-  
-  // 获取食谱的主要食材
-  const getMainIngredients = () => {
-    if (recipeItems.length === 0) return [];
-    
-    // 获取能量最多的食材
-    const caloriesTop = [...recipeItems].sort((a, b) => b.calories - a.calories)[0];
-    
-    // 获取蛋白质最多的食材
-    const proteinTop = [...recipeItems].sort((a, b) => b.protein - a.protein)[0];
-    
-    // 获取碳水最多的食材
-    const carbsTop = [...recipeItems].sort((a, b) => b.carbs - a.carbs)[0];
-    
-    // 获取脂肪最多的食材
-    const fatTop = [...recipeItems].sort((a, b) => b.fat - a.fat)[0];
-    
-    // 合并并去重
-    const mainIngredients = [];
-    const addedIds = new Set();
-    
-    [caloriesTop, proteinTop, carbsTop, fatTop].forEach(item => {
-      if (item && !addedIds.has(item.foodId)) {
-        mainIngredients.push({
-          foodId: item.foodId,
-          foodName: item.foodName
-        });
-        addedIds.add(item.foodId);
-      }
-    });
-    
-    return mainIngredients;
-  };
+  // 这些函数已移至RecipeUtils.js中
   
   // 处理食物详情更新
   const handleFoodUpdate = (updatedFood) => {
-    // 更新本地食物列表中的食物数据
-    setFoods(prevFoods => {
-      return prevFoods.map(food => {
-        if (food.id === updatedFood.id) {
-          return updatedFood;
-        }
-        return food;
-      });
-    });
-    
-    // 如果更新的食物在食谱中，也需要更新食谱项目
-    const foodInRecipe = recipeItems.find(item => item.foodId === updatedFood.id);
-    if (foodInRecipe) {
-      setRecipeItems(prevItems => {
-        return prevItems.map(item => {
-          if (item.foodId === updatedFood.id) {
-            const ratio = item.amount / (updatedFood.servingSize || 100);
-            return {
-              ...item,
-              calories: updatedFood.calories * ratio,
-              protein: updatedFood.protein * ratio,
-              carbs: updatedFood.carbs * ratio,
-              fat: updatedFood.fat * ratio
-            };
-          }
-          return item;
-        });
-      });
-    }
+    const { updatedFoods, updatedRecipeItems } = updateFoodInRecipe(updatedFood, foods, recipeItems);
+    setFoods(updatedFoods);
+    setRecipeItems(updatedRecipeItems);
   };
 
   if (loading) {
@@ -464,7 +287,7 @@ const Recipe = ({ user }) => {
       />
       
       {/* 营养详情区 */}
-      <NutritionDetails prepareNutritionData={prepareNutritionData} />
+      <NutritionDetails recipeItems={recipeItems} totalNutrition={totalNutrition} />
       
       {/* 食谱选择对话框 */}
       <RecipeDialog 

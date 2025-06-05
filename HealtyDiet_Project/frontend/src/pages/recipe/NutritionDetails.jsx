@@ -8,11 +8,12 @@ import {
   CardContent,
 } from '@mui/material';
 import HorizontalBarChart from '../../components/charts/HorizontalBarChart';
+import { prepareNutritionData } from './RecipeUtils';
 
 /**
  * 食谱营养详情组件，显示各营养素的分布图表
  */
-const NutritionDetails = ({ prepareNutritionData }) => {
+const NutritionDetails = ({ recipeItems, totalNutrition }) => {
   return (
     <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
       <Typography variant="h5" gutterBottom>
@@ -24,7 +25,7 @@ const NutritionDetails = ({ prepareNutritionData }) => {
             <CardHeader title="热量分布" />
             <CardContent>
               <HorizontalBarChart 
-                data={prepareNutritionData('calories')} 
+                data={prepareNutritionData(recipeItems, totalNutrition, 'calories')} 
                 unit="千卡" 
                 type="calories" 
               />
@@ -36,7 +37,7 @@ const NutritionDetails = ({ prepareNutritionData }) => {
             <CardHeader title="蛋白质分布" />
             <CardContent>
               <HorizontalBarChart 
-                data={prepareNutritionData('protein')} 
+                data={prepareNutritionData(recipeItems, totalNutrition, 'protein')} 
                 unit="g" 
                 type="protein" 
               />
@@ -48,7 +49,7 @@ const NutritionDetails = ({ prepareNutritionData }) => {
             <CardHeader title="碳水化合物分布" />
             <CardContent>
               <HorizontalBarChart 
-                data={prepareNutritionData('carbs')} 
+                data={prepareNutritionData(recipeItems, totalNutrition, 'carbs')} 
                 unit="g" 
                 type="carbs" 
               />
@@ -60,7 +61,7 @@ const NutritionDetails = ({ prepareNutritionData }) => {
             <CardHeader title="脂肪分布" />
             <CardContent>
               <HorizontalBarChart 
-                data={prepareNutritionData('fat')} 
+                data={prepareNutritionData(recipeItems, totalNutrition, 'fat')} 
                 unit="g" 
                 type="fat" 
               />
