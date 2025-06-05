@@ -3,46 +3,19 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {
   Container,
-  Typography,
-  Box,
-  Grid,
-  Paper,
-  Card,
-  CardContent,
-  CardHeader,
-  Button,
-  TextField,
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
-  IconButton,
-  Tabs,
-  Tab,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Autocomplete,
   CircularProgress,
+  Typography,
   Alert,
-  TableContainer,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  InputAdornment
 } from '@mui/material';
-import {
-  Add as AddIcon,
-  Save as SaveIcon,
-  Delete as DeleteIcon,
-  Info as InfoIcon,
-  CloudDownload as CloudDownloadIcon,
-  Visibility as VisibilityIcon
-} from '@mui/icons-material';
-import HorizontalBarChart from '../../components/charts/HorizontalBarChart';
+
+// 导入拆分后的组件
+import RecipeHeader from './RecipeHeader';
+import NutritionOverview from './NutritionOverview';
+import RecipeItemsTable from './RecipeItemsTable';
+import NutritionDetails from './NutritionDetails';
+import RecipeDialog from './RecipeDialog';
+
+// 导入对话框组件
 import FoodDetailDialog from '../../components/food/FoodDetailDialog';
 import FoodAddDialog from '../../components/food/FoodAddDialog';
 
@@ -154,8 +127,6 @@ const Recipe = ({ user }) => {
     setTotalNutrition(totals);
   }, [recipeItems, foods]);
   
-
-  
   // 添加食物到食谱
   const handleAddFood = (selectedFood, amount) => {
     if (!selectedFood || !amount || isNaN(amount) || amount <= 0) {
@@ -207,6 +178,23 @@ const Recipe = ({ user }) => {
     const updatedItems = [...recipeItems];
     updatedItems.splice(index, 1);
     setRecipeItems(updatedItems);
+  };
+  
+  // 更新食物数量
+  const handleAmountChange = (index, newAmount) => {
+    const updatedItems = [...recipeItems];
+    const food = foods.find(f => f.id === updatedItems[index].foodId);
+    if (food) {
+      updatedItems[index] = {
+        ...updatedItems[index],
+        amount: newAmount,
+        calories: food.calories * (newAmount / (food.servingSize || 100)),
+        protein: food.protein * (newAmount / (food.servingSize || 100)),
+        carbs: food.carbs * (newAmount / (food.servingSize || 100)),
+        fat: food.fat * (newAmount / (food.servingSize || 100))
+      };
+      setRecipeItems(updatedItems);
+    }
   };
   
   // 保存食谱
@@ -393,8 +381,39 @@ const Recipe = ({ user }) => {
     return mainIngredients;
   };
   
+  // 处理食物详情更新
+  const handleFoodUpdate = (updatedFood) => {
+    // 更新本地食物列表中的食物数据
+    setFoods(prevFoods => {
+      return prevFoods.map(food => {
+        if (food.id === updatedFood.id) {
+          return updatedFood;
+        }
+        return food;
+      });
+    });
+    
+    // 如果更新的食物在食谱中，也需要更新食谱项目
+    const foodInRecipe = recipeItems.find(item => item.foodId === updatedFood.id);
+    if (foodInRecipe) {
+      setRecipeItems(prevItems => {
+        return prevItems.map(item => {
+          if (item.foodId === updatedFood.id) {
+            const ratio = item.amount / (updatedFood.servingSize || 100);
+            return {
+              ...item,
+              calories: updatedFood.calories * ratio,
+              protein: updatedFood.protein * ratio,
+              carbs: updatedFood.carbs * ratio,
+              fat: updatedFood.fat * ratio
+            };
+          }
+          return item;
+        });
+      });
+    }
+  };
 
-  
   if (loading) {
     return (
       <Container sx={{ py: 4, textAlign: 'center' }}>
@@ -409,46 +428,13 @@ const Recipe = ({ user }) => {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       {/* 标题区 */}
-      <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Box>
-          <Typography variant="h4" component="h1" gutterBottom>
-            食谱规划
-          </Typography>
-          <TextField
-            fullWidth
-            label="食谱名称"
-            value={recipeName}
-            onChange={(e) => setRecipeName(e.target.value)}
-            variant="outlined"
-            sx={{ mb: 2 }}
-          />
-        </Box>
-        <Box>
-          <Button
-            variant="outlined"
-            startIcon={<CloudDownloadIcon />}
-            onClick={() => setRecipeDialogOpen(true)}
-            sx={{ mr: 2 }}
-          >
-            载入
-          </Button>
-          <Button
-            variant="outlined"
-            startIcon={<AddIcon />}
-            onClick={() => setFoodAddDialogOpen(true)}
-            sx={{ mr: 2 }}
-          >
-            添加
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<SaveIcon />}
-            onClick={handleSaveRecipe}
-          >
-            保存
-          </Button>
-        </Box>
-      </Box>
+      <RecipeHeader 
+        recipeName={recipeName}
+        setRecipeName={setRecipeName}
+        onSave={handleSaveRecipe}
+        onLoad={() => setRecipeDialogOpen(true)}
+        onAdd={() => setFoodAddDialogOpen(true)}
+      />
       
       {/* 消息提示 */}
       {error && (
@@ -463,325 +449,31 @@ const Recipe = ({ user }) => {
       )}
       
       {/* 食谱总览区 */}
-      <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-        <Typography variant="h5" gutterBottom>
-          营养总览
-        </Typography>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={3}>
-            <Card sx={{ height: '100%' }}>
-              <CardContent>
-                <Typography variant="h6" color="primary">
-                  总热量
-                </Typography>
-                <Typography variant="h4">
-                  {totalNutrition.calories} 千卡
-                </Typography>
-                {user && user.dci && (
-                  <Box sx={{ mt: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Typography variant="body2" color="text.secondary">
-                      推荐摄入: {user.dci} 千卡
-                    </Typography>
-                    <Typography 
-                      variant="body2" 
-                      color={totalNutrition.calories > user.dci * 1.1 ? 'error.main' : 
-                             totalNutrition.calories < user.dci * 0.9 ? 'warning.main' : 'success.main'}
-                      sx={{ fontWeight: 'bold' }}
-                    >
-                      {Math.round(totalNutrition.calories / user.dci * 100)}%
-                    </Typography>
-                  </Box>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <Card sx={{ height: '100%' }}>
-              <CardContent>
-                <Typography variant="h6" color="primary">
-                  蛋白质
-                </Typography>
-                <Typography variant="h4">
-                  {totalNutrition.protein} 克
-                </Typography>
-                {user && user.protein && (
-                  <Box sx={{ mt: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Typography variant="body2" color="text.secondary">
-                      推荐摄入: {user.protein} 克
-                    </Typography>
-                    <Typography 
-                      variant="body2" 
-                      color={totalNutrition.protein > user.protein * 1.2 ? 'warning.main' : 
-                             totalNutrition.protein < user.protein * 0.8 ? 'error.main' : 'success.main'}
-                      sx={{ fontWeight: 'bold' }}
-                    >
-                      {Math.round(totalNutrition.protein / user.protein * 100)}%
-                    </Typography>
-                  </Box>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <Card sx={{ height: '100%' }}>
-              <CardContent>
-                <Typography variant="h6" color="primary">
-                  碳水化合物
-                </Typography>
-                <Typography variant="h4">
-                  {totalNutrition.carbs} 克
-                </Typography>
-                {user && user.carbs && (
-                  <Box sx={{ mt: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Typography variant="body2" color="text.secondary">
-                      推荐摄入: {user.carbs} 克
-                    </Typography>
-                    <Typography 
-                      variant="body2" 
-                      color={totalNutrition.carbs > user.carbs * 1.2 ? 'warning.main' : 
-                             totalNutrition.carbs < user.carbs * 0.8 ? 'error.main' : 'success.main'}
-                      sx={{ fontWeight: 'bold' }}
-                    >
-                      {Math.round(totalNutrition.carbs / user.carbs * 100)}%
-                    </Typography>
-                  </Box>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <Card sx={{ height: '100%' }}>
-              <CardContent>
-                <Typography variant="h6" color="primary">
-                  脂肪
-                </Typography>
-                <Typography variant="h4">
-                  {totalNutrition.fat} 克
-                </Typography>
-                {user && user.fat && (
-                  <Box sx={{ mt: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Typography variant="body2" color="text.secondary">
-                      推荐摄入: {user.fat} 克
-                    </Typography>
-                    <Typography 
-                      variant="body2" 
-                      color={totalNutrition.fat > user.fat * 1.2 ? 'warning.main' : 
-                             totalNutrition.fat < user.fat * 0.8 ? 'error.main' : 'success.main'}
-                      sx={{ fontWeight: 'bold' }}
-                    >
-                      {Math.round(totalNutrition.fat / user.fat * 100)}%
-                    </Typography>
-                  </Box>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Paper>
+      <NutritionOverview totalNutrition={totalNutrition} user={user} />
       
-      {/* 功能操作区 */}
-      <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-        <Typography variant="h5" gutterBottom>
-          食物列表
-        </Typography>
-        {recipeItems.length === 0 ? (
-          <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', py: 3 }}>
-            食谱中还没有食物，点击上方的载入按钮载入已保存的食谱，或者请点击上方的添加按钮添加食物。
-          </Typography>
-        ) : (
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>食物名称</TableCell>
-                  <TableCell align="right">数量 (克)</TableCell>
-                  <TableCell align="right">热量 (千卡)</TableCell>
-                  <TableCell align="right">蛋白质 (克)</TableCell>
-                  <TableCell align="right">碳水 (克)</TableCell>
-                  <TableCell align="right">脂肪 (克)</TableCell>
-                  <TableCell align="right">操作</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {recipeItems.map((item, index) => (
-                  <TableRow key={`${item.foodId}-${index}`}>
-                    <TableCell>{item.foodName}</TableCell>
-                    <TableCell align="right">
-                      <TextField
-                        type="number"
-                        value={item.amount}
-                        onChange={(e) => {
-                          const newAmount = parseFloat(e.target.value);
-                          if (!isNaN(newAmount) && newAmount > 0) {
-                            const updatedItems = [...recipeItems];
-                            updatedItems[index] = {
-                              ...updatedItems[index],
-                              amount: newAmount,
-                              calories: foods.find(f => f.id === item.foodId).calories * (newAmount / (foods.find(f => f.id === item.foodId).servingSize || 100)),
-                              protein: foods.find(f => f.id === item.foodId).protein * (newAmount / (foods.find(f => f.id === item.foodId).servingSize || 100)),
-                              carbs: foods.find(f => f.id === item.foodId).carbs * (newAmount / (foods.find(f => f.id === item.foodId).servingSize || 100)),
-                              fat: foods.find(f => f.id === item.foodId).fat * (newAmount / (foods.find(f => f.id === item.foodId).servingSize || 100))
-                            };
-                            setRecipeItems(updatedItems);
-                          }
-                        }}
-                        size="small"
-                        sx={{ width: 80 }}
-                        inputProps={{ min: 0, step: 0.1 }}
-                      />
-                    </TableCell>
-                    <TableCell align="right">{item.calories.toFixed(1)}</TableCell>
-                    <TableCell align="right">{item.protein.toFixed(1)}</TableCell>
-                    <TableCell align="right">{item.carbs.toFixed(1)}</TableCell>
-                    <TableCell align="right">{item.fat.toFixed(1)}</TableCell>
-                    <TableCell align="right">
-                      <IconButton 
-                        size="small" 
-                        color="primary"
-                        onClick={() => {
-                          const food = foods.find(f => f.id === item.foodId);
-                          if (food) {
-                            setFoodToView(food);
-                            setFoodDetailDialogOpen(true);
-                          }
-                        }}
-                        sx={{ mr: 1 }}
-                      >
-                        <VisibilityIcon />
-                      </IconButton>
-                      <IconButton 
-                        size="small" 
-                        color="error"
-                        onClick={() => handleRemoveFood(index)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
-      </Paper>
+      {/* 食物列表区 */}
+      <RecipeItemsTable 
+        recipeItems={recipeItems}
+        foods={foods}
+        onAmountChange={handleAmountChange}
+        onRemoveFood={handleRemoveFood}
+        onViewFoodDetail={(food) => {
+          setFoodToView(food);
+          setFoodDetailDialogOpen(true);
+        }}
+      />
       
-      {/* 详情展示区 */}
-      <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-        <Typography variant="h5" gutterBottom>
-          营养详情
-        </Typography>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-            <Card>
-              <CardHeader title="热量分布" />
-              <CardContent>
-                <HorizontalBarChart 
-                  data={prepareNutritionData('calories')} 
-                  unit="千卡" 
-                  type="calories" 
-                />
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Card>
-              <CardHeader title="蛋白质分布" />
-              <CardContent>
-                <HorizontalBarChart 
-                  data={prepareNutritionData('protein')} 
-                  unit="g" 
-                  type="protein" 
-                />
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Card>
-              <CardHeader title="碳水化合物分布" />
-              <CardContent>
-                <HorizontalBarChart 
-                  data={prepareNutritionData('carbs')} 
-                  unit="g" 
-                  type="carbs" 
-                />
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Card>
-              <CardHeader title="脂肪分布" />
-              <CardContent>
-                <HorizontalBarChart 
-                  data={prepareNutritionData('fat')} 
-                  unit="g" 
-                  type="fat" 
-                />
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Paper>
-      
-
-      
-
+      {/* 营养详情区 */}
+      <NutritionDetails prepareNutritionData={prepareNutritionData} />
       
       {/* 食谱选择对话框 */}
-      <Dialog
+      <RecipeDialog 
         open={recipeDialogOpen}
         onClose={() => setRecipeDialogOpen(false)}
-        maxWidth="md"
-        fullWidth
-      >
-        <DialogTitle>选择食谱</DialogTitle>
-        <DialogContent>
-          {recipes.length === 0 ? (
-            <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', py: 3 }}>
-              没有保存的食谱
-            </Typography>
-          ) : (
-            <List>
-              {recipes.map(recipe => (
-                <ListItem 
-                  key={recipe.id} 
-                  button 
-                  onClick={() => handleLoadRecipe(recipe)}
-                  divider
-                >
-                  <ListItemText
-                    primary={recipe.name}
-                    secondary={
-                      <>
-                        <Typography variant="body2">
-                          热量: {recipe.nutrition?.calories || 0} 千卡 | 蛋白质: {recipe.nutrition?.protein || 0}g | 碳水: {recipe.nutrition?.carbs || 0}g | 脂肪: {recipe.nutrition?.fat || 0}g
-                        </Typography>
-                        {recipe.mainIngredients && recipe.mainIngredients.length > 0 && (
-                          <Typography variant="body2" sx={{ mt: 1 }}>
-                            主要食材: {recipe.mainIngredients.map(ing => ing.foodName).join('、')}
-                          </Typography>
-                        )}
-                      </>
-                    }
-                  />
-                  <IconButton 
-                    edge="end" 
-                    color="error"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteRecipe(recipe.id);
-                    }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItem>
-              ))}
-            </List>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setRecipeDialogOpen(false)}>取消</Button>
-        </DialogActions>
-      </Dialog>
+        recipes={recipes}
+        onLoadRecipe={handleLoadRecipe}
+        onDeleteRecipe={handleDeleteRecipe}
+      />
       
       {/* 食物添加对话框 */}
       <FoodAddDialog
@@ -801,37 +493,7 @@ const Recipe = ({ user }) => {
         open={foodDetailDialogOpen}
         onClose={() => setFoodDetailDialogOpen(false)}
         food={foodToView}
-        onFoodUpdate={(updatedFood) => {
-          // 更新本地食物列表中的食物数据
-          setFoods(prevFoods => {
-            return prevFoods.map(food => {
-              if (food.id === updatedFood.id) {
-                return updatedFood;
-              }
-              return food;
-            });
-          });
-          
-          // 如果更新的食物在食谱中，也需要更新食谱项目
-          const foodInRecipe = recipeItems.find(item => item.foodId === updatedFood.id);
-          if (foodInRecipe) {
-            setRecipeItems(prevItems => {
-              return prevItems.map(item => {
-                if (item.foodId === updatedFood.id) {
-                  const ratio = item.amount / (updatedFood.servingSize || 100);
-                  return {
-                    ...item,
-                    calories: updatedFood.calories * ratio,
-                    protein: updatedFood.protein * ratio,
-                    carbs: updatedFood.carbs * ratio,
-                    fat: updatedFood.fat * ratio
-                  };
-                }
-                return item;
-              });
-            });
-          }
-        }}
+        onFoodUpdate={handleFoodUpdate}
       />
     </Container>
   );
