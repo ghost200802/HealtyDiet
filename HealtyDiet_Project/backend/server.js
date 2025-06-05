@@ -83,7 +83,7 @@ app.use('/api/recipes', recipeRoutes);
 
 // 基础路由
 app.get('/', (req, res) => {
-  res.json({ message: 'CleanEats API 服务运行中' });
+  res.json({ message: 'HealtyDiet API 服务运行中' });
 });
 
 // 启动服务器

@@ -53,7 +53,7 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
               textDecoration: 'none',
             }}
           >
-            CleanEats
+            HealtyDiet
           </Typography>
           
           {/* 移动版菜单 */}
@@ -136,7 +136,7 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
               textDecoration: 'none',
             }}
           >
-            CleanEats
+            HealtyDiet
           </Typography>
           
           {/* 桌面版菜单 */}

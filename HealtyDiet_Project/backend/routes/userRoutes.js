@@ -107,7 +107,7 @@ router.post('/login', async (req, res) => {
     // 创建JWT令牌
     const token = jwt.sign(
       { id: user.id },
-      'cleaneats_jwt_secret', // 在实际应用中应使用环境变量
+      'HealtyDiet_jwt_secret', // 在实际应用中应使用环境变量
       { expiresIn: '1d' }
     );
     

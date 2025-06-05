@@ -20,7 +20,7 @@ const Home = () => {
       {/* 主标题区域 */}
       <Box sx={{ my: 4, textAlign: 'center' }}>
         <Typography variant="h2" component="h1" gutterBottom>
-          欢迎使用 CleanEats
+          欢迎使用 HealtyDiet
         </Typography>
         <Typography variant="h5" color="text.secondary" paragraph>
           您的个人健康饮食管理助手，帮助您追踪营养摄入，规划健康饮食

@@ -17,14 +17,14 @@ const Footer = () => {
     >
       <Container maxWidth="lg">
         <Typography variant="body1" align="center">
-          CleanEats - 健康饮食管理系统
+          HealtyDiet - 健康饮食管理系统
         </Typography>
         <Typography variant="body2" color="text.secondary" align="center">
           {'© '}
           {new Date().getFullYear()}
           {' '}
           <Link color="inherit" href="#">
-            CleanEats
+            HealtyDiet
           </Link>
         </Typography>
       </Container>
