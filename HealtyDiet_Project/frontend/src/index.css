@@ -82,19 +82,6 @@ body {
   }
 }
 
-/* 食谱规划器样式 */
-.recipe-planner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
-@media (max-width: 992px) {
-  .recipe-planner {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* 营养信息显示 */
 .nutrition-info {
   display: grid;

@@ -346,7 +346,7 @@ const Recipe = ({ user }) => {
   // 渲染食物卡片
   const renderFoodCard = (food) => (
     <Card 
-      key={food.id} 
+      key={`food-card-${food.id}`} 
       sx={{ 
         mb: 2, 
         cursor: 'pointer',
@@ -387,7 +387,7 @@ const Recipe = ({ user }) => {
       {/* 标题区 */}
       <Box sx={{ mb: 3 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          食谱分析
+          食谱规划
         </Typography>
         <TextField
           fullWidth
@@ -493,7 +493,7 @@ const Recipe = ({ user }) => {
               </TableHead>
               <TableBody>
                 {recipeItems.map((item, index) => (
-                  <TableRow key={index}>
+                  <TableRow key={`${item.foodId}-${index}`}>
                     <TableCell>{item.foodName}</TableCell>
                     <TableCell align="right">{item.amount}</TableCell>
                     <TableCell align="right">{item.calories.toFixed(1)}</TableCell>
@@ -630,7 +630,7 @@ const Recipe = ({ user }) => {
               </TableHead>
               <TableBody>
                 {recipeItems.map((item, index) => (
-                  <TableRow key={index}>
+                  <TableRow key={`${item.foodId}-${index}`}>
                     <TableCell>{item.foodName}</TableCell>
                     <TableCell align="right">{item.amount}</TableCell>
                     <TableCell align="right">{item.calories.toFixed(1)}</TableCell>
@@ -713,9 +713,9 @@ const Recipe = ({ user }) => {
                 食物分类
               </Typography>
               <List>
-                {categories.map(category => (
+                {categories.map((category, index) => (
                   <ListItem 
-                    key={category} 
+                    key={`${category}-${index}`} 
                     button 
                     selected={selectedCategory === category}
                     onClick={() => setSelectedCategory(category)}

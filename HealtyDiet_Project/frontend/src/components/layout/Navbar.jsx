@@ -100,9 +100,6 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
                   <MenuItem onClick={() => handleMenuClick('/food-add')}>
                     <Typography textAlign="center">添加食物</Typography>
                   </MenuItem>
-                  <MenuItem onClick={() => handleMenuClick('/recipe-planner')}>
-                    <Typography textAlign="center">食谱规划</Typography>
-                  </MenuItem>
                   <MenuItem onClick={() => handleMenuClick('/recipe')}>
                     <Typography textAlign="center">食谱分析</Typography>
                   </MenuItem>
@@ -172,16 +169,10 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
                   添加食物
                 </Button>
                 <Button
-                  onClick={() => handleMenuClick('/recipe-planner')}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  食谱规划
-                </Button>
-                <Button
                   onClick={() => handleMenuClick('/recipe')}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
-                  食谱分析
+                  食谱规划
                 </Button>
               </>
             ) : null}

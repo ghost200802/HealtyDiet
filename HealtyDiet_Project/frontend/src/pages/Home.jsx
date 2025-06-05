@@ -88,7 +88,7 @@ const Home = () => {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small" component={Link} to="/recipe-planner" fullWidth>
+              <Button size="small" component={Link} to="/recipe" fullWidth>
                 开始规划
               </Button>
             </CardActions>
