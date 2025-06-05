@@ -15,6 +15,7 @@ import UserData from './pages/user/UserData';
 import FoodSearch from './pages/food/FoodSearch';
 import FoodAdd from './pages/food/FoodAdd';
 import RecipePlanner from './pages/recipe/RecipePlanner';
+import Recipe from './pages/recipe/Recipe';
 import PrivateRoute from './components/auth/PrivateRoute';
 
 // 创建主题
@@ -239,6 +240,12 @@ function App() {
             <Route path="/recipe-planner" element={
               <PrivateRoute isAuthenticated={isAuthenticated}>
                 <RecipePlanner user={user} />
+              </PrivateRoute>
+            } />
+            
+            <Route path="/recipe" element={
+              <PrivateRoute isAuthenticated={isAuthenticated}>
+                <Recipe user={user} />
               </PrivateRoute>
             } />
             
