@@ -167,8 +167,8 @@ const Recipe = ({ user }) => {
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(food => 
-        food.name.toLowerCase().includes(query) ||
-        food.category.toLowerCase().includes(query)
+        food?.name?.toLowerCase()?.includes(query) ||
+        food?.category?.toLowerCase()?.includes(query)
       );
     }
     
