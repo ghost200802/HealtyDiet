@@ -60,6 +60,7 @@ const Recipe = ({ user }) => {
   
   // 食物添加状态
   const [categories, setCategories] = useState(['全部']);
+  const [filteredFoods, setFilteredFoods] = useState([]);
   
   // 对话框状态
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
@@ -308,6 +309,36 @@ const Recipe = ({ user }) => {
     
     // 3秒后清除成功消息
     setTimeout(() => setSuccess(''), 3000);
+  };
+  
+  // 删除食谱
+  const handleDeleteRecipe = async (recipeId) => {
+    if (!user || !user.id) {
+      setError('请先登录');
+      return;
+    }
+    
+    try {
+      const token = localStorage.getItem('token');
+      await axios.delete(
+        `http://localhost:5000/api/recipes/${recipeId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      
+      // 更新本地食谱列表
+      setRecipes(recipes.filter(recipe => recipe.id !== recipeId));
+      setSuccess('食谱删除成功');
+      
+      // 3秒后清除成功消息
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (err) {
+      console.error('删除食谱失败:', err);
+      setError('删除食谱失败，请重试');
+    }
   };
   
   // 准备营养素数据用于图表显示
@@ -643,6 +674,16 @@ const Recipe = ({ user }) => {
                     primary={recipe.name}
                     secondary={`热量: ${recipe.nutrition?.calories || 0} 千卡 | 蛋白质: ${recipe.nutrition?.protein || 0}g | 碳水: ${recipe.nutrition?.carbs || 0}g | 脂肪: ${recipe.nutrition?.fat || 0}g`}
                   />
+                  <IconButton 
+                    edge="end" 
+                    color="error"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteRecipe(recipe.id);
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
                 </ListItem>
               ))}
             </List>

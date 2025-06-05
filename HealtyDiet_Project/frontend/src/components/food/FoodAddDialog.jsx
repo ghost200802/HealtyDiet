@@ -171,9 +171,15 @@ const FoodAddDialog = ({
             )}
           </Grid>
         </Grid>
-        
-        {selectedFood && (
-          <Box sx={{ mt: 3, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+      </DialogContent>
+      <DialogActions sx={{ 
+        flexDirection: 'column', 
+        alignItems: 'stretch',
+        p: 2,
+        '& > :not(:first-of-type)': { mt: 2 }
+      }}>
+        {selectedFood ? (
+          <Box sx={{ bgcolor: 'background.paper', borderRadius: 1, p: 2, mb: 2 }}>
             <Typography variant="h6" gutterBottom>
               已选择: {selectedFood.name}
             </Typography>
@@ -196,17 +202,17 @@ const FoodAddDialog = ({
               脂肪: {selectedFood.fat * (parseFloat(foodAmount) / 100 || 0).toFixed(1)}g
             </Typography>
           </Box>
-        )}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>取消</Button>
-        <Button 
-          onClick={handleAddFood} 
-          variant="contained" 
-          disabled={!selectedFood || !foodAmount}
-        >
-          添加到食谱
-        </Button>
+        ) : null}
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button onClick={onClose} sx={{ mr: 1 }}>取消</Button>
+          <Button 
+            onClick={handleAddFood} 
+            variant="contained" 
+            disabled={!selectedFood || !foodAmount}
+          >
+            添加到食谱
+          </Button>
+        </Box>
       </DialogActions>
     </Dialog>
   );

@@ -240,7 +240,11 @@ const FoodDetailDialog = ({ open, onClose, food, onFoodUpdate }) => {
           </Grid>
         </Grid>
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ 
+        display: 'flex', 
+        justifyContent: 'flex-end', 
+        p: 2 
+      }}>
         <Button onClick={() => {
           setIsEditing(!isEditing);
           if (!isEditing) {
