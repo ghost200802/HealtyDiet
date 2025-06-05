@@ -345,12 +345,14 @@ const Recipe = ({ user }) => {
   const prepareNutritionData = (type) => {
     if (recipeItems.length === 0) return [];
     
-    // 根据类型获取相应的营养素数据
-    return recipeItems.map(item => ({
-      name: item.foodName,
-      value: item[type],
-      percent: (item[type] / totalNutrition[type]) * 100
-    }));
+    // 根据类型获取相应的营养素数据并按照占比从大到小排序
+    return recipeItems
+      .map(item => ({
+        name: item.foodName,
+        value: item[type],
+        percent: (item[type] / totalNutrition[type]) * 100
+      }))
+      .sort((a, b) => b.percent - a.percent);
   };
   
 
@@ -369,18 +371,45 @@ const Recipe = ({ user }) => {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       {/* 标题区 */}
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          食谱规划
-        </Typography>
-        <TextField
-          fullWidth
-          label="食谱名称"
-          value={recipeName}
-          onChange={(e) => setRecipeName(e.target.value)}
-          variant="outlined"
-          sx={{ mb: 2 }}
-        />
+      <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box>
+          <Typography variant="h4" component="h1" gutterBottom>
+            食谱规划
+          </Typography>
+          <TextField
+            fullWidth
+            label="食谱名称"
+            value={recipeName}
+            onChange={(e) => setRecipeName(e.target.value)}
+            variant="outlined"
+            sx={{ mb: 2 }}
+          />
+        </Box>
+        <Box>
+          <Button
+            variant="outlined"
+            startIcon={<CloudDownloadIcon />}
+            onClick={() => setRecipeDialogOpen(true)}
+            sx={{ mr: 2 }}
+          >
+            载入
+          </Button>
+          <Button
+            variant="outlined"
+            startIcon={<AddIcon />}
+            onClick={() => setFoodAddDialogOpen(true)}
+            sx={{ mr: 2 }}
+          >
+            添加
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<SaveIcon />}
+            onClick={handleSaveRecipe}
+          >
+            保存
+          </Button>
+        </Box>
       </Box>
       
       {/* 消息提示 */}
@@ -479,7 +508,30 @@ const Recipe = ({ user }) => {
                 {recipeItems.map((item, index) => (
                   <TableRow key={`${item.foodId}-${index}`}>
                     <TableCell>{item.foodName}</TableCell>
-                    <TableCell align="right">{item.amount}</TableCell>
+                    <TableCell align="right">
+                      <TextField
+                        type="number"
+                        value={item.amount}
+                        onChange={(e) => {
+                          const newAmount = parseFloat(e.target.value);
+                          if (!isNaN(newAmount) && newAmount > 0) {
+                            const updatedItems = [...recipeItems];
+                            updatedItems[index] = {
+                              ...updatedItems[index],
+                              amount: newAmount,
+                              calories: foods.find(f => f.id === item.foodId).calories * (newAmount / (foods.find(f => f.id === item.foodId).servingSize || 100)),
+                              protein: foods.find(f => f.id === item.foodId).protein * (newAmount / (foods.find(f => f.id === item.foodId).servingSize || 100)),
+                              carbs: foods.find(f => f.id === item.foodId).carbs * (newAmount / (foods.find(f => f.id === item.foodId).servingSize || 100)),
+                              fat: foods.find(f => f.id === item.foodId).fat * (newAmount / (foods.find(f => f.id === item.foodId).servingSize || 100))
+                            };
+                            setRecipeItems(updatedItems);
+                          }
+                        }}
+                        size="small"
+                        sx={{ width: 80 }}
+                        inputProps={{ min: 0, step: 0.1 }}
+                      />
+                    </TableCell>
                     <TableCell align="right">{item.calories.toFixed(1)}</TableCell>
                     <TableCell align="right">{item.protein.toFixed(1)}</TableCell>
                     <TableCell align="right">{item.carbs.toFixed(1)}</TableCell>
@@ -573,7 +625,7 @@ const Recipe = ({ user }) => {
       </Paper>
       
       {/* 底部操作区 */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 3 }}>
         <Button
           variant="outlined"
           startIcon={<InfoIcon />}
@@ -581,31 +633,6 @@ const Recipe = ({ user }) => {
         >
           详情
         </Button>
-        <Box>
-          <Button
-            variant="outlined"
-            startIcon={<CloudDownloadIcon />}
-            onClick={() => setRecipeDialogOpen(true)}
-            sx={{ mr: 2 }}
-          >
-            载入
-          </Button>
-          <Button
-            variant="outlined"
-            startIcon={<AddIcon />}
-            onClick={() => setFoodAddDialogOpen(true)}
-            sx={{ mr: 2 }}
-          >
-            添加
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<SaveIcon />}
-            onClick={handleSaveRecipe}
-          >
-            保存
-          </Button>
-        </Box>
       </Box>
       
       {/* 详情对话框 */}
@@ -630,7 +657,30 @@ const Recipe = ({ user }) => {
                 {recipeItems.map((item, index) => (
                   <TableRow key={`${item.foodId}-${index}`}>
                     <TableCell>{item.foodName}</TableCell>
-                    <TableCell align="right">{item.amount}</TableCell>
+                    <TableCell align="right">
+                      <TextField
+                        type="number"
+                        value={item.amount}
+                        onChange={(e) => {
+                          const newAmount = parseFloat(e.target.value);
+                          if (!isNaN(newAmount) && newAmount > 0) {
+                            const updatedItems = [...recipeItems];
+                            updatedItems[index] = {
+                              ...updatedItems[index],
+                              amount: newAmount,
+                              calories: foods.find(f => f.id === item.foodId).calories * (newAmount / (foods.find(f => f.id === item.foodId).servingSize || 100)),
+                              protein: foods.find(f => f.id === item.foodId).protein * (newAmount / (foods.find(f => f.id === item.foodId).servingSize || 100)),
+                              carbs: foods.find(f => f.id === item.foodId).carbs * (newAmount / (foods.find(f => f.id === item.foodId).servingSize || 100)),
+                              fat: foods.find(f => f.id === item.foodId).fat * (newAmount / (foods.find(f => f.id === item.foodId).servingSize || 100))
+                            };
+                            setRecipeItems(updatedItems);
+                          }
+                        }}
+                        size="small"
+                        sx={{ width: 80 }}
+                        inputProps={{ min: 0, step: 0.1 }}
+                      />
+                    </TableCell>
                     <TableCell align="right">{item.calories.toFixed(1)}</TableCell>
                   </TableRow>
                 ))}
