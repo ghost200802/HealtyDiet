@@ -7,11 +7,42 @@ import {
   CardContent,
   Box,
 } from '@mui/material';
+import ClassicPieChart from '../../components/charts/ClassicPieChart';
 
 /**
  * 食谱营养总览组件
  */
 const NutritionOverview = ({ totalNutrition, user }) => {
+  // 计算三大营养素的能量占比
+  const calculateEnergyData = () => {
+    // 蛋白质、碳水和脂肪的能量转换系数（千卡/克）
+    const proteinFactor = 4;
+    const carbsFactor = 4;
+    const fatFactor = 9;
+    
+    // 计算各营养素提供的能量
+    const proteinEnergy = totalNutrition.protein * proteinFactor;
+    const carbsEnergy = totalNutrition.carbs * carbsFactor;
+    const fatEnergy = totalNutrition.fat * fatFactor;
+    
+    // 计算总能量
+    const totalEnergy = proteinEnergy + carbsEnergy + fatEnergy;
+    
+    // 计算各营养素能量占比
+    const proteinPercent = (proteinEnergy / totalEnergy) * 100;
+    const carbsPercent = (carbsEnergy / totalEnergy) * 100;
+    const fatPercent = (fatEnergy / totalEnergy) * 100;
+    
+    return [
+      { name: '蛋白质', value: proteinEnergy, percent: proteinPercent },
+      { name: '碳水化合物', value: carbsEnergy, percent: carbsPercent },
+      { name: '脂肪', value: fatEnergy, percent: fatPercent }
+    ];
+  };
+
+  // 获取能量数据
+  const energyData = calculateEnergyData();
+
   return (
     <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
       <Typography variant="h5" gutterBottom>
@@ -123,6 +154,25 @@ const NutritionOverview = ({ totalNutrition, user }) => {
                   </Typography>
                 </Box>
               )}
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+      
+      {/* 营养素能量占比饼图 */}
+      <Grid container spacing={3} sx={{ mt: 2, justifyContent: 'center' }}>
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent sx={{ textAlign: 'center' }}>
+              <Typography variant="h6" color="primary" gutterBottom>
+                营养素能量占比
+              </Typography>
+              <ClassicPieChart 
+                data={energyData} 
+                unit="千卡" 
+                type="calories" 
+                donut={true} 
+              />
             </CardContent>
           </Card>
         </Grid>
