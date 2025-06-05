@@ -449,8 +449,7 @@ const Recipe = ({ user }) => {
                              totalNutrition.calories < user.dci * 0.9 ? 'warning.main' : 'success.main'}
                       sx={{ fontWeight: 'bold' }}
                     >
-                      {totalNutrition.calories > user.dci ? `+${Math.round(totalNutrition.calories - user.dci)}` : 
-                       totalNutrition.calories < user.dci ? `${Math.round(totalNutrition.calories - user.dci)}` : '达标'}
+                      {Math.round(totalNutrition.calories / user.dci * 100)}%
                     </Typography>
                   </Box>
                 )}
@@ -477,8 +476,7 @@ const Recipe = ({ user }) => {
                              totalNutrition.protein < user.protein * 0.8 ? 'error.main' : 'success.main'}
                       sx={{ fontWeight: 'bold' }}
                     >
-                      {totalNutrition.protein > user.protein ? `+${Math.round(totalNutrition.protein - user.protein)}` : 
-                       totalNutrition.protein < user.protein ? `${Math.round(totalNutrition.protein - user.protein)}` : '达标'}
+                      {Math.round(totalNutrition.protein / user.protein * 100)}%
                     </Typography>
                   </Box>
                 )}
@@ -505,8 +503,7 @@ const Recipe = ({ user }) => {
                              totalNutrition.carbs < user.carbs * 0.8 ? 'error.main' : 'success.main'}
                       sx={{ fontWeight: 'bold' }}
                     >
-                      {totalNutrition.carbs > user.carbs ? `+${Math.round(totalNutrition.carbs - user.carbs)}` : 
-                       totalNutrition.carbs < user.carbs ? `${Math.round(totalNutrition.carbs - user.carbs)}` : '达标'}
+                      {Math.round(totalNutrition.carbs / user.carbs * 100)}%
                     </Typography>
                   </Box>
                 )}
@@ -533,8 +530,7 @@ const Recipe = ({ user }) => {
                              totalNutrition.fat < user.fat * 0.8 ? 'error.main' : 'success.main'}
                       sx={{ fontWeight: 'bold' }}
                     >
-                      {totalNutrition.fat > user.fat ? `+${Math.round(totalNutrition.fat - user.fat)}` : 
-                       totalNutrition.fat < user.fat ? `${Math.round(totalNutrition.fat - user.fat)}` : '达标'}
+                      {Math.round(totalNutrition.fat / user.fat * 100)}%
                     </Typography>
                   </Box>
                 )}
