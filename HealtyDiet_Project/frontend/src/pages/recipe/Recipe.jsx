@@ -236,7 +236,8 @@ const Recipe = ({ user }) => {
           protein: totalNutrition.protein,
           carbs: totalNutrition.carbs,
           fat: totalNutrition.fat
-        }
+        },
+        mainIngredients: getMainIngredients()
       };
       
       // 检查是否已存在同名食谱
@@ -357,6 +358,39 @@ const Recipe = ({ user }) => {
         percent: (item[type] / totalNutrition[type]) * 100
       }))
       .sort((a, b) => b.percent - a.percent);
+  };
+  
+  // 获取食谱的主要食材
+  const getMainIngredients = () => {
+    if (recipeItems.length === 0) return [];
+    
+    // 获取能量最多的食材
+    const caloriesTop = [...recipeItems].sort((a, b) => b.calories - a.calories)[0];
+    
+    // 获取蛋白质最多的食材
+    const proteinTop = [...recipeItems].sort((a, b) => b.protein - a.protein)[0];
+    
+    // 获取碳水最多的食材
+    const carbsTop = [...recipeItems].sort((a, b) => b.carbs - a.carbs)[0];
+    
+    // 获取脂肪最多的食材
+    const fatTop = [...recipeItems].sort((a, b) => b.fat - a.fat)[0];
+    
+    // 合并并去重
+    const mainIngredients = [];
+    const addedIds = new Set();
+    
+    [caloriesTop, proteinTop, carbsTop, fatTop].forEach(item => {
+      if (item && !addedIds.has(item.foodId)) {
+        mainIngredients.push({
+          foodId: item.foodId,
+          foodName: item.foodName
+        });
+        addedIds.add(item.foodId);
+      }
+    });
+    
+    return mainIngredients;
   };
   
 
@@ -716,7 +750,18 @@ const Recipe = ({ user }) => {
                 >
                   <ListItemText
                     primary={recipe.name}
-                    secondary={`热量: ${recipe.nutrition?.calories || 0} 千卡 | 蛋白质: ${recipe.nutrition?.protein || 0}g | 碳水: ${recipe.nutrition?.carbs || 0}g | 脂肪: ${recipe.nutrition?.fat || 0}g`}
+                    secondary={
+                      <>
+                        <Typography variant="body2">
+                          热量: {recipe.nutrition?.calories || 0} 千卡 | 蛋白质: {recipe.nutrition?.protein || 0}g | 碳水: {recipe.nutrition?.carbs || 0}g | 脂肪: {recipe.nutrition?.fat || 0}g
+                        </Typography>
+                        {recipe.mainIngredients && recipe.mainIngredients.length > 0 && (
+                          <Typography variant="body2" sx={{ mt: 1 }}>
+                            主要食材: {recipe.mainIngredients.map(ing => ing.foodName).join('、')}
+                          </Typography>
+                        )}
+                      </>
+                    }
                   />
                   <IconButton 
                     edge="end" 
