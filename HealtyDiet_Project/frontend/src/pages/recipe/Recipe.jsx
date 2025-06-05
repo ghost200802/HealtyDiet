@@ -44,6 +44,7 @@ import {
 } from '@mui/icons-material';
 import HorizontalBarChart from '../../components/charts/HorizontalBarChart';
 import FoodDetailDialog from '../../components/food/FoodDetailDialog';
+import FoodAddDialog from '../../components/food/FoodAddDialog';
 
 const Recipe = ({ user }) => {
   const navigate = useNavigate();
@@ -58,18 +59,13 @@ const Recipe = ({ user }) => {
   const [recipeItems, setRecipeItems] = useState([]);
   
   // 食物添加状态
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('全部');
   const [categories, setCategories] = useState(['全部']);
-  const [filteredFoods, setFilteredFoods] = useState([]);
   
   // 对话框状态
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
   const [recipeDialogOpen, setRecipeDialogOpen] = useState(false);
   const [foodAddDialogOpen, setFoodAddDialogOpen] = useState(false);
   const [foodDetailDialogOpen, setFoodDetailDialogOpen] = useState(false);
-  const [selectedFood, setSelectedFood] = useState(null);
-  const [foodAmount, setFoodAmount] = useState('');
   const [foodToView, setFoodToView] = useState(null);
   
   // 食谱营养成分总计
@@ -158,30 +154,11 @@ const Recipe = ({ user }) => {
     setTotalNutrition(totals);
   }, [recipeItems, foods]);
   
-  // 过滤食物列表
-  useEffect(() => {
-    let filtered = foods;
-    
-    // 按分类过滤
-    if (selectedCategory !== '全部') {
-      filtered = filtered.filter(food => food.category === selectedCategory);
-    }
-    
-    // 按搜索词过滤
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(food => 
-        food?.name?.toLowerCase()?.includes(query) ||
-        food?.category?.toLowerCase()?.includes(query)
-      );
-    }
-    
-    setFilteredFoods(filtered);
-  }, [foods, selectedCategory, searchQuery]);
+
   
   // 添加食物到食谱
-  const handleAddFood = () => {
-    if (!selectedFood || !foodAmount || isNaN(foodAmount) || parseFloat(foodAmount) <= 0) {
+  const handleAddFood = (selectedFood, amount) => {
+    if (!selectedFood || !amount || isNaN(amount) || amount <= 0) {
       setError('请选择食物并输入有效的数量');
       return;
     }
@@ -189,11 +166,11 @@ const Recipe = ({ user }) => {
     const newItem = {
       foodId: selectedFood.id,
       foodName: selectedFood.name,
-      amount: parseFloat(foodAmount),
-      calories: selectedFood.calories * (parseFloat(foodAmount) / (selectedFood.servingSize || 100)),
-      protein: selectedFood.protein * (parseFloat(foodAmount) / (selectedFood.servingSize || 100)),
-      carbs: selectedFood.carbs * (parseFloat(foodAmount) / (selectedFood.servingSize || 100)),
-      fat: selectedFood.fat * (parseFloat(foodAmount) / (selectedFood.servingSize || 100))
+      amount: amount,
+      calories: selectedFood.calories * (amount / (selectedFood.servingSize || 100)),
+      protein: selectedFood.protein * (amount / (selectedFood.servingSize || 100)),
+      carbs: selectedFood.carbs * (amount / (selectedFood.servingSize || 100)),
+      fat: selectedFood.fat * (amount / (selectedFood.servingSize || 100))
     };
     
     // 检查是否已存在该食物，如果存在则更新数量
@@ -202,7 +179,7 @@ const Recipe = ({ user }) => {
     if (existingItemIndex !== -1) {
       const updatedItems = [...recipeItems];
       const oldAmount = updatedItems[existingItemIndex].amount;
-      const newAmount = oldAmount + parseFloat(foodAmount);
+      const newAmount = oldAmount + amount;
       
       updatedItems[existingItemIndex] = {
         ...updatedItems[existingItemIndex],
@@ -218,8 +195,6 @@ const Recipe = ({ user }) => {
       setRecipeItems([...recipeItems, newItem]);
     }
     
-    setSelectedFood(null);
-    setFoodAmount('');
     setFoodAddDialogOpen(false);
     setSuccess('食物已添加到食谱');
     
@@ -347,46 +322,7 @@ const Recipe = ({ user }) => {
     }));
   };
   
-  // 渲染食物卡片
-  const renderFoodCard = (food) => (
-    <Card 
-      key={`food-card-${food.id}`} 
-      sx={{ 
-        mb: 2, 
-        cursor: 'pointer',
-        '&:hover': { boxShadow: 3 }
-      }}
-      onClick={() => {
-        setSelectedFood(food);
-        setFoodAmount('100');
-      }}
-    >
-      <CardContent>
-        <Typography variant="h6" component="div">
-          {food.name}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          热量: {food.calories} 千卡/100g
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          蛋白质: {food.protein}g | 碳水: {food.carbs}g | 脂肪: {food.fat}g
-        </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-          <IconButton 
-            size="small" 
-            color="primary"
-            onClick={(e) => {
-              e.stopPropagation(); // 阻止事件冒泡，避免触发卡片的点击事件
-              setFoodToView(food);
-              setFoodDetailDialogOpen(true);
-            }}
-          >
-            <VisibilityIcon />
-          </IconButton>
-        </Box>
-      </CardContent>
-    </Card>
-  );
+
   
   if (loading) {
     return (
@@ -718,103 +654,17 @@ const Recipe = ({ user }) => {
       </Dialog>
       
       {/* 食物添加对话框 */}
-      <Dialog
+      <FoodAddDialog
         open={foodAddDialogOpen}
         onClose={() => setFoodAddDialogOpen(false)}
-        maxWidth="lg"
-        fullWidth
-      >
-        <DialogTitle>添加食物</DialogTitle>
-        <DialogContent>
-          <Box sx={{ mb: 2 }}>
-            <TextField
-              fullWidth
-              label="搜索食物"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              variant="outlined"
-              sx={{ mb: 2 }}
-            />
-          </Box>
-          
-          <Grid container spacing={2}>
-            {/* 左侧分类列表 */}
-            <Grid item xs={12} md={3}>
-              <Typography variant="h6" gutterBottom>
-                食物分类
-              </Typography>
-              <List>
-                {categories.map((category, index) => (
-                  <ListItem 
-                    key={`${category}-${index}`} 
-                    button 
-                    selected={selectedCategory === category}
-                    onClick={() => setSelectedCategory(category)}
-                  >
-                    <ListItemText primary={category} />
-                  </ListItem>
-                ))}
-              </List>
-            </Grid>
-            
-            {/* 右侧食物列表 */}
-            <Grid item xs={12} md={9}>
-              <Typography variant="h6" gutterBottom>
-                食物列表
-              </Typography>
-              {filteredFoods.length === 0 ? (
-                <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', py: 3 }}>
-                  没有找到匹配的食物
-                </Typography>
-              ) : (
-                <Grid container spacing={2}>
-                  {filteredFoods.map(food => (
-                    <Grid item xs={12} sm={6} md={4} key={food.id}>
-                      {renderFoodCard(food)}
-                    </Grid>
-                  ))}
-                </Grid>
-              )}
-            </Grid>
-          </Grid>
-          
-          {selectedFood && (
-            <Box sx={{ mt: 3, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
-              <Typography variant="h6" gutterBottom>
-                已选择: {selectedFood.name}
-              </Typography>
-              <TextField
-                label="数量 (克)"
-                type="number"
-                value={foodAmount}
-                onChange={(e) => setFoodAmount(e.target.value)}
-                InputProps={{
-                  endAdornment: <InputAdornment position="end">克</InputAdornment>,
-                }}
-                fullWidth
-                variant="outlined"
-                sx={{ mb: 2 }}
-              />
-              <Typography variant="body2" color="text.secondary">
-                热量: {selectedFood.calories * (parseFloat(foodAmount) / 100 || 0).toFixed(1)} 千卡 | 
-                蛋白质: {selectedFood.protein * (parseFloat(foodAmount) / 100 || 0).toFixed(1)}g | 
-                碳水: {selectedFood.carbs * (parseFloat(foodAmount) / 100 || 0).toFixed(1)}g | 
-                脂肪: {selectedFood.fat * (parseFloat(foodAmount) / 100 || 0).toFixed(1)}g
-              </Typography>
-            </Box>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setFoodAddDialogOpen(false)}>取消</Button>
-          <Button 
-            onClick={handleAddFood} 
-            variant="contained" 
-            disabled={!selectedFood || !foodAmount}
-          >
-            添加到食谱
-          </Button>
-        </DialogActions>
-      </Dialog>
+        foods={foods}
+        categories={categories}
+        onAddFood={handleAddFood}
+        onViewFoodDetail={(food) => {
+          setFoodToView(food);
+          setFoodDetailDialogOpen(true);
+        }}
+      />
       
       {/* 食物详情对话框 */}
       <FoodDetailDialog
