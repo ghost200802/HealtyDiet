@@ -21,7 +21,7 @@ import FoodAddDialog from '../../components/food/FoodAddDialog';
 
 // 导入工具函数和服务
 import { calculateTotalNutrition, calculateRecipeItem } from '../../services/NutritionService';
-import { saveRecipe, deleteRecipe, getUserRecipes, getAllFoods, updateFoodInRecipe } from './RecipeService';
+import { saveRecipe, deleteRecipe, getUserRecipes, updateFoodInRecipe } from './RecipeService';
 import { generateRecipeByDailyNeeds, optimizeRecipeByUserData, saveGeneratedRecipe } from './RecipeAutoGenerator';
 import dailyNeeds from '../../../../data/needs/DailyNeeds.json';
 import { calculateRecipeScoreWithUserData, flattenCategoryRecipe } from '../../services/RecipeScoreService';
