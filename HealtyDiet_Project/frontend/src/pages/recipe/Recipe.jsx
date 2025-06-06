@@ -222,6 +222,8 @@ const Recipe = ({ user }) => {
   // 加载食谱
   const handleLoadRecipe = (recipe) => {
     setRecipeName(recipe.name);
+
+    setSuccess('食谱加载 recipe：', recipe);
     
     // 转换食谱项目格式
     const items = recipe.items.map(item => {
@@ -232,6 +234,8 @@ const Recipe = ({ user }) => {
       return calculateRecipeItem(food, item.amount);
     }).filter(Boolean);
     
+    setSuccess('食谱加载 items：', items);
+
     setRecipeItems(items);
     setRecipeDialogOpen(false);
     setSuccess('食谱加载成功');
@@ -279,45 +283,62 @@ const Recipe = ({ user }) => {
       const optimizedRecipe = await optimizeRecipeByUserData(categoryRecipe, user, dailyNeeds);
       
       // 添加日志输出，列出优化后食谱中的食物和数量
-      console.log('优化后的食谱食物列表:');
-      Object.keys(optimizedRecipe).forEach(category => {
-        console.log(`类别: ${category}`);
-        optimizedRecipe[category].forEach(item => {
-          console.log(`  - ${item.food.name}: ${item.amount}g`);
-        });
-      });
+      console.log('优化后的食谱食物列表:', optimizedRecipe);
       
       // 添加日志输出，检查优化后的食谱得分
       // 将分类食谱转换为扁平列表，以便计算得分
-      console.log('优化后的食谱得分:', await calculateRecipeScoreWithUserData(foods, user, dailyNeeds.standardNeeds));
+      console.log('优化后的食谱得分:', await calculateRecipeScoreWithUserData(optimizedRecipe, user, dailyNeeds.standardNeeds));
       
       // 转换为食谱项目格式
-      const newItems = flatRecipe.map(item => ({
-        foodId: item.food.id,
-        foodName: item.food.name,
-        amount: item.amount,
-        calories: item.nutritionInfo.calories,
-        protein: item.nutritionInfo.protein,
-        carbs: item.nutritionInfo.carbs,
-        fat: item.nutritionInfo.fat,
-        fiber: item.nutritionInfo.fiber || 0, // 添加纤维素，如果没有则默认为0
-        category: item.category,
-        subType: item.subType
-      }));
+      const newItems = [];
+      
+      // 使用Promise.all并行处理所有食物项
+      const processItems = async () => {
+        try {
+          // 从FoodService获取食物数据和计算营养信息
+          const { getFoodById } = await import('../../services/FoodService');
+          const { calculateFoodNutrition } = await import('../../services/NutritionService');
+          
+          // 并行处理所有项目
+          const itemPromises = optimizedRecipe.map(async (item) => {
+            // 获取食物详细信息
+            const food = await getFoodById(item.foodId);
+            // 计算营养信息
+            const nutritionInfo = await calculateFoodNutrition(item.foodId, item.amount);
+            
+            return {
+              foodId: item.foodId,
+              foodName: food.name,
+              amount: item.amount,
+              calories: nutritionInfo.calories,
+              protein: nutritionInfo.protein,
+              carbs: nutritionInfo.carbs,
+              fat: nutritionInfo.fat,
+              fiber: nutritionInfo.fiber || 0,
+              category: food.category || food.type,
+              subType: food.subCategory || food.subType
+            };
+          });
+          
+          // 等待所有项目处理完成
+          const processedItems = await Promise.all(itemPromises);
+          setRecipeItems(processedItems);
+        } catch (error) {
+          console.error('处理食谱项目时出错:', error);
+          setError('处理食谱项目时出错: ' + error.message);
+        }
+      };
+      
+      // 执行处理
+      processItems();
       
       // 添加到食谱中
       setRecipeItems(newItems);
       
-      // 保存生成的食谱到食物列表
-      const updatedRecipes = await saveGeneratedRecipe(optimizedRecipe, user, recipes);
-      if (updatedRecipes) {
-        setRecipes(updatedRecipes);
-      }
-      
-      setSuccess('已根据每日营养需求标准生成食谱并保存到食谱列表');
+      setSuccess('已根据每日营养需求标准生成食谱');
       
       // 3秒后清除成功消息
-      setTimeout(() => setSuccess(''), 3000);
+      setTimeout(() => setSuccess(''), 2000);
     } catch (err) {
       console.error('自动生成食谱失败:', err);
       setError(err.message || '自动生成食谱失败，请重试');

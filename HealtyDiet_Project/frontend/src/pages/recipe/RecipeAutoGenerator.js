@@ -179,7 +179,7 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
   
   
   // 优化迭代次数
-  const maxIterations = 5000;
+  const maxIterations = 100;
   let currentIteration = 0;
   
   // 最佳得分和对应的食谱
@@ -204,71 +204,61 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
 
     console.log(`my optimizedRecipe: `, optimizedRecipe);
     
-    // 遍历每个类别
-    for (const category of Object.keys(optimizedRecipe)) {
-      console.log(`my optimizedRecipe category: `, optimizedRecipe[category]);
-      // 遍历该类别中的每个食物
-      for (const item of optimizedRecipe[category]) {
-        // 保存原始重量
-        const originalAmount = item.amount;
-        
-        // 尝试增加10g
-        item.amount += 10;
-        
-        const increaseScore = await calculateRecipeScoreWithUserData(flatRecipeIncrease, userData, standardNeeds);
+
+    // 遍历该类别中的每个食物
+    for (const item of optimizedRecipe)  {
+      // 保存原始重量
+      const originalAmount = item.amount;
+      
+      // 尝试增加10g
+      item.amount += 10;
+      
+      const increaseScore = await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
+      
+      // 恢复原始重量
+      item.amount = originalAmount;
+      
+      // 尝试减少10g（只有当原始重量大于等于20g时才尝试减少）
+      let decreaseScore = -Infinity;
+      if (originalAmount >= 20) {
+        item.amount -= 10;
+        decreaseScore = await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
         
         // 恢复原始重量
         item.amount = originalAmount;
+      }
+      
+      // 比较增加和减少的得分，选择更高的一个
+      // 只有当得分真正提高时才考虑变化
+      let maxScore = -Infinity;
+      let changeAmount = 0;
+      
+      // 只有当增加得分大于当前得分时，才考虑增加
+      if (increaseScore > currentScore) {
+        maxScore = increaseScore;
+        changeAmount = 10;
+      }
+      
+      // 只有当减少得分大于当前得分且大于增加得分时，才考虑减少
+      if (decreaseScore > currentScore && decreaseScore > maxScore) {
+        maxScore = decreaseScore;
+        changeAmount = -10;
+      }
+      
+      // 只有当找到了能提高得分的变化时，才应用变化
+      if (maxScore > currentScore) {
+        console.log(`找到更好的变化: ${item.foodId} ${changeAmount > 0 ? '增加' : '减少'} ${Math.abs(changeAmount)}g, 得分从 ${currentScore.toFixed(3)} 提高到 ${maxScore.toFixed(3)}`);
+        // 应用变化
+        item.amount += changeAmount;
         
-        // 尝试减少10g（只有当原始重量大于等于20g时才尝试减少）
-        let decreaseScore = -Infinity;
-        if (originalAmount >= 20) {
-          item.amount -= 10;
-          // 将分类食谱转换为扁平列表，以便计算得分
-          decreaseScore = await calculateRecipeScoreWithUserData(flatRecipeDecrease, userData, standardNeeds);
-          
-          // 恢复原始重量
-          item.amount = originalAmount;
-        }
+        // 更新当前得分
+        currentScore = maxScore;
+        hasImprovement = true;
         
-        // 比较增加和减少的得分，选择更高的一个
-        // 只有当得分真正提高时才考虑变化
-        let maxScore = -Infinity;
-        let changeAmount = 0;
-        
-        // 只有当增加得分大于当前得分时，才考虑增加
-        if (increaseScore > currentScore) {
-          maxScore = increaseScore;
-          changeAmount = 10;
-        }
-        
-        // 只有当减少得分大于当前得分且大于增加得分时，才考虑减少
-        if (decreaseScore > currentScore && decreaseScore > maxScore) {
-          maxScore = decreaseScore;
-          changeAmount = -10;
-        }
-        
-        // 只有当找到了能提高得分的变化时，才应用变化
-        if (maxScore > currentScore) {
-          console.log(`找到更好的变化: ${item.food.name} ${changeAmount > 0 ? '增加' : '减少'} ${Math.abs(changeAmount)}g, 得分从 ${currentScore.toFixed(3)} 提高到 ${maxScore.toFixed(3)}`);
-          // 应用变化
-          item.amount += changeAmount;
-          
-          // 更新营养信息
-          item.nutritionInfo = await calculateFoodNutrition(item.food.id, item.amount);
-          
-          // 更新当前得分
-          currentScore = maxScore;
-          hasImprovement = true;
-          
-          // 如果当前得分是最佳得分，保存当前食谱
-          if (currentScore > bestScore) {
-            bestScore = currentScore;
-            bestRecipe = JSON.parse(JSON.stringify(optimizedRecipe));
-          }
-          
-          // 找到了一个好的变化，可以提前结束本轮迭代
-          break;
+        // 如果当前得分是最佳得分，保存当前食谱
+        if (currentScore > bestScore) {
+          bestScore = currentScore;
+          bestRecipe = JSON.parse(JSON.stringify(optimizedRecipe));
         }
       }
       
