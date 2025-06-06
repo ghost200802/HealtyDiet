@@ -1,97 +1,172 @@
 /**
- * 食谱随机生成工具
- * 用于随机从食物库中选择食物并生成随机重量
+ * 食谱生成工具
+ * 根据每日营养需求标准生成合理的食谱
+ * 支持按照食物类别和子类型分配合理的食物重量
  */
 
+import axios from 'axios';
+
 /**
- * 随机生成一个食谱项目
+ * 将食物按类别分组
  * @param {Array} foods - 所有可用的食物列表
- * @returns {Object} - 包含随机选择的食物和重量的对象
+ * @returns {Object} - 按类别分组的食物
  */
-export const generateRandomRecipeItem = (foods) => {
+export const groupFoodsByCategory = async (foods) => {
   if (!foods || foods.length === 0) {
-    throw new Error('食物列表为空，无法生成随机食谱');
+    return {};
   }
   
-  // 随机选择一个食物
-  const randomIndex = Math.floor(Math.random() * foods.length);
-  const selectedFood = foods[randomIndex];
+  // 创建一个对象来存储按类别分组的食物
+  const foodGroups = {};
   
-  // 根据食物类型生成合理的随机重量
-  let minWeight = 50; // 默认最小重量50克
-  let maxWeight = 200; // 默认最大重量200克
-  
-  // 根据食物类别调整重量范围
-  switch (selectedFood.category) {
-    case '肉类':
-    case '禽类':
-      minWeight = 50;
-      maxWeight = 150;
-      break;
-    case '蔬菜':
-    case '水果':
-      minWeight = 100;
-      maxWeight = 300;
-      break;
-    case '谷物':
-    case '豆类':
-      minWeight = 30;
-      maxWeight = 100;
-      break;
-    case '坚果':
-    case '种子':
-      minWeight = 10;
-      maxWeight = 50;
-      break;
-    case '调味品':
-      minWeight = 5;
-      maxWeight = 20;
-      break;
-    default:
-      // 使用默认值
-      break;
-  }
-  
-  // 生成随机重量，四舍五入到整数
-  const randomWeight = Math.round(minWeight + Math.random() * (maxWeight - minWeight));
-  
-  // 计算营养成分
-  const servingSize = selectedFood.servingSize || 100;
-  const ratio = randomWeight / servingSize;
-  
-  return {
-    food: selectedFood,
-    amount: randomWeight,
-    nutritionInfo: {
-      calories: selectedFood.calories * ratio,
-      protein: selectedFood.protein * ratio,
-      carbs: selectedFood.carbs * ratio,
-      fat: selectedFood.fat * ratio
+  // 遍历所有食物
+  foods.forEach(food => {
+    // 获取食物的类别
+    const category = food.type;
+    
+    // 如果该类别还没有在foodGroups中，则创建一个空数组
+    if (!foodGroups[category]) {
+      foodGroups[category] = [];
     }
-  };
+    
+    // 将食物添加到对应类别的数组中
+    foodGroups[category].push(food);
+  });
+  
+  return foodGroups;
 };
 
 /**
- * 生成随机食谱
+ * 根据每日标准需求生成随机食谱
  * @param {Array} foods - 所有可用的食物列表
- * @param {number} itemCount - 要生成的食物项目数量
- * @returns {Array} - 随机生成的食谱项目列表
+ * @param {Object} dailyNeeds - 每日标准需求数据
+ * @returns {Object} - 按类别分组的食谱项目
  */
-export const generateRandomRecipe = (foods, itemCount = 1) => {
+export const generateRecipeByDailyNeeds = async (foods, dailyNeeds) => {
   if (!foods || foods.length === 0) {
-    throw new Error('食物列表为空，无法生成随机食谱');
+    throw new Error('食物列表为空，无法生成食谱');
   }
   
-  const recipeItems = [];
+  if (!dailyNeeds || !dailyNeeds.standardNeeds) {
+    throw new Error('每日标准需求数据无效');
+  }
   
-  for (let i = 0; i < itemCount; i++) {
-    try {
-      const randomItem = generateRandomRecipeItem(foods);
-      recipeItems.push(randomItem);
-    } catch (error) {
-      console.error('生成随机食谱项目失败:', error);
+  const standardNeeds = dailyNeeds.standardNeeds;
+  const foodGroups = await groupFoodsByCategory(foods);
+  const recipe = {};
+  
+  // 为每个食物类别生成食谱项目
+  Object.keys(standardNeeds).forEach(category => {
+    if (!foodGroups[category] || foodGroups[category].length === 0) {
+      console.warn(`没有找到${category}类别的食物，跳过此类别`);
+      return;
     }
+    
+    const needsData = standardNeeds[category];
+    const totalRange = needsData.total;
+    
+    // 确定该类别的总重量范围
+    const minTotal = totalRange[0];
+    const maxTotal = totalRange[1];
+    
+    // 随机生成该类别的总重量（以10g为基准）
+    const targetTotal = Math.floor((minTotal + Math.random() * (maxTotal - minTotal)) / 10) * 10;
+    
+    // 根据子类型的比例分配重量
+    const subTypes = needsData.subTypes;
+    const subTypeItems = [];
+    let remainingWeight = targetTotal;
+    
+    // 为每个子类型选择食物
+    Object.keys(subTypes).forEach(subType => {
+      if (remainingWeight <= 0) return;
+      
+      const subTypeRange = subTypes[subType];
+      const minSubWeight = Math.min(subTypeRange[0], remainingWeight);
+      const maxSubWeight = Math.min(subTypeRange[1], remainingWeight);
+      
+      // 如果最小值为0且最大值也为0，则跳过此子类型
+      if (minSubWeight === 0 && maxSubWeight === 0) return;
+      
+      // 随机生成该子类型的重量（以10g为基准）
+      const subTypeWeight = Math.floor((minSubWeight + Math.random() * (maxSubWeight - minSubWeight)) / 10) * 10;
+      if (subTypeWeight <= 0) return;
+      
+      // 从该类别中随机选择一个食物
+      const availableFoods = foodGroups[category].filter(food => 
+        food.subCategory === subType || !food.subCategory
+      );
+      
+      if (availableFoods.length > 0) {
+        const randomIndex = Math.floor(Math.random() * availableFoods.length);
+        const selectedFood = availableFoods[randomIndex];
+        
+        // 计算营养成分
+        const servingSize = selectedFood.servingSize || 100;
+        const ratio = subTypeWeight / servingSize;
+        
+        subTypeItems.push({
+          food: selectedFood,
+          amount: subTypeWeight,
+          nutritionInfo: {
+            calories: selectedFood.calories * ratio,
+            protein: selectedFood.protein * ratio,
+            carbs: selectedFood.carbs * ratio,
+            fat: selectedFood.fat * ratio
+          },
+          subType: subType
+        });
+        
+        remainingWeight -= subTypeWeight;
+      }
+    });
+    
+    // 如果还有剩余重量，随机分配给已有的食物项目
+    if (remainingWeight > 0 && subTypeItems.length > 0) {
+      const randomItemIndex = Math.floor(Math.random() * subTypeItems.length);
+      const item = subTypeItems[randomItemIndex];
+      
+      // 更新重量和营养成分
+      const newAmount = item.amount + remainingWeight;
+      const servingSize = item.food.servingSize || 100;
+      const ratio = newAmount / servingSize;
+      
+      item.amount = newAmount;
+      item.nutritionInfo = {
+        calories: item.food.calories * ratio,
+        protein: item.food.protein * ratio,
+        carbs: item.food.carbs * ratio,
+        fat: item.food.fat * ratio
+      };
+    }
+    
+    recipe[category] = subTypeItems;
+  });
+  
+  return recipe;
+};
+
+/**
+ * 将按类别分组的食谱转换为扁平列表
+ * @param {Object} categoryRecipe - 按类别分组的食谱
+ * @returns {Array} - 食谱项目列表
+ */
+export const flattenCategoryRecipe = (categoryRecipe) => {
+  if (!categoryRecipe) {
+    return [];
   }
   
-  return recipeItems;
+  const flatRecipe = [];
+  
+  Object.keys(categoryRecipe).forEach(category => {
+    const items = categoryRecipe[category] || [];
+    items.forEach(item => {
+      flatRecipe.push({
+        ...item,
+        category: category
+      });
+    });
+  });
+  
+  return flatRecipe;
 };
