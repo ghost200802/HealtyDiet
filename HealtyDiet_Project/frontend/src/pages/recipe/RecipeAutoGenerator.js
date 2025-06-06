@@ -156,7 +156,7 @@ export const optimizeRecipeByUserData = (recipe, userData, dailyNeeds) => {
   }
   
   // 创建食谱的深拷贝，避免修改原始数据
-  const optimizedRecipe = JSON.parse(JSON.stringify(recipe));
+  let optimizedRecipe = JSON.parse(JSON.stringify(recipe));
   const standardNeeds = dailyNeeds.standardNeeds;
   
   
@@ -272,29 +272,4 @@ export const optimizeRecipeByUserData = (recipe, userData, dailyNeeds) => {
   
   // 返回优化后的最佳食谱
   return bestRecipe;
-};
-
-/**
- * 将按类别分组的食谱转换为扁平列表
- * @param {Object} categoryRecipe - 按类别分组的食谱
- * @returns {Array} - 食谱项目列表
- */
-export const flattenCategoryRecipe = (categoryRecipe) => {
-  if (!categoryRecipe) {
-    return [];
-  }
-  
-  const flatRecipe = [];
-  
-  Object.keys(categoryRecipe).forEach(category => {
-    const items = categoryRecipe[category] || [];
-    items.forEach(item => {
-      flatRecipe.push({
-        ...item,
-        category: category
-      });
-    });
-  });
-  
-  return flatRecipe;
 };

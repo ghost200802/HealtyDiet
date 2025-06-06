@@ -835,7 +835,7 @@
         "26005": {
             "id": 26005,
             "type": "蔬菜",
-            "subType": "其它",
+            "subType": "深色蔬菜​​",
             "name": "西红柿",
             "calories": 19,
             "protein": 0.9,
@@ -1069,7 +1069,7 @@
         "26014": {
             "id": 26014,
             "type": "蔬菜",
-            "subType": "其它",
+            "subType": "深色蔬菜​​",
             "name": "南瓜",
             "calories": 23,
             "protein": 0.7,
@@ -1095,7 +1095,7 @@
         "26015": {
             "id": 26015,
             "type": "蔬菜",
-            "subType": "其它",
+            "subType": "深色蔬菜​​",
             "name": "苦瓜",
             "calories": 19,
             "protein": 1,

@@ -22,9 +22,9 @@ import FoodAddDialog from '../../components/food/FoodAddDialog';
 // 导入工具函数和服务
 import { calculateTotalNutrition, calculateRecipeItem } from '../../services/NutritionService';
 import { saveRecipe, deleteRecipe, getUserRecipes, getAllFoods, updateFoodInRecipe } from './RecipeService';
-import { generateRecipeByDailyNeeds, flattenCategoryRecipe, optimizeRecipeByUserData } from './RecipeAutoGenerator';
+import { generateRecipeByDailyNeeds, optimizeRecipeByUserData } from './RecipeAutoGenerator';
 import dailyNeeds from '../../../../data/needs/DailyNeeds.json';
-import { calculateRecipeScoreWithUserData } from '../../services/RecipeScoreService';
+import { calculateRecipeScoreWithUserData, flattenCategoryRecipe } from '../../services/RecipeScoreService';
 
 const Recipe = ({ user }) => {
   const navigate = useNavigate();
@@ -94,8 +94,26 @@ const Recipe = ({ user }) => {
   
   // 计算食谱的总营养成分
   useEffect(() => {
-    const totals = calculateTotalNutrition(recipeItems, foods);
-    setTotalNutrition(totals);
+    console.log('Recipe.jsx - 计算食谱总营养成分');
+    console.log('recipeItems:', recipeItems);
+    console.log('foods数量:', foods.length);
+    
+    try {
+      // 使用同步版本的calculateTotalNutrition
+      const totals = calculateTotalNutrition(recipeItems, foods);
+      console.log('计算得到的总营养成分:', totals);
+      setTotalNutrition(totals);
+    } catch (error) {
+      console.error('计算总营养成分时出错:', error);
+      // 设置默认值，避免UI显示NaN
+      setTotalNutrition({
+        calories: 0,
+        protein: 0,
+        carbs: 0,
+        fat: 0,
+        fiber: 0
+      });
+    }
   }, [recipeItems, foods]);
   
   // 添加食物到食谱

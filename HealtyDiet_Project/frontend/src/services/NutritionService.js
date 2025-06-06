@@ -70,7 +70,11 @@ export const calculateRecipeItem = (food, amount) => {
  * @returns {Object} - 总营养成分
  */
 export const calculateTotalNutrition = (recipeItems, foods = []) => {
+  console.log('calculateTotalNutrition 调用:', { recipeItemsLength: recipeItems?.length, foodsLength: foods?.length });
+  
+  // 检查参数
   if (!recipeItems || recipeItems.length === 0) {
+    console.log('没有食谱项目，返回零值');
     return {
       calories: 0,
       protein: 0,
@@ -88,7 +92,13 @@ export const calculateTotalNutrition = (recipeItems, foods = []) => {
     fiber: 0
   };
   
-  recipeItems.forEach(item => {
+  // 收集需要从服务器获取的食物ID
+  const foodIdsToFetch = [];
+  const itemsWithoutNutrition = [];
+  
+  // 先处理已有营养信息的项目，并收集需要获取的食物ID
+  recipeItems.forEach((item, index) => {
+    console.log(`处理食谱项目 ${index}:`, item);
     // 如果recipeItems中已包含完整营养信息，直接使用
     if (item.calories !== undefined && item.protein !== undefined && 
         item.carbs !== undefined && item.fat !== undefined) {
@@ -97,26 +107,156 @@ export const calculateTotalNutrition = (recipeItems, foods = []) => {
       totals.carbs += item.carbs || 0;
       totals.fat += item.fat || 0;
       totals.fiber += item.fiber || 0;
+      console.log(`项目 ${index} 已有营养信息，直接累加`);
     } 
-    // 否则，从foods中查找食物并计算营养成分
-    else if (foods.length > 0) {
-      const food = foods.find(f => f.id === item.foodId);
+    // 否则，需要获取食物信息
+    else if (item.foodId) {
+      // 先检查传入的foods中是否有该食物
+      const food = foods.length > 0 ? foods.find(f => f.id === item.foodId) : null;
+      
       if (food) {
+        console.log(`项目 ${index} 在传入的foods中找到食物:`, food.name);
         const nutrition = calculateFoodNutrition(food, item.amount);
         totals.calories += nutrition.calories;
         totals.protein += nutrition.protein;
         totals.carbs += nutrition.carbs;
         totals.fat += nutrition.fat;
         totals.fiber += nutrition.fiber;
+      } else {
+        // 需要从服务器获取的食物
+        console.log(`项目 ${index} 需要从服务器获取食物信息，ID:`, item.foodId);
+        foodIdsToFetch.push(item.foodId);
+        itemsWithoutNutrition.push(item);
       }
+    } else {
+      console.warn(`项目 ${index} 没有营养信息也没有foodId:`, item);
     }
   });
+  
+  // 如果有需要获取的食物，从服务器批量获取
+  // 注意：这里改为同步方式，避免在同步调用环境中出现问题
+  if (foodIdsToFetch.length > 0) {
+    console.log('需要从服务器获取的食物IDs:', foodIdsToFetch);
+    console.warn('警告：有食物需要从服务器获取，但当前函数被同步调用。这可能导致营养计算不完整。');
+    console.warn('建议在调用calculateTotalNutrition前确保所有食物数据已加载。');
+    
+    // 在同步环境中，我们不能使用await，所以这里不进行异步获取
+    // 返回当前已计算的结果，可能不完整
+  }
   
   // 四舍五入到一位小数
   Object.keys(totals).forEach(key => {
     totals[key] = Math.round(totals[key] * 10) / 10;
   });
   
+  console.log('计算结果:', totals);
+  return totals;
+};
+
+/**
+ * 计算食谱的总营养成分（异步版本）
+ * @param {Array} recipeItems - 食谱中的食物项目
+ * @param {Array} foods - 所有食物数据（可选，如果recipeItems中已包含完整营养信息则不需要）
+ * @returns {Promise<Object>} - 总营养成分
+ */
+export const calculateTotalNutritionAsync = async (recipeItems, foods = []) => {
+  console.log('calculateTotalNutritionAsync 调用:', { recipeItemsLength: recipeItems?.length, foodsLength: foods?.length });
+  
+  // 检查参数
+  if (!recipeItems || recipeItems.length === 0) {
+    console.log('没有食谱项目，返回零值');
+    return {
+      calories: 0,
+      protein: 0,
+      carbs: 0,
+      fat: 0,
+      fiber: 0
+    };
+  }
+  
+  const totals = {
+    calories: 0,
+    protein: 0,
+    carbs: 0,
+    fat: 0,
+    fiber: 0
+  };
+  
+  // 收集需要从服务器获取的食物ID
+  const foodIdsToFetch = [];
+  const itemsWithoutNutrition = [];
+  
+  // 先处理已有营养信息的项目，并收集需要获取的食物ID
+  recipeItems.forEach((item, index) => {
+    console.log(`处理食谱项目 ${index}:`, item);
+    // 如果recipeItems中已包含完整营养信息，直接使用
+    if (item.calories !== undefined && item.protein !== undefined && 
+        item.carbs !== undefined && item.fat !== undefined) {
+      totals.calories += item.calories || 0;
+      totals.protein += item.protein || 0;
+      totals.carbs += item.carbs || 0;
+      totals.fat += item.fat || 0;
+      totals.fiber += item.fiber || 0;
+      console.log(`项目 ${index} 已有营养信息，直接累加`);
+    } 
+    // 否则，需要获取食物信息
+    else if (item.foodId) {
+      // 先检查传入的foods中是否有该食物
+      const food = foods.length > 0 ? foods.find(f => f.id === item.foodId) : null;
+      
+      if (food) {
+        console.log(`项目 ${index} 在传入的foods中找到食物:`, food.name);
+        const nutrition = calculateFoodNutrition(food, item.amount);
+        totals.calories += nutrition.calories;
+        totals.protein += nutrition.protein;
+        totals.carbs += nutrition.carbs;
+        totals.fat += nutrition.fat;
+        totals.fiber += nutrition.fiber;
+      } else {
+        // 需要从服务器获取的食物
+        console.log(`项目 ${index} 需要从服务器获取食物信息，ID:`, item.foodId);
+        foodIdsToFetch.push(item.foodId);
+        itemsWithoutNutrition.push(item);
+      }
+    } else {
+      console.warn(`项目 ${index} 没有营养信息也没有foodId:`, item);
+    }
+  });
+  
+  // 如果有需要获取的食物，从服务器批量获取
+  if (foodIdsToFetch.length > 0) {
+    try {
+      console.log('从服务器获取食物数据:', foodIdsToFetch);
+      // 动态导入FoodService，避免循环依赖
+      const { getFoodsByIds } = await import('./FoodService');
+      const fetchedFoods = await getFoodsByIds(foodIdsToFetch);
+      console.log('获取到的食物数据:', fetchedFoods);
+      
+      // 处理获取到的食物
+      itemsWithoutNutrition.forEach(item => {
+        const food = fetchedFoods.find(f => f.id === item.foodId);
+        if (food) {
+          const nutrition = calculateFoodNutrition(food, item.amount);
+          totals.calories += nutrition.calories;
+          totals.protein += nutrition.protein;
+          totals.carbs += nutrition.carbs;
+          totals.fat += nutrition.fat;
+          totals.fiber += nutrition.fiber;
+        } else {
+          console.warn(`未找到ID为${item.foodId}的食物数据`);
+        }
+      });
+    } catch (error) {
+      console.error('获取食物数据失败:', error);
+    }
+  }
+  
+  // 四舍五入到一位小数
+  Object.keys(totals).forEach(key => {
+    totals[key] = Math.round(totals[key] * 10) / 10;
+  });
+  
+  console.log('计算结果:', totals);
   return totals;
 };
 

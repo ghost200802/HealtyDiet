@@ -173,4 +173,26 @@ router.get('/types/full', (req, res) => {
     res.status(500).json({ message: '获取完整食物类型数据失败', error: error.message });
   }
 });
+
+// 批量获取食物信息
+router.post('/batch', (req, res) => {
+  try {
+    const { ids } = req.body;
+    
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ message: '请提供有效的食物ID数组' });
+    }
+    
+    // 批量获取食物信息
+    const foods = ids.map(id => {
+      const food = foodsData.getById(id);
+      return food || { id, error: '食物不存在' };
+    });
+    
+    res.json(foods);
+  } catch (error) {
+    res.status(500).json({ message: '批量获取食物信息失败', error: error.message });
+  }
+});
+
 module.exports = router;
