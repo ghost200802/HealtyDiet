@@ -353,12 +353,12 @@ export const calculateEnergyDistribution = (totalNutrition) => {
 
 /**
  * 准备营养素数据用于图表显示
- * @param {Array} recipeItems - 食谱中的食物项目
+ * @param {Array} recipeItems - 食谱中的食物项目，简化格式为[{foodId, amount}]
  * @param {Object} totalNutrition - 食谱的总营养成分
  * @param {string} type - 营养素类型 (calories, protein, carbs, fat, fiber)
- * @returns {Array} 排序后的营养素数据
+ * @returns {Promise<Array>} 排序后的营养素数据
  */
-export const prepareNutritionData = (recipeItems, totalNutrition, type) => {
+export const prepareNutritionData = async (recipeItems, totalNutrition, type) => {
   if (recipeItems.length === 0) return [];
   
   // 防止除以0的情况
@@ -366,12 +366,39 @@ export const prepareNutritionData = (recipeItems, totalNutrition, type) => {
     return [];
   }
   
+  // 导入FoodService
+  const { getFoodsByIds } = await import('./FoodService');
+  
+  // 收集所有foodId
+  const foodIds = recipeItems.map(item => item.foodId);
+  
+  // 获取食物数据
+  const foods = await getFoodsByIds(foodIds);
+  
+  // 创建foodId到食物的映射
+  const foodMap = {};
+  foods.forEach(food => {
+    foodMap[food.id] = food;
+  });
+  
   // 根据类型获取相应的营养素数据并按照占比从大到小排序
-  return recipeItems
-    .map(item => ({
-      name: item.foodName,
-      value: item[type] || 0, // 确保值存在，如果不存在则默认为0
-      percent: ((item[type] || 0) / totalNutrition[type]) * 100
-    }))
-    .sort((a, b) => b.percent - a.percent);
+  const result = [];
+  
+  for (const item of recipeItems) {
+    const food = foodMap[item.foodId];
+    if (!food) continue; // 如果找不到食物数据，跳过
+    
+    // 计算营养素值
+    const servingSize = food.servingSize || 100;
+    const ratio = item.amount / servingSize;
+    const value = (food[type] || 0) * ratio;
+    
+    result.push({
+      name: food.name,
+      value: value,
+      percent: (value / totalNutrition[type]) * 100
+    });
+  }
+  
+  return result.sort((a, b) => b.percent - a.percent);
 };

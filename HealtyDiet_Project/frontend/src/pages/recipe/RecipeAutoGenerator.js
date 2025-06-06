@@ -7,6 +7,7 @@
 import axios from 'axios';
 import { calculateFoodNutrition, calculateTotalNutrition } from '../../services/NutritionService';
 import { calculateRecipeScoreWithUserData } from '../../services/RecipeScoreService';
+import { saveRecipe } from './RecipeService';
 
 /**
  * 将食物按类别分组
@@ -272,4 +273,67 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
   
   // 返回优化后的最佳食谱
   return bestRecipe;
+};
+
+/**
+ * 将生成的食谱保存到食物列表
+ * @param {Object} recipe - 优化后的食谱
+ * @param {Object} userData - 用户数据
+ * @param {Array} recipes - 现有的食谱列表
+ * @returns {Promise<Array>} - 更新后的食谱列表
+ */
+export const saveGeneratedRecipe = async (recipe, userData, recipes) => {
+  if (!recipe || Object.keys(recipe).length === 0) {
+    throw new Error('食谱为空，无法保存');
+  }
+  
+  if (!userData || !userData.id) {
+    throw new Error('用户数据无效，无法保存食谱');
+  }
+  
+  // 将分类食谱转换为扁平列表
+  const recipeItems = [];
+  
+  // 遍历每个类别
+  for (const category of Object.keys(recipe)) {
+    // 遍历该类别中的每个食物
+    for (const item of recipe[category]) {
+      recipeItems.push({
+        foodId: item.food.id,
+        foodName: item.food.name,
+        amount: item.amount,
+        calories: item.nutritionInfo.calories,
+        protein: item.nutritionInfo.protein,
+        carbs: item.nutritionInfo.carbs,
+        fat: item.nutritionInfo.fat,
+        fiber: item.nutritionInfo.fiber || 0,
+        category: category,
+        subType: item.subType
+      });
+    }
+  }
+  
+  // 计算总营养成分
+  const totalNutrition = await calculateTotalNutrition(recipeItems);
+  
+  // 生成食谱名称
+  const recipeName = `${new Date().toLocaleDateString()}自动生成食谱`;
+  
+  // 保存食谱
+  try {
+    const updatedRecipes = await saveRecipe({
+      name: recipeName,
+      user: userData,
+      recipeItems: recipeItems,
+      totalNutrition: totalNutrition,
+      recipes: recipes,
+      saveAsFile: true
+    });
+    
+    console.log('自动生成的食谱已保存');
+    return updatedRecipes;
+  } catch (error) {
+    console.error('保存自动生成的食谱失败:', error);
+    throw error;
+  }
 };

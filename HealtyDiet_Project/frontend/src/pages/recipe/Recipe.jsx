@@ -22,9 +22,11 @@ import FoodAddDialog from '../../components/food/FoodAddDialog';
 // 导入工具函数和服务
 import { calculateTotalNutrition, calculateRecipeItem } from '../../services/NutritionService';
 import { saveRecipe, deleteRecipe, getUserRecipes, getAllFoods, updateFoodInRecipe } from './RecipeService';
-import { generateRecipeByDailyNeeds, optimizeRecipeByUserData } from './RecipeAutoGenerator';
+import { generateRecipeByDailyNeeds, optimizeRecipeByUserData, saveGeneratedRecipe } from './RecipeAutoGenerator';
 import dailyNeeds from '../../../../data/needs/DailyNeeds.json';
 import { calculateRecipeScoreWithUserData, flattenCategoryRecipe } from '../../services/RecipeScoreService';
+// 导入FoodService
+import { getAllFoods as getFoodsFromService } from '../../services/FoodService';
 
 const Recipe = ({ user }) => {
   const navigate = useNavigate();
@@ -67,8 +69,18 @@ const Recipe = ({ user }) => {
         setLoading(true);
         setError('');
         
-        // 获取所有食物
-        const foodsData = await getAllFoods();
+        // 优先从FoodService中获取食物数据
+        let foodsData;
+        
+        try {
+          // 尝试从FoodService获取数据
+          foodsData = await getFoodsFromService();
+        } catch (foodServiceError) {
+          console.error('从FoodService获取数据失败，尝试从RecipeService获取:', foodServiceError);
+          // 如果从FoodService获取失败，则从RecipeService获取
+          foodsData = await getAllFoods();
+        }
+        
         setFoods(foodsData);
         
         // 提取食物分类
@@ -264,7 +276,7 @@ const Recipe = ({ user }) => {
       const categoryRecipe = await generateRecipeByDailyNeeds(foods, dailyNeeds);
       
       // 根据用户数据优化食谱中食物的重量
-      const optimizedRecipe = optimizeRecipeByUserData(categoryRecipe, user, dailyNeeds);
+      const optimizedRecipe = await optimizeRecipeByUserData(categoryRecipe, user, dailyNeeds);
       
       // 添加日志输出，列出优化后食谱中的食物和数量
       console.log('优化后的食谱食物列表:');
@@ -297,7 +309,14 @@ const Recipe = ({ user }) => {
       
       // 添加到食谱中
       setRecipeItems(newItems);
-      setSuccess('已根据每日营养需求标准生成食谱');
+      
+      // 保存生成的食谱到食物列表
+      const updatedRecipes = await saveGeneratedRecipe(optimizedRecipe, user, recipes);
+      if (updatedRecipes) {
+        setRecipes(updatedRecipes);
+      }
+      
+      setSuccess('已根据每日营养需求标准生成食谱并保存到食谱列表');
       
       // 3秒后清除成功消息
       setTimeout(() => setSuccess(''), 3000);
