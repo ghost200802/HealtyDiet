@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { ensureDataFilesExist } = require('./services/dataService');
+const { ensureDataFilesExist } = require('./services/index');
 
 // 初始化Express应用
 const app = express();
