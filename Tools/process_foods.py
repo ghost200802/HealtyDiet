@@ -60,6 +60,10 @@ def main():
                     # 对于servingSize列，如果为NaN，设置默认值为100
                     type_foods_df['servingSize'] = type_foods_df['servingSize'].fillna(100)
                     
+                    # 确保id字段为整数类型
+                    if 'id' in type_foods_df.columns:
+                        type_foods_df['id'] = type_foods_df['id'].astype(int)
+                    
                     # 将其他列的NaN值替换为None
                     type_foods = type_foods_df.replace({np.nan: None}).to_dict('records')
                     

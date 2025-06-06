@@ -115,8 +115,13 @@ export const getUserRecipes = async (user) => {
  * 获取所有食物
  */
 export const getAllFoods = async () => {
-  const response = await axios.get('http://localhost:5000/api/foods');
-  return response.data;
+  try {
+    const response = await axios.get('http://localhost:5000/api/foods');
+    return response.data;
+  } catch (error) {
+    console.error('获取食物数据失败:', error);
+    throw new Error('读取数据出错了');
+  }
 };
 
 /**

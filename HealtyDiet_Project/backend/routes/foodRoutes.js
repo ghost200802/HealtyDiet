@@ -4,6 +4,27 @@ const { v4: uuidv4 } = require('uuid');
 const { foodsData } = require('../services/dataService');
 
 
+// 获取所有食物类型
+router.get('/types', (req, res) => {
+  try {
+    const types = foodsData.getAllTypes();
+    res.json(types);
+  } catch (error) {
+    res.status(500).json({ message: '获取食物类型失败', error: error.message });
+  }
+});
+
+// 获取指定类型的所有食物
+router.get('/type/:type', (req, res) => {
+  try {
+    const { type } = req.params;
+    const foods = foodsData.getByType(type);
+    res.json(foods);
+  } catch (error) {
+    res.status(500).json({ message: `获取${type}类食物失败`, error: error.message });
+  }
+});
+
 // 获取所有食物
 router.get('/', (req, res) => {
   try {
@@ -54,7 +75,8 @@ router.post('/', (req, res) => {
       minerals,
       servingSize,
       unit,
-      description
+      description,
+      type // 新增食物类型参数
     } = req.body;
     
     if (!name || calories === undefined || protein === undefined || 
@@ -77,7 +99,8 @@ router.post('/', (req, res) => {
       description: description || ''
     };
     
-    foodsData.add(newFood);
+    // 如果指定了类型，则添加到对应类型文件中
+    foodsData.add(newFood, type);
     res.status(201).json(newFood);
   } catch (error) {
     res.status(500).json({ message: '添加食物失败', error: error.message });

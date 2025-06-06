@@ -55,12 +55,16 @@ router.post('/', (req, res) => {
       if (!item.foodId || !item.amount) {
         return res.status(400).json({ message: '每个食物项目必须包含foodId和amount' });
       }
+      
+      // 检查食物是否存在
+      const food = foodsData.getById(item.foodId);
+      if (!food) {
+        return res.status(400).json({ message: `ID为${item.foodId}的食物不存在` });
+      }
     }
     
-    const foods = foodsData.getAll();
-    
     // 计算营养成分
-    const nutrition = calculateNutrition(items, foods);
+    const nutrition = calculateNutrition(items);
     
     const newRecipe = {
       id: uuidv4(),
@@ -87,7 +91,6 @@ router.put('/:id', (req, res) => {
     const { id } = req.params;
     const updates = req.body;
     const recipe = recipesData.getById(id);
-    const foods = foodsData.getAll();
     
     if (!recipe) {
       return res.status(404).json({ message: '食谱不存在' });
@@ -103,13 +106,13 @@ router.put('/:id', (req, res) => {
         }
         
         // 检查食物是否存在
-        const foodExists = foods.some(food => food.id === item.foodId);
-        if (!foodExists) {
+        const food = foodsData.getById(item.foodId);
+        if (!food) {
           return res.status(400).json({ message: `ID为${item.foodId}的食物不存在` });
         }
       }
       
-      nutrition = calculateNutrition(updates.items, foods);
+      nutrition = calculateNutrition(updates.items);
     }
     
     // 更新食谱信息
@@ -147,7 +150,7 @@ router.delete('/:id', (req, res) => {
 });
 
 // 计算食谱的营养成分
-function calculateNutrition(items, foods) {
+function calculateNutrition(items) {
   const nutrition = {
     calories: 0,
     protein: 0,
@@ -158,7 +161,7 @@ function calculateNutrition(items, foods) {
   };
   
   for (const item of items) {
-    const food = foods.find(f => f.id === item.foodId);
+    const food = foodsData.getById(item.foodId);
     if (food) {
       // 使用默认值100作为标准份量，避免除以0或undefined
       const servingSize = food.servingSize || 100;

@@ -76,7 +76,7 @@ const Recipe = ({ user }) => {
         }
       } catch (err) {
         console.error('获取数据失败:', err);
-        setError('获取数据失败，请重试');
+        setError(err.message || '获取数据失败，请重试');
       } finally {
         setLoading(false);
       }

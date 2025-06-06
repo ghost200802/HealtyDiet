@@ -49,11 +49,11 @@ const RecipeDialog = ({
                   primary={recipe.name}
                   secondary={
                     <>
-                      <Typography variant="body2">
+                      <Typography variant="body2" component="span">
                         热量: {recipe.nutrition?.calories || 0} 千卡 | 蛋白质: {recipe.nutrition?.protein || 0}g | 碳水: {recipe.nutrition?.carbs || 0}g | 脂肪: {recipe.nutrition?.fat || 0}g
                       </Typography>
                       {recipe.mainIngredients && recipe.mainIngredients.length > 0 && (
-                        <Typography variant="body2" sx={{ mt: 1 }}>
+                        <Typography variant="body2" component="span" sx={{ display: 'block', mt: 1 }}>
                           主要食材: {recipe.mainIngredients.map(ing => ing.foodName).join('、')}
                         </Typography>
                       )}
