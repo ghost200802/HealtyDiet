@@ -32,44 +32,54 @@ export const saveRecipe = async ({ name, user, recipeItems, totalNutrition, reci
     saveAsFile: saveAsFile // 添加按文件保存选项
   };
   
+  console.log('准备保存食谱数据:', JSON.stringify(recipeData, null, 2));
+  
   // 检查是否已存在同名食谱
   const existingRecipe = recipes.find(r => r.name === name);
   
-  if (existingRecipe) {
-    // 更新现有食谱
-    await axios.put(
-      `http://localhost:5000/api/recipes/${existingRecipe.id}`,
-      recipeData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
+  try {
+    if (existingRecipe) {
+      // 更新现有食谱
+      console.log(`更新现有食谱 ID: ${existingRecipe.id}`);
+      await axios.put(
+        `http://localhost:5000/api/recipes/${existingRecipe.id}`,
+        recipeData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      }
-    );
-  } else {
-    // 创建新食谱
-    await axios.post(
-      'http://localhost:5000/api/recipes',
-      recipeData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
+      );
+    } else {
+      // 创建新食谱
+      console.log('创建新食谱');
+      await axios.post(
+        'http://localhost:5000/api/recipes',
+        recipeData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      }
-    );
-  }
-  
-  // 重新获取用户的食谱
-  const recipesResponse = await axios.get(
-    `http://localhost:5000/api/recipes/user/${user.id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      );
     }
-  );
-  
-  return recipesResponse.data;
+    
+    // 重新获取用户的食谱
+    console.log(`获取用户 ${user.id} 的食谱列表`);
+    const recipesResponse = await axios.get(
+      `http://localhost:5000/api/recipes/user/${user.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    
+    return recipesResponse.data;
+  } catch (error) {
+    console.error('保存食谱请求失败:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
 
 /**

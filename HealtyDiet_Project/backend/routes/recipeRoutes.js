@@ -44,7 +44,8 @@ router.get('/:id', (req, res) => {
 // 创建新食谱
 router.post('/', (req, res) => {
   try {
-    const { name, userId, items, description, saveAsFile } = req.body;
+    console.log('收到创建食谱请求:', JSON.stringify(req.body, null, 2));
+    const { name, userId, items, description, nutrition, saveAsFile, mainIngredients } = req.body;
     
     if (!name || !userId || !items || !Array.isArray(items)) {
       return res.status(400).json({ message: '必须提供食谱名称、用户ID和食物项目' });
@@ -63,25 +64,28 @@ router.post('/', (req, res) => {
       }
     }
     
-    // 计算营养成分
-    const nutrition = calculateNutrition(items);
+    // 使用传入的营养成分或计算营养成分
+    const recipeNutrition = nutrition || calculateNutrition(items);
     
     const newRecipe = {
       id: uuidv4(),
       name,
       userId,
       items,
-      nutrition,
+      nutrition: recipeNutrition,
+      mainIngredients: mainIngredients || [],
       description: description || '',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      saveAsFile: true // 默认按文件保存，不再使用传入的值
+      saveAsFile: saveAsFile === false ? false : true // 默认按文件保存
     };
     
+    console.log('准备添加食谱:', JSON.stringify(newRecipe, null, 2));
     recipesData.add(newRecipe);
     
     res.status(201).json(newRecipe);
   } catch (error) {
+    console.error('创建食谱失败:', error);
     res.status(500).json({ message: '创建食谱失败', error: error.message });
   }
 });
@@ -89,6 +93,7 @@ router.post('/', (req, res) => {
 // 更新食谱
 router.put('/:id', (req, res) => {
   try {
+    console.log('收到更新食谱请求:', JSON.stringify(req.body, null, 2));
     const { id } = req.params;
     const updates = req.body;
     const recipe = recipesData.getById(id);
@@ -98,7 +103,7 @@ router.put('/:id', (req, res) => {
     }
     
     // 如果更新包含食物项目，重新计算营养成分
-    let nutrition = recipe.nutrition;
+    let recipeNutrition = recipe.nutrition;
     if (updates.items && Array.isArray(updates.items)) {
       // 验证食物项目
       for (const item of updates.items) {
@@ -113,24 +118,30 @@ router.put('/:id', (req, res) => {
         }
       }
       
-      nutrition = calculateNutrition(updates.items);
+      // 如果提供了nutrition则使用，否则计算
+      recipeNutrition = updates.nutrition || calculateNutrition(updates.items);
+    } else if (updates.nutrition) {
+      // 如果只提供了nutrition但没有items，直接使用提供的nutrition
+      recipeNutrition = updates.nutrition;
     }
     
     // 更新食谱信息
     const updatedRecipe = {
       ...recipe,
       ...updates,
-      nutrition,
+      nutrition: recipeNutrition,
       // 确保ID不变
       id,
       updatedAt: new Date().toISOString(),
-      saveAsFile: true // 确保更新时也始终按文件保存
+      saveAsFile: updates.saveAsFile === false ? false : true // 尊重传入的saveAsFile值，默认为true
     };
     
+    console.log('准备更新食谱:', JSON.stringify(updatedRecipe, null, 2));
     const result = recipesData.update(id, updatedRecipe);
     
     res.json(result);
   } catch (error) {
+    console.error('更新食谱失败:', error);
     res.status(500).json({ message: '更新食谱失败', error: error.message });
   }
 });
