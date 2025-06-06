@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   Dialog,
   DialogTitle,
@@ -15,9 +16,11 @@ import {
   Card,
   CardContent,
   IconButton,
-  InputAdornment
+  InputAdornment,
+  Collapse,
+  CircularProgress
 } from '@mui/material';
-import { Visibility as VisibilityIcon } from '@mui/icons-material';
+import { Visibility as VisibilityIcon, ExpandLess, ExpandMore } from '@mui/icons-material';
 
 /**
  * 添加食物到食谱的弹出式对话框组件
@@ -33,17 +36,105 @@ const FoodAddDialog = ({
   // 状态
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('全部');
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [filteredFoods, setFilteredFoods] = useState([]);
   const [selectedFood, setSelectedFood] = useState(null);
   const [foodAmount, setFoodAmount] = useState('');
+  const [foodTypes, setFoodTypes] = useState({});
+  const [expandedCategories, setExpandedCategories] = useState({});
+  
+  // 从后端API获取食物分类数据
+  useEffect(() => {
+    const fetchFoodTypes = async () => {
+      try {
+        // 直接获取完整的食物类型数据
+        const response = await axios.get('http://localhost:5000/api/foods/foodTypes.json');
+        
+        if (response.data && response.data.foodTypes) {
+          setFoodTypes(response.data.foodTypes);
+          
+          // 初始化展开状态
+          const initialExpandedState = {};
+          Object.keys(response.data.foodTypes).forEach(category => {
+            initialExpandedState[category] = false;
+          });
+          setExpandedCategories(initialExpandedState);
+        } else {
+          console.error('食物类型数据格式不正确');
+          throw new Error('食物类型数据格式不正确');
+        }
+      } catch (error) {
+        console.error('获取食物分类数据失败:', error);
+        
+        // 如果API请求失败，使用硬编码的数据作为备份
+        const hardcodedFoodTypes = {
+          "主食": {
+            "subTypes": [
+              "精制谷物",
+              "全谷物",
+              "豆类",
+              "薯类"
+            ]
+          },
+          "蔬菜": {
+            "subTypes": [
+              "绿叶菜",
+              "浅色蔬菜",
+              "深色蔬菜",
+              "菌藻类",
+              "辣椒类",
+              "其它"
+            ]
+          },
+          "肉蛋奶": {
+            "subTypes": [
+              "畜禽肉",
+              "水产品",
+              "乳制品",
+              "蛋类",
+              "豆制品"
+            ]
+          },
+          "水果": {
+            "subTypes": [
+              "鲜果",
+              "果干"
+            ]
+          },
+          "油盐调料": {
+            "subTypes": [
+              "食用油",
+              "调料"
+            ]
+          }
+        };
+        
+        setFoodTypes(hardcodedFoodTypes);
+        
+        // 初始化展开状态
+        const initialExpandedState = {};
+        Object.keys(hardcodedFoodTypes).forEach(category => {
+          initialExpandedState[category] = false;
+        });
+        setExpandedCategories(initialExpandedState);
+      }
+    };
+    
+    fetchFoodTypes();
+  }, []);
 
   // 过滤食物列表
   useEffect(() => {
     let filtered = foods;
     
-    // 按分类过滤
+    // 按主分类过滤
     if (selectedCategory !== '全部') {
-      filtered = filtered.filter(food => food.category === selectedCategory);
+      filtered = filtered.filter(food => food.type === selectedCategory);
+      
+      // 按子分类过滤
+      if (selectedSubCategory) {
+        filtered = filtered.filter(food => food.subType === selectedSubCategory);
+      }
     }
     
     // 按搜索词过滤
@@ -51,12 +142,13 @@ const FoodAddDialog = ({
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(food => 
         food?.name?.toLowerCase()?.includes(query) ||
-        food?.category?.toLowerCase()?.includes(query)
+        food?.type?.toLowerCase()?.includes(query) ||
+        food?.subType?.toLowerCase()?.includes(query)
       );
     }
     
     setFilteredFoods(filtered);
-  }, [foods, selectedCategory, searchQuery]);
+  }, [foods, selectedCategory, selectedSubCategory, searchQuery]);
 
   // 处理添加食物
   const handleAddFood = () => {
@@ -138,16 +230,59 @@ const FoodAddDialog = ({
               食物分类
             </Typography>
             <List>
-              {categories.map((category, index) => (
-                <ListItem 
-                  key={`${category}-${index}`} 
-                  button 
-                  selected={selectedCategory === category}
-                  onClick={() => setSelectedCategory(category)}
-                >
-                  <ListItemText primary={category} />
-                </ListItem>
-              ))}
+              <ListItem 
+                button 
+                selected={selectedCategory === '全部'}
+                onClick={() => {
+                  setSelectedCategory('全部');
+                  setSelectedSubCategory(null);
+                }}
+              >
+                <ListItemText primary="全部" />
+              </ListItem>
+              
+              {Object.keys(foodTypes).map((type) => {
+                const isExpanded = expandedCategories[type] || false;
+                
+                return (
+                  <React.Fragment key={type}>
+                    <ListItem 
+                      button 
+                      selected={selectedCategory === type && !selectedSubCategory}
+                      onClick={() => {
+                        setSelectedCategory(type);
+                        setSelectedSubCategory(null);
+                        setExpandedCategories(prev => ({
+                          ...prev,
+                          [type]: !isExpanded
+                        }));
+                      }}
+                    >
+                      <ListItemText primary={type} />
+                      {isExpanded ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    
+                    <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+                      <List component="div" disablePadding>
+                        {foodTypes[type] && foodTypes[type].subTypes && foodTypes[type].subTypes.map((subType) => (
+                          <ListItem 
+                            key={`${type}-${subType}`} 
+                            button 
+                            selected={selectedCategory === type && selectedSubCategory === subType}
+                            sx={{ pl: 4 }}
+                            onClick={() => {
+                              setSelectedCategory(type);
+                              setSelectedSubCategory(subType);
+                            }}
+                          >
+                            <ListItemText primary={subType} />
+                          </ListItem>
+                        ))}
+                      </List>
+                    </Collapse>
+                  </React.Fragment>
+                );
+              })}
             </List>
           </Grid>
           
