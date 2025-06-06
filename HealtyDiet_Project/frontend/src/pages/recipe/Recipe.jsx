@@ -45,6 +45,9 @@ const Recipe = ({ user }) => {
   const [foodDetailDialogOpen, setFoodDetailDialogOpen] = useState(false);
   const [foodToView, setFoodToView] = useState(null);
   
+  // 按文件保存食谱选项 - 默认为true，始终按文件保存
+  const [saveAsFile, setSaveAsFile] = useState(true);
+  
   // 食谱营养成分总计
   const [totalNutrition, setTotalNutrition] = useState({
     calories: 0,
@@ -169,7 +172,8 @@ const Recipe = ({ user }) => {
         user,
         recipeItems,
         totalNutrition,
-        recipes
+        recipes,
+        saveAsFile
       });
       
       setRecipes(updatedRecipes);
@@ -296,6 +300,8 @@ const Recipe = ({ user }) => {
         recipes={recipes}
         onLoadRecipe={handleLoadRecipe}
         onDeleteRecipe={handleDeleteRecipe}
+        saveAsFile={saveAsFile}
+        onSaveAsFileChange={setSaveAsFile}
       />
       
       {/* 食物添加对话框 */}

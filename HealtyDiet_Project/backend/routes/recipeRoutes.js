@@ -44,7 +44,7 @@ router.get('/:id', (req, res) => {
 // 创建新食谱
 router.post('/', (req, res) => {
   try {
-    const { name, userId, items, description } = req.body;
+    const { name, userId, items, description, saveAsFile } = req.body;
     
     if (!name || !userId || !items || !Array.isArray(items)) {
       return res.status(400).json({ message: '必须提供食谱名称、用户ID和食物项目' });
@@ -74,7 +74,8 @@ router.post('/', (req, res) => {
       nutrition,
       description: description || '',
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
+      saveAsFile: true // 默认按文件保存，不再使用传入的值
     };
     
     recipesData.add(newRecipe);
@@ -122,7 +123,8 @@ router.put('/:id', (req, res) => {
       nutrition,
       // 确保ID不变
       id,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
+      saveAsFile: true // 确保更新时也始终按文件保存
     };
     
     const result = recipesData.update(id, updatedRecipe);

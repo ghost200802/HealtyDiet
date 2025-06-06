@@ -4,7 +4,7 @@ import { getMainIngredients } from './RecipeUtils';
 /**
  * 保存食谱（创建新食谱或更新现有食谱）
  */
-export const saveRecipe = async ({ name, user, recipeItems, totalNutrition, recipes }) => {
+export const saveRecipe = async ({ name, user, recipeItems, totalNutrition, recipes, saveAsFile = false }) => {
   if (!user || !user.id) {
     throw new Error('请先登录');
   }
@@ -28,7 +28,8 @@ export const saveRecipe = async ({ name, user, recipeItems, totalNutrition, reci
       carbs: totalNutrition.carbs,
       fat: totalNutrition.fat
     },
-    mainIngredients: getMainIngredients(recipeItems)
+    mainIngredients: getMainIngredients(recipeItems),
+    saveAsFile: saveAsFile // 添加按文件保存选项
   };
   
   // 检查是否已存在同名食谱

@@ -10,6 +10,7 @@ import {
   ListItemText,
   Typography,
   IconButton,
+  Box,
 } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 
@@ -21,8 +22,12 @@ const RecipeDialog = ({
   onClose, 
   recipes, 
   onLoadRecipe, 
-  onDeleteRecipe 
+  onDeleteRecipe,
+  saveAsFile = true, // 默认为true，始终按文件保存
+  onSaveAsFileChange
 }) => {
+  // 移除saveAsFileState状态和handleSaveAsFileChange函数，因为不再需要用户选择
+
   return (
     <Dialog
       open={open}
@@ -32,6 +37,8 @@ const RecipeDialog = ({
     >
       <DialogTitle>选择食谱</DialogTitle>
       <DialogContent>
+        {/* 移除保存方式选择开关 */}
+
         {recipes.length === 0 ? (
           <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', py: 3 }}>
             没有保存的食谱
@@ -41,7 +48,7 @@ const RecipeDialog = ({
             {recipes.map(recipe => (
               <ListItem 
                 key={recipe.id} 
-                button 
+                sx={{ cursor: 'pointer' }}
                 onClick={() => onLoadRecipe(recipe)}
                 divider
               >
@@ -76,7 +83,9 @@ const RecipeDialog = ({
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>取消</Button>
+        <Button onClick={onClose} color="primary">
+          取消
+        </Button>
       </DialogActions>
     </Dialog>
   );
