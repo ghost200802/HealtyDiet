@@ -22,6 +22,7 @@ import FoodAddDialog from '../../components/food/FoodAddDialog';
 // 导入工具函数和服务
 import { calculateTotalNutrition } from './RecipeUtils';
 import { saveRecipe, deleteRecipe, getUserRecipes, getAllFoods, updateFoodInRecipe } from './RecipeService';
+import { generateRandomRecipeItem } from './RecipeAutoGenerator';
 
 const Recipe = ({ user }) => {
   const navigate = useNavigate();
@@ -240,6 +241,38 @@ const Recipe = ({ user }) => {
     setFoods(updatedFoods);
     setRecipeItems(updatedRecipeItems);
   };
+  
+  // 自动生成随机食谱
+  const handleAutoGenerate = () => {
+    try {
+      // 清空当前食物列表
+      setRecipeItems([]);
+      
+      // 随机选择一个食物和重量
+      const randomResult = generateRandomRecipeItem(foods);
+      
+      // 创建新的食谱项目
+      const newItem = {
+        foodId: randomResult.food.id,
+        foodName: randomResult.food.name,
+        amount: randomResult.amount,
+        calories: randomResult.nutritionInfo.calories,
+        protein: randomResult.nutritionInfo.protein,
+        carbs: randomResult.nutritionInfo.carbs,
+        fat: randomResult.nutritionInfo.fat
+      };
+      
+      // 添加到食谱中
+      setRecipeItems([newItem]);
+      setSuccess('已自动生成随机食谱');
+      
+      // 3秒后清除成功消息
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (err) {
+      console.error('自动生成食谱失败:', err);
+      setError(err.message || '自动生成食谱失败，请重试');
+    }
+  };
 
   if (loading) {
     return (
@@ -261,6 +294,7 @@ const Recipe = ({ user }) => {
         onSave={handleSaveRecipe}
         onLoad={() => setRecipeDialogOpen(true)}
         onAdd={() => setFoodAddDialogOpen(true)}
+        onAutoGenerate={handleAutoGenerate}
       />
       
       {/* 消息提示 */}

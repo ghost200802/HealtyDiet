@@ -9,6 +9,7 @@ import {
   Add as AddIcon,
   Save as SaveIcon,
   CloudDownload as CloudDownloadIcon,
+  AutoFixHigh as AutoFixHighIcon,
 } from '@mui/icons-material';
 
 /**
@@ -19,7 +20,8 @@ const RecipeHeader = ({
   setRecipeName, 
   onSave, 
   onLoad, 
-  onAdd 
+  onAdd,
+  onAutoGenerate
 }) => {
   return (
     <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -52,6 +54,15 @@ const RecipeHeader = ({
           sx={{ mr: 2 }}
         >
           添加
+        </Button>
+        <Button
+          variant="outlined"
+          color="secondary"
+          startIcon={<AutoFixHighIcon />}
+          onClick={onAutoGenerate}
+          sx={{ mr: 2 }}
+        >
+          自动生成
         </Button>
         <Button
           variant="contained"
