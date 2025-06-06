@@ -1,23 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const fs = require('fs-extra');
-const path = require('path');
 const { v4: uuidv4 } = require('uuid');
+const { recipesData, foodsData } = require('../services/dataService');
 
-const recipesDir = path.join(__dirname, '..', '..', 'data', 'recipes');
-const recipesFile = path.join(recipesDir, 'recipes.json');
-const foodsFile = path.join(__dirname, '..', '..', 'data', 'foods', 'foods.json');
-
-// 确保食谱数据文件存在
-if (!fs.existsSync(recipesFile)) {
-  fs.writeJsonSync(recipesFile, { recipes: [] });
-}
 
 // 获取所有食谱
 router.get('/', (req, res) => {
   try {
-    const recipeData = fs.readJsonSync(recipesFile);
-    res.json(recipeData.recipes);
+    const recipes = recipesData.getAll();
+    res.json(recipes);
   } catch (error) {
     res.status(500).json({ message: '获取食谱数据失败', error: error.message });
   }
@@ -27,9 +18,7 @@ router.get('/', (req, res) => {
 router.get('/user/:userId', (req, res) => {
   try {
     const { userId } = req.params;
-    const recipeData = fs.readJsonSync(recipesFile);
-    const userRecipes = recipeData.recipes.filter(recipe => recipe.userId === userId);
-    
+    const userRecipes = recipesData.getByUserId(userId);
     res.json(userRecipes);
   } catch (error) {
     res.status(500).json({ message: '获取用户食谱失败', error: error.message });
@@ -40,8 +29,7 @@ router.get('/user/:userId', (req, res) => {
 router.get('/:id', (req, res) => {
   try {
     const { id } = req.params;
-    const recipeData = fs.readJsonSync(recipesFile);
-    const recipe = recipeData.recipes.find(recipe => recipe.id === id);
+    const recipe = recipesData.getById(id);
     
     if (!recipe) {
       return res.status(404).json({ message: '食谱不存在' });
@@ -69,11 +57,10 @@ router.post('/', (req, res) => {
       }
     }
     
-    const recipeData = fs.readJsonSync(recipesFile);
-    const foodData = fs.readJsonSync(foodsFile);
+    const foods = foodsData.getAll();
     
     // 计算营养成分
-    const nutrition = calculateNutrition(items, foodData.foods);
+    const nutrition = calculateNutrition(items, foods);
     
     const newRecipe = {
       id: uuidv4(),
@@ -86,8 +73,7 @@ router.post('/', (req, res) => {
       updatedAt: new Date().toISOString()
     };
     
-    recipeData.recipes.push(newRecipe);
-    fs.writeJsonSync(recipesFile, recipeData);
+    recipesData.add(newRecipe);
     
     res.status(201).json(newRecipe);
   } catch (error) {
@@ -100,17 +86,15 @@ router.put('/:id', (req, res) => {
   try {
     const { id } = req.params;
     const updates = req.body;
-    const recipeData = fs.readJsonSync(recipesFile);
-    const foodData = fs.readJsonSync(foodsFile);
+    const recipe = recipesData.getById(id);
+    const foods = foodsData.getAll();
     
-    const recipeIndex = recipeData.recipes.findIndex(recipe => recipe.id === id);
-    
-    if (recipeIndex === -1) {
+    if (!recipe) {
       return res.status(404).json({ message: '食谱不存在' });
     }
     
     // 如果更新包含食物项目，重新计算营养成分
-    let nutrition = recipeData.recipes[recipeIndex].nutrition;
+    let nutrition = recipe.nutrition;
     if (updates.items && Array.isArray(updates.items)) {
       // 验证食物项目
       for (const item of updates.items) {
@@ -119,18 +103,18 @@ router.put('/:id', (req, res) => {
         }
         
         // 检查食物是否存在
-        const foodExists = foodData.foods.some(food => food.id === item.foodId);
+        const foodExists = foods.some(food => food.id === item.foodId);
         if (!foodExists) {
           return res.status(400).json({ message: `ID为${item.foodId}的食物不存在` });
         }
       }
       
-      nutrition = calculateNutrition(updates.items, foodData.foods);
+      nutrition = calculateNutrition(updates.items, foods);
     }
     
     // 更新食谱信息
-    recipeData.recipes[recipeIndex] = {
-      ...recipeData.recipes[recipeIndex],
+    const updatedRecipe = {
+      ...recipe,
       ...updates,
       nutrition,
       // 确保ID不变
@@ -138,9 +122,9 @@ router.put('/:id', (req, res) => {
       updatedAt: new Date().toISOString()
     };
     
-    fs.writeJsonSync(recipesFile, recipeData);
+    const result = recipesData.update(id, updatedRecipe);
     
-    res.json(recipeData.recipes[recipeIndex]);
+    res.json(result);
   } catch (error) {
     res.status(500).json({ message: '更新食谱失败', error: error.message });
   }
@@ -150,19 +134,11 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   try {
     const { id } = req.params;
-    const recipeData = fs.readJsonSync(recipesFile);
+    const deletedRecipe = recipesData.delete(id);
     
-    const recipeIndex = recipeData.recipes.findIndex(recipe => recipe.id === id);
-    
-    if (recipeIndex === -1) {
+    if (!deletedRecipe) {
       return res.status(404).json({ message: '食谱不存在' });
     }
-    
-    // 删除食谱
-    const deletedRecipe = recipeData.recipes[recipeIndex];
-    recipeData.recipes.splice(recipeIndex, 1);
-    
-    fs.writeJsonSync(recipesFile, recipeData);
     
     res.json({ message: '食谱已删除', deletedRecipe });
   } catch (error) {
