@@ -67,12 +67,21 @@ function App() {
     const userData = localStorage.getItem('user');
     
     if (token && userData) {
-      setIsAuthenticated(true);
-      const parsedUserData = JSON.parse(userData);
-      setUser(parsedUserData);
-      
-      // 自动获取用户营养数据
-      fetchUserNutritionData(parsedUserData, token);
+      console.log('从localStorage获取的原始用户数据:', userData);
+      try {
+        const parsedUserData = JSON.parse(userData);
+        console.log('解析后的用户数据:', parsedUserData);
+        setIsAuthenticated(true);
+        setUser(parsedUserData);
+        
+        // 自动获取用户营养数据
+        fetchUserNutritionData(parsedUserData, token);
+      } catch (error) {
+        console.error('JSON解析错误:', error);
+        // 清除可能损坏的数据
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+      }
     }
   }, []);
   
@@ -90,10 +99,13 @@ function App() {
       // 确保解析正确的profile数据结构
       console.log('自动获取的用户数据:', response.data);
       const profileData = response.data.profile;
+      console.log('提取的profile数据:', profileData);
       
       // 如果有用户数据，计算营养指标
       if (profileData) {
         updateNutritionMetrics(profileData, userData);
+      } else {
+        console.warn('未找到用户profile数据');
       }
     } catch (err) {
       console.error('自动获取用户营养数据失败:', err);
@@ -102,6 +114,9 @@ function App() {
   
   // 更新营养指标
   const updateNutritionMetrics = (profileData, userData) => {
+    console.log('开始计算营养指标，传入的profileData:', profileData);
+    console.log('开始计算营养指标，传入的userData:', userData);
+    
     // 计算年龄
     const calculateAge = (birthDate) => {
       const today = new Date();
