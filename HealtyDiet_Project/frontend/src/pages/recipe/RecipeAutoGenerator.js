@@ -58,10 +58,10 @@ export const generateRecipeByDailyNeeds = async (foods, dailyNeeds) => {
   const recipe = {};
   
   // 为每个食物类别生成食谱项目
-  Object.keys(standardNeeds).forEach(category => {
+  for (const category of Object.keys(standardNeeds)) {
     if (!foodGroups[category] || foodGroups[category].length === 0) {
       console.warn(`没有找到${category}类别的食物，跳过此类别`);
-      return;
+      continue;
     }
     
     const needsData = standardNeeds[category];
@@ -80,19 +80,19 @@ export const generateRecipeByDailyNeeds = async (foods, dailyNeeds) => {
     let remainingWeight = targetTotal;
     
     // 为每个子类型选择食物
-    Object.keys(subTypes).forEach(subType => {
-      if (remainingWeight <= 0) return;
+    for (const subType of Object.keys(subTypes)) {
+      if (remainingWeight <= 0) continue;
       
       const subTypeRange = subTypes[subType];
       const minSubWeight = Math.min(subTypeRange[0], remainingWeight);
       const maxSubWeight = Math.min(subTypeRange[1], remainingWeight);
       
       // 如果最小值为0且最大值也为0，则跳过此子类型
-      if (minSubWeight === 0 && maxSubWeight === 0) return;
+      if (minSubWeight === 0 && maxSubWeight === 0) continue;
       
       // 随机生成该子类型的重量（以10g为基准）
       const subTypeWeight = Math.floor((minSubWeight + Math.random() * (maxSubWeight - minSubWeight)) / 10) * 10;
-      if (subTypeWeight <= 0) return;
+      if (subTypeWeight <= 0) continue;
       
       // 从该类别中随机选择一个食物
       const availableFoods = foodGroups[category].filter(food => 
@@ -104,7 +104,7 @@ export const generateRecipeByDailyNeeds = async (foods, dailyNeeds) => {
         const selectedFood = availableFoods[randomIndex];
         
         // 使用NutritionService计算营养成分
-        const nutritionInfo = calculateFoodNutrition(selectedFood, subTypeWeight);
+        const nutritionInfo = await calculateFoodNutrition(selectedFood.id, subTypeWeight);
         
         subTypeItems.push({
           food: selectedFood,
@@ -115,7 +115,7 @@ export const generateRecipeByDailyNeeds = async (foods, dailyNeeds) => {
         
         remainingWeight -= subTypeWeight;
       }
-    });
+    }
     
     // 如果还有剩余重量，随机分配给已有的食物项目
     if (remainingWeight > 0 && subTypeItems.length > 0) {
@@ -126,11 +126,11 @@ export const generateRecipeByDailyNeeds = async (foods, dailyNeeds) => {
       const newAmount = item.amount + remainingWeight;
       
       item.amount = newAmount;
-      item.nutritionInfo = calculateFoodNutrition(item.food, newAmount);
+      item.nutritionInfo = await calculateFoodNutrition(item.food.id, newAmount);
     }
     
     recipe[category] = subTypeItems;
-  });
+  }
   
   return recipe;
 };
@@ -140,9 +140,9 @@ export const generateRecipeByDailyNeeds = async (foods, dailyNeeds) => {
  * @param {Object} recipe - 初始生成的食谱
  * @param {Object} userData - 用户数据，包含能量和营养素需求
  * @param {Object} dailyNeeds - 每日标准需求数据
- * @returns {Object} - 优化后的食谱
+ * @returns {Promise<Object>} - 优化后的食谱
  */
-export const optimizeRecipeByUserData = (recipe, userData, dailyNeeds) => {
+export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => {
   if (!recipe || Object.keys(recipe).length === 0) {
     throw new Error('食谱为空，无法进行优化');
   }
@@ -171,7 +171,7 @@ export const optimizeRecipeByUserData = (recipe, userData, dailyNeeds) => {
   // 优化循环
   while (currentIteration < maxIterations) {
     // 计算当前食谱的得分
-    let currentScore = calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
+    let currentScore = await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
     
     // 初始化本轮迭代的前一个得分，用于比较是否有改进
     let previousScore = currentScore;
@@ -192,7 +192,7 @@ export const optimizeRecipeByUserData = (recipe, userData, dailyNeeds) => {
         
         // 尝试增加10g
         item.amount += 10;
-        const increaseScore = calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
+        const increaseScore = await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
         
         // 恢复原始重量
         item.amount = originalAmount;
@@ -201,7 +201,7 @@ export const optimizeRecipeByUserData = (recipe, userData, dailyNeeds) => {
         let decreaseScore = -Infinity;
         if (originalAmount >= 20) {
           item.amount -= 10;
-          decreaseScore = calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
+          decreaseScore = await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
           
           // 恢复原始重量
           item.amount = originalAmount;
@@ -231,7 +231,7 @@ export const optimizeRecipeByUserData = (recipe, userData, dailyNeeds) => {
           item.amount += changeAmount;
           
           // 更新营养信息
-          item.nutritionInfo = calculateFoodNutrition(item.food, item.amount);
+          item.nutritionInfo = await calculateFoodNutrition(item.food.id, item.amount);
           
           // 更新当前得分
           currentScore = maxScore;
@@ -268,7 +268,7 @@ export const optimizeRecipeByUserData = (recipe, userData, dailyNeeds) => {
   }
   
   console.log(`优化完成，最佳得分: ${bestScore.toFixed(2)}，迭代次数: ${currentIteration}`);
-  console.log(`最终返回最佳食谱，而不是当前食谱。最佳得分: ${bestScore.toFixed(2)}，当前得分: ${calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds).toFixed(2)}`);
+  console.log(`最终返回最佳食谱，而不是当前食谱。最佳得分: ${bestScore.toFixed(2)}，当前得分: ${(await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds)).toFixed(2)}`);
   
   // 返回优化后的最佳食谱
   return bestRecipe;

@@ -98,22 +98,26 @@ const Recipe = ({ user }) => {
     console.log('recipeItems:', recipeItems);
     console.log('foods数量:', foods.length);
     
-    try {
-      // 使用同步版本的calculateTotalNutrition
-      const totals = calculateTotalNutrition(recipeItems, foods);
-      console.log('计算得到的总营养成分:', totals);
-      setTotalNutrition(totals);
-    } catch (error) {
-      console.error('计算总营养成分时出错:', error);
-      // 设置默认值，避免UI显示NaN
-      setTotalNutrition({
-        calories: 0,
-        protein: 0,
-        carbs: 0,
-        fat: 0,
-        fiber: 0
-      });
-    }
+    // 使用异步版本的calculateTotalNutrition
+    const calculateNutrition = async () => {
+      try {
+        const totals = await calculateTotalNutrition(recipeItems, foods);
+        console.log('计算得到的总营养成分:', totals);
+        setTotalNutrition(totals);
+      } catch (error) {
+        console.error('计算总营养成分时出错:', error);
+        // 设置默认值，避免UI显示NaN
+        setTotalNutrition({
+          calories: 0,
+          protein: 0,
+          carbs: 0,
+          fat: 0,
+          fiber: 0
+        });
+      }
+    };
+    
+    calculateNutrition();
   }, [recipeItems, foods]);
   
   // 添加食物到食谱
@@ -123,31 +127,43 @@ const Recipe = ({ user }) => {
       return;
     }
     
-    // 使用NutritionService计算食谱项目的营养素含量
-    const { calculateRecipeItem } = require('../../services/NutritionService');
-    const newItem = calculateRecipeItem(selectedFood, amount);
-    
-    // 检查是否已存在该食物，如果存在则更新数量
-    const existingItemIndex = recipeItems.findIndex(item => item.foodId === selectedFood.id);
-    
-    if (existingItemIndex !== -1) {
-      const updatedItems = [...recipeItems];
-      const oldAmount = updatedItems[existingItemIndex].amount;
-      const newAmount = oldAmount + amount;
-      
-      // 使用NutritionService计算更新后的营养素含量
-      updatedItems[existingItemIndex] = calculateRecipeItem(selectedFood, newAmount);
-      
-      setRecipeItems(updatedItems);
-    } else {
-      setRecipeItems([...recipeItems, newItem]);
-    }
-    
-    setFoodAddDialogOpen(false);
-    setSuccess('食物已添加到食谱');
-    
-    // 3秒后清除成功消息
-    setTimeout(() => setSuccess(''), 3000);
+    // 使用已导入的calculateRecipeItem函数计算食谱项目的营养素含量
+    calculateRecipeItem(selectedFood.id, amount)
+      .then(newItem => {
+        // 检查是否已存在该食物，如果存在则更新数量
+        const existingItemIndex = recipeItems.findIndex(item => item.foodId === selectedFood.id);
+        
+        if (existingItemIndex !== -1) {
+          const updatedItems = [...recipeItems];
+          const oldAmount = updatedItems[existingItemIndex].amount;
+          const newAmount = oldAmount + amount;
+          
+          // 使用NutritionService计算更新后的营养素含量
+          calculateRecipeItem(selectedFood.id, newAmount)
+            .then(updatedItem => {
+              updatedItems[existingItemIndex] = updatedItem;
+              setRecipeItems(updatedItems);
+              
+              setFoodAddDialogOpen(false);
+              setSuccess('食物已添加到食谱');
+              
+              // 3秒后清除成功消息
+              setTimeout(() => setSuccess(''), 3000);
+            });
+        } else {
+          setRecipeItems([...recipeItems, newItem]);
+          
+          setFoodAddDialogOpen(false);
+          setSuccess('食物已添加到食谱');
+          
+          // 3秒后清除成功消息
+          setTimeout(() => setSuccess(''), 3000);
+        }
+      })
+      .catch(error => {
+        console.error('添加食物时出错:', error);
+        setError('添加食物时出错: ' + error.message);
+      });
   };
   
   // 从食谱中移除食物
@@ -260,7 +276,7 @@ const Recipe = ({ user }) => {
       });
       
       // 添加日志输出，检查优化后的食谱得分
-      console.log('优化后的食谱得分:', calculateRecipeScoreWithUserData(optimizedRecipe, user, dailyNeeds.standardNeeds));
+      console.log('优化后的食谱得分:', await calculateRecipeScoreWithUserData(optimizedRecipe, user, dailyNeeds.standardNeeds));
       
       // 将分类食谱转换为扁平列表
       const flatRecipe = flattenCategoryRecipe(optimizedRecipe);

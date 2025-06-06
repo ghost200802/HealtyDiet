@@ -36,9 +36,9 @@ export const flattenCategoryRecipe = (categoryRecipe) => {
  * @param {Object} recipe - 要计算得分的食谱
  * @param {Object} user - 用户数据
  * @param {Object} standardNeeds - 标准需求数据
- * @returns {number} - 食谱的总得分
+ * @returns {Promise<number>} - 食谱的总得分
  */
-export const calculateRecipeScoreWithUserData = (recipe, user, standardNeeds) => {
+export const calculateRecipeScoreWithUserData = async (recipe, user, standardNeeds) => {
   return calculateRecipeScore(recipe, {
     dci: user.dci,
     protein: user.protein,
@@ -53,9 +53,9 @@ export const calculateRecipeScoreWithUserData = (recipe, user, standardNeeds) =>
  * @param {Object} recipe - 要计算得分的食谱
  * @param {Object} targetValues - 目标营养值
  * @param {Object} standardNeeds - 标准需求数据
- * @returns {number} - 食谱的总得分
+ * @returns {Promise<number>} - 食谱的总得分
  */
-const calculateRecipeScore = (recipe, targetValues, standardNeeds) => {
+const calculateRecipeScore = async (recipe, targetValues, standardNeeds) => {
   console.log('开始计算食谱得分...');
   console.log('目标值:', targetValues);
   
@@ -79,7 +79,7 @@ const calculateRecipeScore = (recipe, targetValues, standardNeeds) => {
   
   // 计算总营养成分
   console.log('调用calculateTotalNutrition计算总营养成分...');
-  const nutrition = calculateTotalNutrition(nutritionItems);
+  const nutrition = await calculateTotalNutrition(nutritionItems);
   console.log('计算得到的总营养成分:', nutrition);
   
   // 获取目标值
@@ -172,12 +172,12 @@ const calculateRecipeScore = (recipe, targetValues, standardNeeds) => {
  * @param {Object} recipe - 要计算得分的食谱
  * @param {Object} targetValues - 目标营养值
  * @param {Object} standardNeeds - 标准需求数据
- * @returns {Object} - 包含各项得分和总得分的对象
+ * @returns {Promise<Object>} - 包含各项得分和总得分的对象
  */
-export const getRecipeScoreDetails = (recipe, targetValues, standardNeeds) => {
+export const getRecipeScoreDetails = async (recipe, targetValues, standardNeeds) => {
   // 将食谱转换为扁平列表，便于计算总营养成分
   const items = flattenCategoryRecipe(recipe);
-  const nutrition = calculateTotalNutrition(items.map(item => ({
+  const nutrition = await calculateTotalNutrition(items.map(item => ({
     ...item,
     calories: item.nutritionInfo.calories,
     protein: item.nutritionInfo.protein,
