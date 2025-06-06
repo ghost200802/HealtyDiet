@@ -85,9 +85,17 @@ def main():
                     # 构建输出文件路径
                     output_file = os.path.join(output_dir, file_name)
                     
+                    # 将食物列表转换为以id为key的字典
+                    foods_by_id = {}
+                    for food in type_foods:
+                        if 'id' in food:
+                            foods_by_id[str(food['id'])] = food
+                        else:
+                            print(f"警告: 食物 '{food.get('name', '未知')}' 缺少id字段，将被跳过")
+                    
                     # 保存到JSON文件
                     with open(output_file, 'w', encoding='utf-8') as f:
-                        json.dump({food_type: type_foods}, f, ensure_ascii=False, indent=4)
+                        json.dump({food_type: foods_by_id}, f, ensure_ascii=False, indent=4)
                     
                     print(f"已导出 {food_type} 类型的食物到 {output_file}")
                 else:

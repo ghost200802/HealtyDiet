@@ -74,9 +74,8 @@ const ensureDataFilesExist = () => {
     const typeFilePath = getFoodTypeFilePath(type);
     
     if (!fs.existsSync(typeFilePath)) {
-      // 如果有默认数据就使用，否则创建空数组
-      const foods = [];
-      fs.writeJsonSync(typeFilePath, { foods });
+      // 创建空的食物类型对象，使用新的格式（以ID为键的对象）
+      fs.writeJsonSync(typeFilePath, { [type]: {} });
     }
   });
 
@@ -135,11 +134,10 @@ const foodsData = {
       }
       
       const data = fs.readJsonSync(typeFilePath);
-      // 检查数据格式，支持两种格式：{foods: [...]} 或 {"主食": [...]} 格式
-      if (data.foods) {
-        return data.foods || [];
-      } else if (data[type]) {
-        return data[type] || [];
+      // 新格式：{"主食": {"11001": {...}, "11002": {...}}} 
+      if (data[type]) {
+        // 将对象值转换为数组返回
+        return Object.values(data[type]) || [];
       }
       return [];
     } catch (error) {
@@ -178,9 +176,14 @@ const foodsData = {
       const types = foodsData.getAllTypes();
       for (const type of types) {
         try {
-          const typeFoods = foodsData.getByType(type);
-          const food = typeFoods.find(food => food.id === id);
-          if (food) return food;
+          const typeFilePath = getFoodTypeFilePath(type);
+          if (!fs.existsSync(typeFilePath)) continue;
+          
+          const data = fs.readJsonSync(typeFilePath);
+          // 新格式：{"主食": {"11001": {...}, "11002": {...}}}
+          if (data[type] && data[type][id]) {
+            return data[type][id];
+          }
         } catch (error) {
           console.error(`在${type}类中查找食物失败: ${error.message}`);
         }
@@ -211,13 +214,22 @@ const foodsData = {
       // 如果指定了类型，则添加到对应类型文件中
       if (type) {
         const typeFilePath = getFoodTypeFilePath(type);
-        let data = { foods: [] };
+        let data = { [type]: {} };
         
         if (fs.existsSync(typeFilePath)) {
           data = fs.readJsonSync(typeFilePath);
+          if (!data[type]) {
+            data[type] = {};
+          }
         }
         
-        data.foods.push(food);
+        // 确保食物有ID
+        if (!food.id) {
+          throw new Error('食物必须有ID');
+        }
+        
+        // 将食物添加到对应类型的对象中，以ID为键
+        data[type][food.id] = food;
         fs.writeJsonSync(typeFilePath, data);
       }
       
@@ -240,18 +252,19 @@ const foodsData = {
           if (!fs.existsSync(typeFilePath)) continue;
           
           const data = fs.readJsonSync(typeFilePath);
-          const foodIndex = data.foods.findIndex(food => food.id === id);
           
-          if (foodIndex !== -1) {
-            data.foods[foodIndex] = {
-              ...data.foods[foodIndex],
+          // 检查该类型中是否存在此ID的食物
+          if (data[type] && data[type][id]) {
+            // 更新食物数据
+            data[type][id] = {
+              ...data[type][id],
               ...updates,
               id // 确保ID不变
             };
             
             fs.writeJsonSync(typeFilePath, data);
             updated = true;
-            return data.foods[foodIndex];
+            return data[type][id];
           }
         } catch (error) {
           console.error(`在${type}类中更新食物失败: ${error.message}`);
@@ -277,11 +290,13 @@ const foodsData = {
           if (!fs.existsSync(typeFilePath)) continue;
           
           const data = fs.readJsonSync(typeFilePath);
-          const foodIndex = data.foods.findIndex(food => food.id === id);
           
-          if (foodIndex !== -1) {
-            deleted = data.foods[foodIndex];
-            data.foods.splice(foodIndex, 1);
+          // 检查该类型中是否存在此ID的食物
+          if (data[type] && data[type][id]) {
+            // 保存要删除的食物数据
+            deleted = data[type][id];
+            // 删除该食物
+            delete data[type][id];
             fs.writeJsonSync(typeFilePath, data);
             break;
           }
