@@ -309,7 +309,7 @@ const Recipe = ({ user }) => {
       )}
       
       {/* 食谱总览区 */}
-      <NutritionOverview totalNutrition={totalNutrition} user={user} />
+      <NutritionOverview totalNutrition={totalNutrition} user={user} recipeItems={recipeItems} />
       
       {/* 食物列表区 */}
       <RecipeItemsTable 

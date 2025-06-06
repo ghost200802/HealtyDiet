@@ -9,17 +9,26 @@ import {
 } from '@mui/material';
 import ClassicPieChart from '../../components/charts/ClassicPieChart';
 import { calculateEnergyDistribution } from '../../services/NutritionService';
+import { calculateRecipeScoreWithUserData } from '../../services/RecipeScoreService';
+import dailyNeeds from '../../../../data/needs/DailyNeeds.json';
 
 /**
  * 食谱营养总览组件
  */
-const NutritionOverview = ({ totalNutrition, user }) => {
+const NutritionOverview = ({ totalNutrition, user, recipeItems }) => {
   // 获取能量数据
   const calculateEnergyData = () => {
     return calculateEnergyDistribution(totalNutrition);
   };
 
   const energyData = calculateEnergyData();
+
+  // 计算食谱评分
+  const calculateScore = () => {
+    return 0;
+  };
+
+  const recipeScore = calculateScore();
 
   return (
     <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
@@ -137,8 +146,35 @@ const NutritionOverview = ({ totalNutrition, user }) => {
         </Grid>
       </Grid>
       
-      {/* 营养素能量占比饼图 */}
-      <Grid container spacing={3} sx={{ mt: 2, justifyContent: 'center' }}>
+      {/* 食谱评分卡片 */}
+      <Grid container spacing={3} sx={{ mt: 2 }}>
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent sx={{ textAlign: 'center' }}>
+              <Typography variant="h6" color="primary" gutterBottom>
+                食谱评分
+              </Typography>
+              {recipeScore !== null ? (
+                <Box>
+                  <Typography variant="h3" color={recipeScore > 70 ? 'success.main' : recipeScore > 50 ? 'warning.main' : 'error.main'}>
+                    {Math.round(recipeScore)}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                    {recipeScore > 70 ? '优秀' : recipeScore > 50 ? '良好' : '需要改进'}
+                  </Typography>
+                  <Typography variant="body2" sx={{ mt: 1 }}>
+                    {recipeScore > 70 ? '这份食谱非常符合您的营养需求！' : 
+                     recipeScore > 50 ? '这份食谱基本符合您的营养需求，可以适当调整。' : 
+                     '这份食谱与您的营养需求有较大差距，建议调整食物种类和数量。'}
+                  </Typography>
+                </Box>
+              ) : (
+                <Typography variant="body1">无法计算评分，请确保已添加食物并设置用户数据</Typography>
+              )}
+            </CardContent>
+          </Card>
+        </Grid>
+        
         <Grid item xs={12} md={6}>
           <Card>
             <CardContent sx={{ textAlign: 'center' }}>
