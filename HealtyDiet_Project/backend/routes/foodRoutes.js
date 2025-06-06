@@ -2,7 +2,12 @@ const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
 const { foodsData } = require('../services/dataService');
+const path = require('path');
+const fs = require('fs-extra');
 
+// 数据目录路径
+const dataDir = path.join(__dirname, '..', '..', 'data');
+const foodsDir = path.join(dataDir, 'foods');
 
 // 获取所有食物类型
 router.get('/types', (req, res) => {
@@ -142,4 +147,30 @@ router.delete('/:id', (req, res) => {
   }
 });
 
+// 获取所有食物类型（完整信息，包含子类型）
+router.get('/types/full', (req, res) => {
+  try {
+    const foodTypesJsonPath = path.join(foodsDir, 'foodTypes.json');
+    if (fs.existsSync(foodTypesJsonPath)) {
+      const data = fs.readJsonSync(foodTypesJsonPath);
+      res.json(data);
+    } else {
+      // 如果不存在完整的foodTypes.json，则返回简化版本
+      const types = foodsData.getAllTypes();
+      const simplifiedData = {
+        foodTypes: {}
+      };
+      
+      types.forEach(type => {
+        simplifiedData.foodTypes[type] = {
+          subTypes: []
+        };
+      });
+      
+      res.json(simplifiedData);
+    }
+  } catch (error) {
+    res.status(500).json({ message: '获取完整食物类型数据失败', error: error.message });
+  }
+});
 module.exports = router;

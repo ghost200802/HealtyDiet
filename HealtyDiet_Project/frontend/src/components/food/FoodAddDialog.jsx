@@ -48,7 +48,7 @@ const FoodAddDialog = ({
     const fetchFoodTypes = async () => {
       try {
         // 直接获取完整的食物类型数据
-        const response = await axios.get('http://localhost:5000/api/foods/foodTypes.json');
+        const response = await axios.get('http://localhost:5000/api/foods/types/full');
         
         if (response.data && response.data.foodTypes) {
           setFoodTypes(response.data.foodTypes);
@@ -65,58 +65,6 @@ const FoodAddDialog = ({
         }
       } catch (error) {
         console.error('获取食物分类数据失败:', error);
-        
-        // 如果API请求失败，使用硬编码的数据作为备份
-        const hardcodedFoodTypes = {
-          "主食": {
-            "subTypes": [
-              "精制谷物",
-              "全谷物",
-              "豆类",
-              "薯类"
-            ]
-          },
-          "蔬菜": {
-            "subTypes": [
-              "绿叶菜",
-              "浅色蔬菜",
-              "深色蔬菜",
-              "菌藻类",
-              "辣椒类",
-              "其它"
-            ]
-          },
-          "肉蛋奶": {
-            "subTypes": [
-              "畜禽肉",
-              "水产品",
-              "乳制品",
-              "蛋类",
-              "豆制品"
-            ]
-          },
-          "水果": {
-            "subTypes": [
-              "鲜果",
-              "果干"
-            ]
-          },
-          "油盐调料": {
-            "subTypes": [
-              "食用油",
-              "调料"
-            ]
-          }
-        };
-        
-        setFoodTypes(hardcodedFoodTypes);
-        
-        // 初始化展开状态
-        const initialExpandedState = {};
-        Object.keys(hardcodedFoodTypes).forEach(category => {
-          initialExpandedState[category] = false;
-        });
-        setExpandedCategories(initialExpandedState);
       }
     };
     
