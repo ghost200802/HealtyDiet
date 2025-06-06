@@ -7,38 +7,15 @@ import { calculateTotalNutrition } from './NutritionService';
 
 
 /**
- * 将按类别分组的食谱转换为扁平列表
- * @param {Object} categoryRecipe - 按类别分组的食谱
- * @returns {Array} - 食谱项目列表
- */
-export const flattenCategoryRecipe = (categoryRecipe) => {
-  if (!categoryRecipe) {
-    return [];
-  }
-  
-  const flatRecipe = [];
-  
-  Object.keys(categoryRecipe).forEach(category => {
-    const items = categoryRecipe[category] || [];
-    items.forEach(item => {
-      flatRecipe.push({
-        ...item,
-        category: category
-      });
-    });
-  });
-  
-  return flatRecipe;
-};
-
-/**
  * 使用用户数据计算食谱得分
- * @param {Object} recipe - 要计算得分的食谱
+ * @param {Array} recipe - 要计算得分的食谱，简化的[{foodId, amount}]数组格式
  * @param {Object} user - 用户数据
  * @param {Object} standardNeeds - 标准需求数据
  * @returns {Promise<number>} - 食谱的总得分
  */
 export const calculateRecipeScoreWithUserData = async (recipe, user, standardNeeds) => {
+  console.log('开始计算食谱得分WithUserData...');
+  console.log('recipe:',recipe);
   return calculateRecipeScore(recipe, {
     dci: user.dci,
     protein: user.protein,
@@ -50,36 +27,25 @@ export const calculateRecipeScoreWithUserData = async (recipe, user, standardNee
 
 /**
  * 计算食谱的得分
- * @param {Object} recipe - 要计算得分的食谱
+ * @param {Array} recipe - 要计算得分的食谱，简化的[{foodId, amount}]数组格式
  * @param {Object} targetValues - 目标营养值
  * @param {Object} standardNeeds - 标准需求数据
  * @returns {Promise<number>} - 食谱的总得分
  */
 const calculateRecipeScore = async (recipe, targetValues, standardNeeds) => {
   console.log('开始计算食谱得分...');
+  console.log('recipe:',recipe);
   console.log('目标值:', targetValues);
   
-  // 将食谱转换为扁平列表，便于计算总营养成分
-  const items = flattenCategoryRecipe(recipe);
-  console.log('扁平化后的食谱项目数量:', items.length);
+  // 使用简化格式的食谱数据（[{foodId, amount}]数组格式）
+  console.log('食谱为简化数组格式，直接使用');
+  const items = recipe;
+  console.log('食谱项目数量:', items.length);
   
-  // 转换项目格式，确保包含所有必要的营养信息
-  const nutritionItems = items.map(item => {
-    const nutritionItem = {
-      ...item,
-      calories: item.nutritionInfo?.calories || 0,
-      protein: item.nutritionInfo?.protein || 0,
-      carbs: item.nutritionInfo?.carbs || 0,
-      fat: item.nutritionInfo?.fat || 0,
-      fiber: item.nutritionInfo?.fiber || 0
-    };
-    console.log('转换后的营养项目:', nutritionItem);
-    return nutritionItem;
-  });
   
   // 计算总营养成分
   console.log('调用calculateTotalNutrition计算总营养成分...');
-  const nutrition = await calculateTotalNutrition(nutritionItems);
+  const nutrition = await calculateTotalNutrition(recipe);
   console.log('计算得到的总营养成分:', nutrition);
   
   // 获取目标值
@@ -119,32 +85,11 @@ const calculateRecipeScore = async (recipe, targetValues, standardNeeds) => {
   let categoryLimitsScore = 0;
   let categoryViolations = 0;
   
-  // 检查每个类别的总重量是否在限制范围内
-  Object.keys(recipe).forEach(category => {
-    if (standardNeeds[category]) {
-      const totalRange = standardNeeds[category].total;
-      const minTotal = totalRange[0];
-      const maxTotal = totalRange[1];
-      
-      // 计算该类别的总重量
-      const categoryTotal = recipe[category].reduce((sum, item) => sum + item.amount, 0);
-      
-      console.log(`类别 ${category} 总重量: ${categoryTotal}g, 限制范围: ${minTotal}-${maxTotal}g`);
-      
-      // 如果超出范围，减少得分
-      if (categoryTotal < minTotal || categoryTotal > maxTotal) {
-        categoryViolations++;
-        console.log(`类别 ${category} 超出限制范围`);
-      }
-    }
-  });
+  // 对于简化格式，给予默认得分
+  categoryLimitsScore = 30; // 给一个中等得分
   
-  // 根据违反类别限制的数量调整得分
-  if (categoryViolations > 0) {
-    categoryLimitsScore = Math.max(0, 50 - (categoryViolations * 20));
-  } else {
-    categoryLimitsScore = 50; // 如果没有违反限制，得满分50分
-  }
+  // 对于简化格式的食谱数据，已经给了默认得分，不需要再调整
+  // categoryLimitsScore = 30; // 已在上面设置
   
   console.log(`类别限制得分: ${categoryLimitsScore}, 违规数量: ${categoryViolations}`);
   

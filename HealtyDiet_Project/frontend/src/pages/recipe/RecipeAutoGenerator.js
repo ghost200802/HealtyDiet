@@ -43,7 +43,7 @@ export const groupFoodsByCategory = async (foods) => {
  * 根据每日标准需求生成随机食谱
  * @param {Array} foods - 所有可用的食物列表
  * @param {Object} dailyNeeds - 每日标准需求数据
- * @returns {Object} - 按类别分组的食谱项目
+ * @returns {Object} - 按类别分组的食谱项目，简化格式为[{foodId, amount}]
  */
 export const generateRecipeByDailyNeeds = async (foods, dailyNeeds) => {
   if (!foods || foods.length === 0) {
@@ -132,8 +132,24 @@ export const generateRecipeByDailyNeeds = async (foods, dailyNeeds) => {
     
     recipe[category] = subTypeItems;
   }
+
+  console.log('简化前的食谱数据:', recipe);
   
-  return recipe;
+  // 将复杂的recipe对象转换为简化格式[{foodId, amount}]
+  const simplifiedRecipe = [];
+  for (const category of Object.keys(recipe)) {
+    for (const item of recipe[category]) {
+      simplifiedRecipe.push({
+        foodId: item.food.id,
+        amount: item.amount
+      });
+    }
+  }
+  
+  // 输出简化后的食谱数据
+  console.log('简化后的食谱数据:', simplifiedRecipe);
+  
+  return simplifiedRecipe;
 };
 
 /**
@@ -144,6 +160,7 @@ export const generateRecipeByDailyNeeds = async (foods, dailyNeeds) => {
  * @returns {Promise<Object>} - 优化后的食谱
  */
 export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => {
+  console.log(`my input: `, recipe);
   if (!recipe || Object.keys(recipe).length === 0) {
     throw new Error('食谱为空，无法进行优化');
   }
@@ -172,7 +189,8 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
   // 优化循环
   while (currentIteration < maxIterations) {
     // 计算当前食谱的得分
-    let currentScore = await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
+    console.log(`my input: `, recipe);
+    let currentScore = await calculateRecipeScoreWithUserData(recipe, userData, standardNeeds);
     
     // 初始化本轮迭代的前一个得分，用于比较是否有改进
     let previousScore = currentScore;
@@ -183,9 +201,12 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
       bestScore = currentScore;
       bestRecipe = JSON.parse(JSON.stringify(optimizedRecipe));
     }
+
+    console.log(`my optimizedRecipe: `, optimizedRecipe);
     
     // 遍历每个类别
     for (const category of Object.keys(optimizedRecipe)) {
+      console.log(`my optimizedRecipe category: `, optimizedRecipe[category]);
       // 遍历该类别中的每个食物
       for (const item of optimizedRecipe[category]) {
         // 保存原始重量
@@ -193,7 +214,8 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
         
         // 尝试增加10g
         item.amount += 10;
-        const increaseScore = await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
+        
+        const increaseScore = await calculateRecipeScoreWithUserData(flatRecipeIncrease, userData, standardNeeds);
         
         // 恢复原始重量
         item.amount = originalAmount;
@@ -202,7 +224,8 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
         let decreaseScore = -Infinity;
         if (originalAmount >= 20) {
           item.amount -= 10;
-          decreaseScore = await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
+          // 将分类食谱转换为扁平列表，以便计算得分
+          decreaseScore = await calculateRecipeScoreWithUserData(flatRecipeDecrease, userData, standardNeeds);
           
           // 恢复原始重量
           item.amount = originalAmount;
@@ -314,7 +337,9 @@ export const saveGeneratedRecipe = async (recipe, userData, recipes) => {
   }
   
   // 计算总营养成分
-  const totalNutrition = await calculateTotalNutrition(recipeItems);
+  console.log('准备计算总营养成分的recipe:', recipe);
+  // 计算总营养成分
+  const totalNutrition = await calculateTotalNutrition(recipe);
   
   // 生成食谱名称
   const recipeName = `${new Date().toLocaleDateString()}自动生成食谱`;

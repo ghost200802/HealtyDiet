@@ -24,7 +24,7 @@ import { calculateTotalNutrition, calculateRecipeItem } from '../../services/Nut
 import { saveRecipe, deleteRecipe, getUserRecipes, updateFoodInRecipe } from './RecipeService';
 import { generateRecipeByDailyNeeds, optimizeRecipeByUserData, saveGeneratedRecipe } from './RecipeAutoGenerator';
 import dailyNeeds from '../../../../data/needs/DailyNeeds.json';
-import { calculateRecipeScoreWithUserData, flattenCategoryRecipe } from '../../services/RecipeScoreService';
+import { calculateRecipeScoreWithUserData } from '../../services/RecipeScoreService';
 // 导入FoodService
 import { getAllFoods as getFoodsFromService } from '../../services/FoodService';
 
@@ -108,12 +108,12 @@ const Recipe = ({ user }) => {
   useEffect(() => {
     console.log('Recipe.jsx - 计算食谱总营养成分');
     console.log('recipeItems:', recipeItems);
-    console.log('foods数量:', foods.length);
+    // foods不再需要传递给calculateTotalNutrition
     
     // 使用异步版本的calculateTotalNutrition
     const calculateNutrition = async () => {
       try {
-        const totals = await calculateTotalNutrition(recipeItems, foods);
+        const totals = await calculateTotalNutrition(recipeItems);
         console.log('计算得到的总营养成分:', totals);
         setTotalNutrition(totals);
       } catch (error) {
@@ -288,10 +288,8 @@ const Recipe = ({ user }) => {
       });
       
       // 添加日志输出，检查优化后的食谱得分
-      console.log('优化后的食谱得分:', await calculateRecipeScoreWithUserData(optimizedRecipe, user, dailyNeeds.standardNeeds));
-      
-      // 将分类食谱转换为扁平列表
-      const flatRecipe = flattenCategoryRecipe(optimizedRecipe);
+      // 将分类食谱转换为扁平列表，以便计算得分
+      console.log('优化后的食谱得分:', await calculateRecipeScoreWithUserData(foods, user, dailyNeeds.standardNeeds));
       
       // 转换为食谱项目格式
       const newItems = flatRecipe.map(item => ({
