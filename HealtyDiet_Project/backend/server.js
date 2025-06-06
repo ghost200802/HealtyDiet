@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { ensureDataFilesExist } = require('./services/index');
+const { foodsData } = require('./services/index');
 
 // 初始化Express应用
 const app = express();
@@ -14,6 +15,13 @@ app.use(bodyParser.json());
 // 确保数据目录和文件存在
 ensureDataFilesExist();
 
+// 初始化食物缓存
+try {
+  foodsData.initializeCache();
+  console.log('食物缓存初始化成功');
+} catch (error) {
+  console.error('食物缓存初始化失败:', error.message);
+}
 
 // 路由导入
 const userRoutes = require('./routes/userRoutes');
