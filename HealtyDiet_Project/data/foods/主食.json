@@ -1,0 +1,992 @@
+{
+    "主食": [
+        {
+            "id": 11001.0,
+            "type": "主食",
+            "subType": "精制谷物",
+            "name": "大米",
+            "calories": 346,
+            "protein": 7.7,
+            "carbs": 77.4,
+            "fat": 0.6,
+            "fiber": 0.7,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "常见主食，提供碳水化合物等营养",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0.46
+            },
+            "minerals": {
+                "calcium": 13,
+                "iron": 0.46,
+                "magnesium": 34,
+                "potassium": 110
+            }
+        },
+        {
+            "id": 11002.0,
+            "type": "主食",
+            "subType": "精制谷物",
+            "name": "白面",
+            "calories": 354,
+            "protein": 10.3,
+            "carbs": 74.6,
+            "fat": 1.2,
+            "fiber": 1.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": null,
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0.86
+            },
+            "minerals": {
+                "calcium": 31,
+                "iron": 0.86,
+                "magnesium": 34,
+                "potassium": 121
+            }
+        },
+        {
+            "id": 11003.0,
+            "type": "主食",
+            "subType": "精制谷物",
+            "name": "面条",
+            "calories": 355,
+            "protein": 8.3,
+            "carbs": 76.8,
+            "fat": 0.7,
+            "fiber": 0.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": null,
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0.83
+            },
+            "minerals": {
+                "calcium": 13,
+                "iron": 0.83,
+                "magnesium": 31,
+                "potassium": 142
+            }
+        },
+        {
+            "id": 11004.0,
+            "type": "主食",
+            "subType": "精制谷物",
+            "name": "馒头",
+            "calories": 221,
+            "protein": 7,
+            "carbs": 47,
+            "fat": 1.1,
+            "fiber": 1.3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": null,
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0.65
+            },
+            "minerals": {
+                "calcium": 38,
+                "iron": 0.65,
+                "magnesium": 30,
+                "potassium": 109
+            }
+        },
+        {
+            "id": 11005.0,
+            "type": "主食",
+            "subType": "精制谷物",
+            "name": "面包",
+            "calories": 312,
+            "protein": 8.3,
+            "carbs": 58.6,
+            "fat": 3.2,
+            "fiber": 2.1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": null,
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 1.03
+            },
+            "minerals": {
+                "calcium": 32,
+                "iron": 1.03,
+                "magnesium": 38,
+                "potassium": 107
+            }
+        },
+        {
+            "id": 12001.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "小米",
+            "calories": 361,
+            "protein": 9,
+            "carbs": 75.1,
+            "fat": 3.1,
+            "fiber": 1.6,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "营养丰富，含多种维生素和矿物质",
+            "vitamins": {
+                "A": 17,
+                "C": 0,
+                "D": 0,
+                "E": 3.63
+            },
+            "minerals": {
+                "calcium": 29,
+                "iron": 3.63,
+                "magnesium": 107,
+                "potassium": 284
+            }
+        },
+        {
+            "id": 12002.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "玉米（带棒）",
+            "calories": 106,
+            "protein": 4,
+            "carbs": 22.8,
+            "fat": 1.2,
+            "fiber": 2.4,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含膳食纤维与多种营养",
+            "vitamins": {
+                "A": 17,
+                "C": 10,
+                "D": 0,
+                "E": 0.46
+            },
+            "minerals": {
+                "calcium": 1,
+                "iron": 0.46,
+                "magnesium": 9,
+                "potassium": 258
+            }
+        },
+        {
+            "id": 12003.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "玉米粒（鲜）",
+            "calories": 107,
+            "protein": 4,
+            "carbs": 22.8,
+            "fat": 1.2,
+            "fiber": 2.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "营养丰富，可鲜食或加工",
+            "vitamins": {
+                "A": 17,
+                "C": 10,
+                "D": 0,
+                "E": 0.46
+            },
+            "minerals": {
+                "calcium": 1,
+                "iron": 0.46,
+                "magnesium": 9,
+                "potassium": 287
+            }
+        },
+        {
+            "id": 12004.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "玉米糁",
+            "calories": 347,
+            "protein": 8.1,
+            "carbs": 75.2,
+            "fat": 3.3,
+            "fiber": 3.1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "由玉米加工，可煮粥等",
+            "vitamins": {
+                "A": 17,
+                "C": 0,
+                "D": 0,
+                "E": 3.89
+            },
+            "minerals": {
+                "calcium": 12,
+                "iron": 3.89,
+                "magnesium": 105,
+                "potassium": 240
+            }
+        },
+        {
+            "id": 12005.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "玉米面粉",
+            "calories": 340,
+            "protein": 8.1,
+            "carbs": 72.4,
+            "fat": 4.5,
+            "fiber": 4.6,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "用于制作多种面食",
+            "vitamins": {
+                "A": 17,
+                "C": 0,
+                "D": 0,
+                "E": 2.09
+            },
+            "minerals": {
+                "calcium": 12,
+                "iron": 2.09,
+                "magnesium": 86,
+                "potassium": 249
+            }
+        },
+        {
+            "id": 12006.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "面粉（普通）",
+            "calories": 366,
+            "protein": 11.2,
+            "carbs": 71.5,
+            "fat": 1.5,
+            "fiber": 2.1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "制作面食的常用原料",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 1.8
+            },
+            "minerals": {
+                "calcium": 31,
+                "iron": 1.8,
+                "magnesium": 32,
+                "potassium": 190
+            }
+        },
+        {
+            "id": 12007.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "全麦面粉",
+            "calories": 325,
+            "protein": 11.4,
+            "carbs": 64.4,
+            "fat": 1.9,
+            "fiber": 10.7,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "保留较多营养，富含膳食纤维",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 4.47
+            },
+            "minerals": {
+                "calcium": 33,
+                "iron": 4.47,
+                "magnesium": 146,
+                "potassium": 190
+            }
+        },
+        {
+            "id": 12008.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "燕麦（燕麦片）",
+            "calories": 338,
+            "protein": 15,
+            "carbs": 65.3,
+            "fat": 6.9,
+            "fiber": 10.6,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含 β - 葡聚糖，有益健康",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 3.07
+            },
+            "minerals": {
+                "calcium": 54,
+                "iron": 3.07,
+                "magnesium": 177,
+                "potassium": 319
+            }
+        },
+        {
+            "id": 12009.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "燕麦米",
+            "calories": 336,
+            "protein": 14.7,
+            "carbs": 65.3,
+            "fat": 6.9,
+            "fiber": 10.6,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可煮食，营养与燕麦片相似",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 3.07
+            },
+            "minerals": {
+                "calcium": 54,
+                "iron": 3.07,
+                "magnesium": 177,
+                "potassium": 319
+            }
+        },
+        {
+            "id": 12010.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "荞麦（荞麦面粉）",
+            "calories": 324,
+            "protein": 9.3,
+            "carbs": 66.5,
+            "fat": 2.3,
+            "fiber": 6.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "含独特芦丁，营养丰富",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 4.4
+            },
+            "minerals": {
+                "calcium": 47,
+                "iron": 4.4,
+                "magnesium": 258,
+                "potassium": 401
+            }
+        },
+        {
+            "id": 12011.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "荞麦面条",
+            "calories": 286,
+            "protein": 7.5,
+            "carbs": 60.4,
+            "fat": 1.2,
+            "fiber": 4.1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "以荞麦面粉制作，口感独特",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 3.4
+            },
+            "minerals": {
+                "calcium": 134,
+                "iron": 3.4,
+                "magnesium": 133,
+                "potassium": 401
+            }
+        },
+        {
+            "id": 12012.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "紫米",
+            "calories": 346,
+            "protein": 8.3,
+            "carbs": 75.1,
+            "fat": 1.7,
+            "fiber": 2.3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含花青素，营养丰富",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 1.79
+            },
+            "minerals": {
+                "calcium": 13,
+                "iron": 1.79,
+                "magnesium": 124,
+                "potassium": 217
+            }
+        },
+        {
+            "id": 12013.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "糙米",
+            "calories": 348,
+            "protein": 7.7,
+            "carbs": 75,
+            "fat": 2.7,
+            "fiber": 3.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "全谷物，富含纤维和矿物质",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0.1
+            },
+            "minerals": {
+                "calcium": 11,
+                "iron": 0.1,
+                "magnesium": 124,
+                "potassium": 141
+            }
+        },
+        {
+            "id": 12014.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "藜麦",
+            "calories": 368,
+            "protein": 14,
+            "carbs": 64.2,
+            "fat": 6.1,
+            "fiber": 7,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "优质植物蛋白来源，营养全面",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 3.04
+            },
+            "minerals": {
+                "calcium": 41,
+                "iron": 3.04,
+                "magnesium": 160,
+                "potassium": 563
+            }
+        },
+        {
+            "id": 12015.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "薏苡仁",
+            "calories": 357,
+            "protein": 12.8,
+            "carbs": 69.1,
+            "fat": 3.3,
+            "fiber": 2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可食用也可药用，祛湿利水",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 2.08
+            },
+            "minerals": {
+                "calcium": 42,
+                "iron": 2.08,
+                "magnesium": 88,
+                "potassium": 238
+            }
+        },
+        {
+            "id": 12016.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "高粱米",
+            "calories": 351,
+            "protein": 10.4,
+            "carbs": 74.7,
+            "fat": 3.1,
+            "fiber": 4.3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可制作多种食物，适应性强",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 1.88
+            },
+            "minerals": {
+                "calcium": 22,
+                "iron": 1.88,
+                "magnesium": 129,
+                "potassium": 281
+            }
+        },
+        {
+            "id": 12017.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "青稞米",
+            "calories": 339,
+            "protein": 8.1,
+            "carbs": 70.1,
+            "fat": 1.5,
+            "fiber": 4.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "高原特色粮食，营养独特",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0.57
+            },
+            "minerals": {
+                "calcium": 42,
+                "iron": 0.57,
+                "magnesium": 64,
+                "potassium": 136
+            }
+        },
+        {
+            "id": 12018.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "糯米",
+            "calories": 348,
+            "protein": 7.3,
+            "carbs": 78.3,
+            "fat": 1.4,
+            "fiber": 0.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "粘性大，常制作特色食品",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 1.29
+            },
+            "minerals": {
+                "calcium": 26,
+                "iron": 1.29,
+                "magnesium": 49,
+                "potassium": 137
+            }
+        },
+        {
+            "id": 12019.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "粳米",
+            "calories": 343,
+            "protein": 7.3,
+            "carbs": 77.9,
+            "fat": 0.6,
+            "fiber": 0.6,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "常见大米品种，口感较好",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0.46
+            },
+            "minerals": {
+                "calcium": 11,
+                "iron": 0.46,
+                "magnesium": 34,
+                "potassium": 97
+            }
+        },
+        {
+            "id": 12020.0,
+            "type": "主食",
+            "subType": "全谷物",
+            "name": "土豆",
+            "calories": 77,
+            "protein": 2,
+            "carbs": 17.2,
+            "fat": 0.2,
+            "fiber": 2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "常见蔬菜与主食，营养丰富",
+            "vitamins": {
+                "A": 5,
+                "C": 20,
+                "D": 0,
+                "E": 0.34
+            },
+            "minerals": {
+                "calcium": 11,
+                "iron": 0.34,
+                "magnesium": 23,
+                "potassium": 342
+            }
+        },
+        {
+            "id": 13001.0,
+            "type": "主食",
+            "subType": "豆类",
+            "name": "黑豆",
+            "calories": 381,
+            "protein": 36,
+            "carbs": 33.6,
+            "fat": 15.9,
+            "fiber": 15,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "高蛋白、高纤维，营养丰富",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 17.36
+            },
+            "minerals": {
+                "calcium": 224,
+                "iron": 17.36,
+                "magnesium": 243,
+                "potassium": 1377
+            }
+        },
+        {
+            "id": 13002.0,
+            "type": "主食",
+            "subType": "豆类",
+            "name": "绿豆",
+            "calories": 335,
+            "protein": 21.6,
+            "carbs": 62,
+            "fat": 0.8,
+            "fiber": 6.4,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "夏季消暑佳品，富含营养",
+            "vitamins": {
+                "A": 22,
+                "C": 9,
+                "D": 0,
+                "E": 10.95
+            },
+            "minerals": {
+                "calcium": 81,
+                "iron": 10.95,
+                "magnesium": 125,
+                "potassium": 787
+            }
+        },
+        {
+            "id": 13003.0,
+            "type": "主食",
+            "subType": "豆类",
+            "name": "赤小豆",
+            "calories": 309,
+            "protein": 20.2,
+            "carbs": 63.4,
+            "fat": 0.6,
+            "fiber": 7.7,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可入药，有利水消肿功效",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 14.36
+            },
+            "minerals": {
+                "calcium": 74,
+                "iron": 14.36,
+                "magnesium": 138,
+                "potassium": 860
+            }
+        },
+        {
+            "id": 13004.0,
+            "type": "主食",
+            "subType": "豆类",
+            "name": "芸豆",
+            "calories": 314,
+            "protein": 23.4,
+            "carbs": 54.4,
+            "fat": 1.3,
+            "fiber": 8.6,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "营养丰富，可煮食或配菜",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 1.24
+            },
+            "minerals": {
+                "calcium": 116,
+                "iron": 1.24,
+                "magnesium": 162,
+                "potassium": 820
+            }
+        },
+        {
+            "id": 13005.0,
+            "type": "主食",
+            "subType": "豆类",
+            "name": "白扁豆",
+            "calories": 326,
+            "protein": 25.3,
+            "carbs": 54.2,
+            "fat": 0.4,
+            "fiber": 6.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "药食同源，健脾化湿",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 1.86
+            },
+            "minerals": {
+                "calcium": 137,
+                "iron": 1.86,
+                "magnesium": 137,
+                "potassium": 800
+            }
+        },
+        {
+            "id": 13006.0,
+            "type": "主食",
+            "subType": "豆类",
+            "name": "豌豆",
+            "calories": 334,
+            "protein": 20.3,
+            "carbs": 65.8,
+            "fat": 1.1,
+            "fiber": 8.3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含多种营养，可鲜食或加工",
+            "vitamins": {
+                "A": 82,
+                "C": 14,
+                "D": 0,
+                "E": 8.47
+            },
+            "minerals": {
+                "calcium": 71,
+                "iron": 8.47,
+                "magnesium": 43,
+                "potassium": 337
+            }
+        },
+        {
+            "id": 13007.0,
+            "type": "主食",
+            "subType": "豆类",
+            "name": "鹰嘴豆",
+            "calories": 386,
+            "protein": 21.2,
+            "carbs": 62.6,
+            "fat": 6.3,
+            "fiber": 12.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "高蛋白质、高纤维，营养好",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 5.3
+            },
+            "minerals": {
+                "calcium": 104,
+                "iron": 5.3,
+                "magnesium": 165,
+                "potassium": 474
+            }
+        },
+        {
+            "id": 13008.0,
+            "type": "主食",
+            "subType": "豆类",
+            "name": "豇豆",
+            "calories": 322,
+            "protein": 22.3,
+            "carbs": 58.9,
+            "fat": 2,
+            "fiber": 7.1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可鲜食或干制，营养丰富",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 2.24
+            },
+            "minerals": {
+                "calcium": 100,
+                "iron": 2.24,
+                "magnesium": 146,
+                "potassium": 737
+            }
+        },
+        {
+            "id": 13009.0,
+            "type": "主食",
+            "subType": "豆类",
+            "name": "蚕豆",
+            "calories": 335,
+            "protein": 25.4,
+            "carbs": 59.8,
+            "fat": 1.6,
+            "fiber": 3.1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "营养丰富，可多种方式食用",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 1.6
+            },
+            "minerals": {
+                "calcium": 168,
+                "iron": 1.6,
+                "magnesium": 204,
+                "potassium": 992
+            }
+        },
+        {
+            "id": 14001.0,
+            "type": "主食",
+            "subType": "薯类",
+            "name": "红薯",
+            "calories": 102,
+            "protein": 1.1,
+            "carbs": 24.7,
+            "fat": 0.2,
+            "fiber": 3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含膳食纤维，营养丰富",
+            "vitamins": {
+                "A": 125,
+                "C": 26,
+                "D": 0,
+                "E": 0.28
+            },
+            "minerals": {
+                "calcium": 23,
+                "iron": 0.28,
+                "magnesium": 12,
+                "potassium": 337
+            }
+        },
+        {
+            "id": 14002.0,
+            "type": "主食",
+            "subType": "薯类",
+            "name": "紫薯",
+            "calories": 106,
+            "protein": 2.3,
+            "carbs": 24.7,
+            "fat": 0.2,
+            "fiber": 3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "含花青素，营养独特",
+            "vitamins": {
+                "A": 125,
+                "C": 26,
+                "D": 0,
+                "E": 0.28
+            },
+            "minerals": {
+                "calcium": 23,
+                "iron": 0.28,
+                "magnesium": 12,
+                "potassium": 337
+            }
+        },
+        {
+            "id": 14003.0,
+            "type": "主食",
+            "subType": "薯类",
+            "name": "芋头",
+            "calories": 79,
+            "protein": 2.2,
+            "carbs": 17.1,
+            "fat": 0.2,
+            "fiber": 1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可作为主食，口感软糯",
+            "vitamins": {
+                "A": 20,
+                "C": 6,
+                "D": 0,
+                "E": 0.45
+            },
+            "minerals": {
+                "calcium": 36,
+                "iron": 0.45,
+                "magnesium": 23,
+                "potassium": 378
+            }
+        },
+        {
+            "id": 14004.0,
+            "type": "主食",
+            "subType": "薯类",
+            "name": "山药",
+            "calories": 56,
+            "protein": 1.9,
+            "carbs": 11.6,
+            "fat": 0.2,
+            "fiber": 0.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "药食同源，健脾益胃",
+            "vitamins": {
+                "A": 0,
+                "C": 5,
+                "D": 0,
+                "E": 0.24
+            },
+            "minerals": {
+                "calcium": 16,
+                "iron": 0.24,
+                "magnesium": 20,
+                "potassium": 213
+            }
+        }
+    ]
+}

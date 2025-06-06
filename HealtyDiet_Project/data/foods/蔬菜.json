@@ -1,0 +1,1304 @@
+{
+    "蔬菜": [
+        {
+            "id": 21001.0,
+            "type": "蔬菜",
+            "subType": "绿叶菜",
+            "name": "菠菜",
+            "calories": 28,
+            "protein": 2.6,
+            "carbs": 4.5,
+            "fat": 0.3,
+            "fiber": 2.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含类胡萝卜素与铁元素，补铁佳品",
+            "vitamins": {
+                "A": 483,
+                "C": 32,
+                "D": 0,
+                "E": 1.74
+            },
+            "minerals": {
+                "calcium": 66,
+                "iron": 2.9,
+                "magnesium": 58,
+                "potassium": 311
+            }
+        },
+        {
+            "id": 21002.0,
+            "type": "蔬菜",
+            "subType": "绿叶菜",
+            "name": "芹菜（茎）",
+            "calories": 10,
+            "protein": 1.2,
+            "carbs": 1.8,
+            "fat": 0.2,
+            "fiber": 1.2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "膳食纤维丰富，有利尿降压作用",
+            "vitamins": {
+                "A": 10,
+                "C": 12,
+                "D": 0,
+                "E": 0.22
+            },
+            "minerals": {
+                "calcium": 48,
+                "iron": 0.8,
+                "magnesium": 10,
+                "potassium": 154
+            }
+        },
+        {
+            "id": 21003.0,
+            "type": "蔬菜",
+            "subType": "绿叶菜",
+            "name": "白菜",
+            "calories": 16,
+            "protein": 1.5,
+            "carbs": 3.2,
+            "fat": 0.1,
+            "fiber": 0.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "冬季常见蔬菜，营养均衡",
+            "vitamins": {
+                "A": 28,
+                "C": 31,
+                "D": 0,
+                "E": 0.76
+            },
+            "minerals": {
+                "calcium": 50,
+                "iron": 0.7,
+                "magnesium": 11,
+                "potassium": 130
+            }
+        },
+        {
+            "id": 21004.0,
+            "type": "蔬菜",
+            "subType": "绿叶菜",
+            "name": "生菜",
+            "calories": 16,
+            "protein": 1.6,
+            "carbs": 2.2,
+            "fat": 0.4,
+            "fiber": 0.7,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "常作沙拉配菜，口感鲜嫩",
+            "vitamins": {
+                "A": 298,
+                "C": 13,
+                "D": 0,
+                "E": 1.02
+            },
+            "minerals": {
+                "calcium": 34,
+                "iron": 0.9,
+                "magnesium": 12,
+                "potassium": 170
+            }
+        },
+        {
+            "id": 21005.0,
+            "type": "蔬菜",
+            "subType": "绿叶菜",
+            "name": "油麦菜",
+            "calories": 15,
+            "protein": 1.6,
+            "carbs": 2,
+            "fat": 0.4,
+            "fiber": 1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "低热量高纤维，富含维生素 A",
+            "vitamins": {
+                "A": 320,
+                "C": 31,
+                "D": 0,
+                "E": 0.81
+            },
+            "minerals": {
+                "calcium": 70,
+                "iron": 0.9,
+                "magnesium": 29,
+                "potassium": 230
+            }
+        },
+        {
+            "id": 21006.0,
+            "type": "蔬菜",
+            "subType": "绿叶菜",
+            "name": "茼蒿",
+            "calories": 21,
+            "protein": 1.9,
+            "carbs": 3.9,
+            "fat": 0.3,
+            "fiber": 1.2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "具有特殊香气，可清炒或涮食",
+            "vitamins": {
+                "A": 400,
+                "C": 18,
+                "D": 0,
+                "E": 0.92
+            },
+            "minerals": {
+                "calcium": 25,
+                "iron": 1.2,
+                "magnesium": 20,
+                "potassium": 220
+            }
+        },
+        {
+            "id": 21007.0,
+            "type": "蔬菜",
+            "subType": "绿叶菜",
+            "name": "苦苣",
+            "calories": 17,
+            "protein": 1.7,
+            "carbs": 3.1,
+            "fat": 0.3,
+            "fiber": 1.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "味道微苦，有清热去火功效",
+            "vitamins": {
+                "A": 330,
+                "C": 12,
+                "D": 0,
+                "E": 0.74
+            },
+            "minerals": {
+                "calcium": 66,
+                "iron": 0.9,
+                "magnesium": 36,
+                "potassium": 170
+            }
+        },
+        {
+            "id": 21008.0,
+            "type": "蔬菜",
+            "subType": "绿叶菜",
+            "name": "荠菜",
+            "calories": 27,
+            "protein": 2.9,
+            "carbs": 4.7,
+            "fat": 0.4,
+            "fiber": 2.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "野生蔬菜，营养丰富",
+            "vitamins": {
+                "A": 259,
+                "C": 41,
+                "D": 0,
+                "E": 0.79
+            },
+            "minerals": {
+                "calcium": 294,
+                "iron": 5.4,
+                "magnesium": 28,
+                "potassium": 280
+            }
+        },
+        {
+            "id": 21009.0,
+            "type": "蔬菜",
+            "subType": "绿叶菜",
+            "name": "空心菜",
+            "calories": 20,
+            "protein": 2.2,
+            "carbs": 3.6,
+            "fat": 0.3,
+            "fiber": 1.4,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可清炒或蒜蓉，口感滑嫩",
+            "vitamins": {
+                "A": 253,
+                "C": 25,
+                "D": 0,
+                "E": 1.09
+            },
+            "minerals": {
+                "calcium": 99,
+                "iron": 2.3,
+                "magnesium": 29,
+                "potassium": 243
+            }
+        },
+        {
+            "id": 21010.0,
+            "type": "蔬菜",
+            "subType": "绿叶菜",
+            "name": "蒿子秆",
+            "calories": 21,
+            "protein": 1.9,
+            "carbs": 3.6,
+            "fat": 0.3,
+            "fiber": 1.4,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "有特殊香气，可清炒",
+            "vitamins": {
+                "A": 310,
+                "C": 20,
+                "D": 0,
+                "E": 0.92
+            },
+            "minerals": {
+                "calcium": 20,
+                "iron": 1.2,
+                "magnesium": 20,
+                "potassium": 220
+            }
+        },
+        {
+            "id": 21011.0,
+            "type": "蔬菜",
+            "subType": "绿叶菜",
+            "name": "娃娃菜",
+            "calories": 13,
+            "protein": 1.3,
+            "carbs": 2.3,
+            "fat": 0.1,
+            "fiber": 0.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "小型白菜，口感清甜",
+            "vitamins": {
+                "A": 28,
+                "C": 12,
+                "D": 0,
+                "E": 0.76
+            },
+            "minerals": {
+                "calcium": 50,
+                "iron": 0.7,
+                "magnesium": 11,
+                "potassium": 110
+            }
+        },
+        {
+            "id": 21012.0,
+            "type": "蔬菜",
+            "subType": "绿叶菜",
+            "name": "上海青",
+            "calories": 15,
+            "protein": 1.7,
+            "carbs": 2.1,
+            "fat": 0.2,
+            "fiber": 1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "常见绿叶菜，可清炒",
+            "vitamins": {
+                "A": 56,
+                "C": 28,
+                "D": 0,
+                "E": 0.75
+            },
+            "minerals": {
+                "calcium": 187,
+                "iron": 1.3,
+                "magnesium": 25,
+                "potassium": 158
+            }
+        },
+        {
+            "id": 22001.0,
+            "type": "蔬菜",
+            "subType": "浅色蔬菜",
+            "name": "大葱",
+            "calories": 30,
+            "protein": 1.7,
+            "carbs": 6.5,
+            "fat": 0.3,
+            "fiber": 1.3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "常用调味品，有特殊香气",
+            "vitamins": {
+                "A": 10,
+                "C": 17,
+                "D": 0,
+                "E": 0.3
+            },
+            "minerals": {
+                "calcium": 29,
+                "iron": 0.7,
+                "magnesium": 16,
+                "potassium": 144
+            }
+        },
+        {
+            "id": 22002.0,
+            "type": "蔬菜",
+            "subType": "浅色蔬菜",
+            "name": "小葱",
+            "calories": 30,
+            "protein": 2.4,
+            "carbs": 4.9,
+            "fat": 0.3,
+            "fiber": 1.4,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "多用于提香增色",
+            "vitamins": {
+                "A": 102,
+                "C": 27,
+                "D": 0,
+                "E": 0.73
+            },
+            "minerals": {
+                "calcium": 72,
+                "iron": 1.4,
+                "magnesium": 18,
+                "potassium": 147
+            }
+        },
+        {
+            "id": 22003.0,
+            "type": "蔬菜",
+            "subType": "浅色蔬菜",
+            "name": "香菜",
+            "calories": 24,
+            "protein": 1.8,
+            "carbs": 4.6,
+            "fat": 0.4,
+            "fiber": 1.2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "特殊香味，可作佐料或配菜",
+            "vitamins": {
+                "A": 193,
+                "C": 28,
+                "D": 0,
+                "E": 0.8
+            },
+            "minerals": {
+                "calcium": 101,
+                "iron": 2.9,
+                "magnesium": 49,
+                "potassium": 272
+            }
+        },
+        {
+            "id": 22004.0,
+            "type": "蔬菜",
+            "subType": "浅色蔬菜",
+            "name": "韭菜",
+            "calories": 25,
+            "protein": 2.4,
+            "carbs": 4.6,
+            "fat": 0.4,
+            "fiber": 1.4,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "有温补肝肾功效，可炒食或做馅",
+            "vitamins": {
+                "A": 235,
+                "C": 24,
+                "D": 0,
+                "E": 0.96
+            },
+            "minerals": {
+                "calcium": 42,
+                "iron": 1.6,
+                "magnesium": 25,
+                "potassium": 247
+            }
+        },
+        {
+            "id": 23001.0,
+            "type": "蔬菜",
+            "subType": "深色蔬菜​​",
+            "name": "西兰花",
+            "calories": 34,
+            "protein": 2.8,
+            "carbs": 6.6,
+            "fat": 0.4,
+            "fiber": 2.6,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "十字花科蔬菜，含多种抗氧化物",
+            "vitamins": {
+                "A": 623,
+                "C": 89.2,
+                "D": 0,
+                "E": 0.8
+            },
+            "minerals": {
+                "calcium": 47,
+                "iron": 1,
+                "magnesium": 18,
+                "potassium": 299
+            }
+        },
+        {
+            "id": 23002.0,
+            "type": "蔬菜",
+            "subType": "深色蔬菜​​",
+            "name": "紫甘蓝",
+            "calories": 25,
+            "protein": 1.4,
+            "carbs": 5.7,
+            "fat": 0.2,
+            "fiber": 2.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含花青素，抗氧化能力强",
+            "vitamins": {
+                "A": 9,
+                "C": 36,
+                "D": 0,
+                "E": 0.7
+            },
+            "minerals": {
+                "calcium": 57,
+                "iron": 0.4,
+                "magnesium": 12,
+                "potassium": 170
+            }
+        },
+        {
+            "id": 23003.0,
+            "type": "蔬菜",
+            "subType": "深色蔬菜​​",
+            "name": "胡萝卜",
+            "calories": 41,
+            "protein": 1,
+            "carbs": 9.5,
+            "fat": 0.2,
+            "fiber": 2.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含 β- 胡萝卜素，护眼明目",
+            "vitamins": {
+                "A": 8285,
+                "C": 9,
+                "D": 0,
+                "E": 0.41
+            },
+            "minerals": {
+                "calcium": 32,
+                "iron": 1,
+                "magnesium": 16,
+                "potassium": 190
+            }
+        },
+        {
+            "id": 23004.0,
+            "type": "蔬菜",
+            "subType": "深色蔬菜​​",
+            "name": "洋葱",
+            "calories": 40,
+            "protein": 1.1,
+            "carbs": 9.3,
+            "fat": 0.2,
+            "fiber": 1.7,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "具有杀菌作用，可炒食或凉拌",
+            "vitamins": {
+                "A": 9,
+                "C": 9,
+                "D": 0,
+                "E": 0.14
+            },
+            "minerals": {
+                "calcium": 24,
+                "iron": 0.6,
+                "magnesium": 14,
+                "potassium": 147
+            }
+        },
+        {
+            "id": 23005.0,
+            "type": "蔬菜",
+            "subType": "深色蔬菜​​",
+            "name": "马齿苋",
+            "calories": 32,
+            "protein": 2.3,
+            "carbs": 6.2,
+            "fat": 0.7,
+            "fiber": 2.3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "药食同源，有清热解毒功效",
+            "vitamins": {
+                "A": 375,
+                "C": 5,
+                "D": 0,
+                "E": 1.07
+            },
+            "minerals": {
+                "calcium": 56,
+                "iron": 1.3,
+                "magnesium": 30,
+                "potassium": 101
+            }
+        },
+        {
+            "id": 23006.0,
+            "type": "蔬菜",
+            "subType": "深色蔬菜​​",
+            "name": "香椿",
+            "calories": 47,
+            "protein": 1.7,
+            "carbs": 10.9,
+            "fat": 0.4,
+            "fiber": 1.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "香气独特，季节性强",
+            "vitamins": {
+                "A": 117,
+                "C": 40,
+                "D": 0,
+                "E": 0.99
+            },
+            "minerals": {
+                "calcium": 96,
+                "iron": 3.9,
+                "magnesium": 36,
+                "potassium": 172
+            }
+        },
+        {
+            "id": 23007.0,
+            "type": "蔬菜",
+            "subType": "深色蔬菜​​",
+            "name": "苋菜",
+            "calories": 30,
+            "protein": 2.8,
+            "carbs": 5.6,
+            "fat": 0.4,
+            "fiber": 2.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "分红苋菜和绿苋菜，营养丰富",
+            "vitamins": {
+                "A": 352,
+                "C": 47,
+                "D": 0,
+                "E": 1.54
+            },
+            "minerals": {
+                "calcium": 187,
+                "iron": 2.2,
+                "magnesium": 124,
+                "potassium": 577
+            }
+        },
+        {
+            "id": 24001.0,
+            "type": "蔬菜",
+            "subType": "菌藻类",
+            "name": "木耳菜",
+            "calories": 33,
+            "protein": 1.6,
+            "carbs": 6.6,
+            "fat": 0.3,
+            "fiber": 1.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含钙铁，口感软糯",
+            "vitamins": {
+                "A": 337,
+                "C": 34,
+                "D": 0,
+                "E": 1.66
+            },
+            "minerals": {
+                "calcium": 166,
+                "iron": 1.6,
+                "magnesium": 62,
+                "potassium": 443
+            }
+        },
+        {
+            "id": 24002.0,
+            "type": "蔬菜",
+            "subType": "菌藻类",
+            "name": "海带",
+            "calories": 13,
+            "protein": 1.1,
+            "carbs": 2.1,
+            "fat": 0.1,
+            "fiber": 0.9,
+            "servingSize": 100,
+            "unit": "g",
+            "description": null,
+            "vitamins": {
+                "A": 24,
+                "C": 1,
+                "D": 0,
+                "E": 0.12
+            },
+            "minerals": {
+                "calcium": 46,
+                "iron": 0.9,
+                "magnesium": 22,
+                "potassium": 246
+            }
+        },
+        {
+            "id": 24003.0,
+            "type": "蔬菜",
+            "subType": "菌藻类",
+            "name": "香菇（鲜）",
+            "calories": 26,
+            "protein": 2.2,
+            "carbs": 5.2,
+            "fat": 0.3,
+            "fiber": 2.1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": null,
+            "vitamins": {
+                "A": 0,
+                "C": 5,
+                "D": 0,
+                "E": 0.55
+            },
+            "minerals": {
+                "calcium": 86,
+                "iron": 1,
+                "magnesium": 25,
+                "potassium": 206
+            }
+        },
+        {
+            "id": 25001.0,
+            "type": "蔬菜",
+            "subType": "辣椒类",
+            "name": "青椒",
+            "calories": 22,
+            "protein": 1.4,
+            "carbs": 5.4,
+            "fat": 0.3,
+            "fiber": 2.1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "维生素 C 含量高，味道微辣",
+            "vitamins": {
+                "A": 130,
+                "C": 62,
+                "D": 0,
+                "E": 0.43
+            },
+            "minerals": {
+                "calcium": 14,
+                "iron": 0.8,
+                "magnesium": 18,
+                "potassium": 220
+            }
+        },
+        {
+            "id": 25002.0,
+            "type": "蔬菜",
+            "subType": "辣椒类",
+            "name": "尖椒",
+            "calories": 32,
+            "protein": 1.4,
+            "carbs": 6.9,
+            "fat": 0.3,
+            "fiber": 2.3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "辣味浓郁，可调味或做菜",
+            "vitamins": {
+                "A": 142,
+                "C": 144,
+                "D": 0,
+                "E": 0.73
+            },
+            "minerals": {
+                "calcium": 15,
+                "iron": 0.7,
+                "magnesium": 12,
+                "potassium": 209
+            }
+        },
+        {
+            "id": 26001.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "百合",
+            "calories": 162,
+            "protein": 3.2,
+            "carbs": 38.8,
+            "fat": 0.1,
+            "fiber": 1.7,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "润肺止咳，可食用可药用",
+            "vitamins": {
+                "A": 17,
+                "C": 18,
+                "D": 0,
+                "E": 1.07
+            },
+            "minerals": {
+                "calcium": 11,
+                "iron": 1,
+                "magnesium": 43,
+                "potassium": 510
+            }
+        },
+        {
+            "id": 26002.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "荸荠",
+            "calories": 59,
+            "protein": 1.2,
+            "carbs": 14.2,
+            "fat": 0.2,
+            "fiber": 1.1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "口感清甜，可生食或烹饪",
+            "vitamins": {
+                "A": 3,
+                "C": 7,
+                "D": 0,
+                "E": 0.65
+            },
+            "minerals": {
+                "calcium": 4,
+                "iron": 0.6,
+                "magnesium": 23,
+                "potassium": 306
+            }
+        },
+        {
+            "id": 26003.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "菱角",
+            "calories": 98,
+            "protein": 4.5,
+            "carbs": 21.4,
+            "fat": 0.1,
+            "fiber": 1.7,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "水生植物果实，营养丰富",
+            "vitamins": {
+                "A": 14,
+                "C": 13,
+                "D": 0,
+                "E": 0.78
+            },
+            "minerals": {
+                "calcium": 7,
+                "iron": 0.6,
+                "magnesium": 49,
+                "potassium": 304
+            }
+        },
+        {
+            "id": 26004.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "黄瓜",
+            "calories": 16,
+            "protein": 0.8,
+            "carbs": 2.9,
+            "fat": 0.2,
+            "fiber": 0.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "水分足，可生食或凉拌",
+            "vitamins": {
+                "A": 15,
+                "C": 9,
+                "D": 0,
+                "E": 0.43
+            },
+            "minerals": {
+                "calcium": 24,
+                "iron": 0.5,
+                "magnesium": 15,
+                "potassium": 102
+            }
+        },
+        {
+            "id": 26005.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "西红柿",
+            "calories": 19,
+            "protein": 0.9,
+            "carbs": 4,
+            "fat": 0.2,
+            "fiber": 0.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含番茄红素，营养丰富",
+            "vitamins": {
+                "A": 92,
+                "C": 19,
+                "D": 0,
+                "E": 0.54
+            },
+            "minerals": {
+                "calcium": 10,
+                "iron": 0.2,
+                "magnesium": 9,
+                "potassium": 162
+            }
+        },
+        {
+            "id": 26006.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "白萝卜",
+            "calories": 21,
+            "protein": 0.9,
+            "carbs": 4.9,
+            "fat": 0.1,
+            "fiber": 1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "有下气消食功效，可生食熟食",
+            "vitamins": {
+                "A": 3,
+                "C": 21,
+                "D": 0,
+                "E": 0.92
+            },
+            "minerals": {
+                "calcium": 36,
+                "iron": 0.5,
+                "magnesium": 16,
+                "potassium": 166
+            }
+        },
+        {
+            "id": 26007.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "绿豆芽",
+            "calories": 18,
+            "protein": 2.1,
+            "carbs": 2.9,
+            "fat": 0.1,
+            "fiber": 0.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含维生素 C，口感脆嫩",
+            "vitamins": {
+                "A": 5,
+                "C": 6,
+                "D": 0,
+                "E": 0.19
+            },
+            "minerals": {
+                "calcium": 9,
+                "iron": 0.6,
+                "magnesium": 37,
+                "potassium": 68
+            }
+        },
+        {
+            "id": 26008.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "黄豆芽",
+            "calories": 44,
+            "protein": 4.5,
+            "carbs": 6.4,
+            "fat": 1.6,
+            "fiber": 1.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "蛋白质丰富，营养较全面",
+            "vitamins": {
+                "A": 15,
+                "C": 8,
+                "D": 0,
+                "E": 0.81
+            },
+            "minerals": {
+                "calcium": 21,
+                "iron": 0.9,
+                "magnesium": 52,
+                "potassium": 160
+            }
+        },
+        {
+            "id": 26009.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "长豆角",
+            "calories": 30,
+            "protein": 2.5,
+            "carbs": 6.7,
+            "fat": 0.2,
+            "fiber": 2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可炒食或腌制，口感鲜嫩",
+            "vitamins": {
+                "A": 15,
+                "C": 18,
+                "D": 0,
+                "E": 0.75
+            },
+            "minerals": {
+                "calcium": 29,
+                "iron": 1,
+                "magnesium": 42,
+                "potassium": 205
+            }
+        },
+        {
+            "id": 26010.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "四季豆",
+            "calories": 28,
+            "protein": 2,
+            "carbs": 6,
+            "fat": 0.3,
+            "fiber": 2.6,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "烹饪需熟透以防中毒",
+            "vitamins": {
+                "A": 36,
+                "C": 12,
+                "D": 0,
+                "E": 0.57
+            },
+            "minerals": {
+                "calcium": 34,
+                "iron": 1.5,
+                "magnesium": 42,
+                "potassium": 123
+            }
+        },
+        {
+            "id": 26011.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "茄子",
+            "calories": 21,
+            "protein": 1.1,
+            "carbs": 4.9,
+            "fat": 0.2,
+            "fiber": 1.3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "含多种有益成分，可多种方式烹饪",
+            "vitamins": {
+                "A": 8,
+                "C": 5,
+                "D": 0,
+                "E": 1.13
+            },
+            "minerals": {
+                "calcium": 24,
+                "iron": 0.5,
+                "magnesium": 13,
+                "potassium": 142
+            }
+        },
+        {
+            "id": 26012.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "西葫芦",
+            "calories": 18,
+            "protein": 0.8,
+            "carbs": 3.8,
+            "fat": 0.2,
+            "fiber": 0.6,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "口感清甜，可清炒或做汤",
+            "vitamins": {
+                "A": 5,
+                "C": 6,
+                "D": 0,
+                "E": 0.34
+            },
+            "minerals": {
+                "calcium": 15,
+                "iron": 0.3,
+                "magnesium": 9,
+                "potassium": 92
+            }
+        },
+        {
+            "id": 26013.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "冬瓜",
+            "calories": 11,
+            "protein": 0.4,
+            "carbs": 2.6,
+            "fat": 0.2,
+            "fiber": 0.7,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "含水量高，利水消肿",
+            "vitamins": {
+                "A": 13,
+                "C": 18,
+                "D": 0,
+                "E": 0.08
+            },
+            "minerals": {
+                "calcium": 19,
+                "iron": 0.2,
+                "magnesium": 8,
+                "potassium": 78
+            }
+        },
+        {
+            "id": 26014.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "南瓜",
+            "calories": 23,
+            "protein": 0.7,
+            "carbs": 5.3,
+            "fat": 0.1,
+            "fiber": 0.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含类胡萝卜素，香甜可口",
+            "vitamins": {
+                "A": 898,
+                "C": 4,
+                "D": 0,
+                "E": 0.36
+            },
+            "minerals": {
+                "calcium": 16,
+                "iron": 0.4,
+                "magnesium": 12,
+                "potassium": 145
+            }
+        },
+        {
+            "id": 26015.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "苦瓜",
+            "calories": 19,
+            "protein": 1,
+            "carbs": 4.9,
+            "fat": 0.1,
+            "fiber": 1.4,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "有降血糖功效，味道清苦",
+            "vitamins": {
+                "A": 17,
+                "C": 56,
+                "D": 0,
+                "E": 0.85
+            },
+            "minerals": {
+                "calcium": 14,
+                "iron": 0.7,
+                "magnesium": 24,
+                "potassium": 256
+            }
+        },
+        {
+            "id": 26016.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "丝瓜",
+            "calories": 20,
+            "protein": 1,
+            "carbs": 4.2,
+            "fat": 0.2,
+            "fiber": 0.6,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可清热凉血，口感嫩滑",
+            "vitamins": {
+                "A": 15,
+                "C": 5,
+                "D": 0,
+                "E": 0.22
+            },
+            "minerals": {
+                "calcium": 14,
+                "iron": 0.4,
+                "magnesium": 11,
+                "potassium": 115
+            }
+        },
+        {
+            "id": 26017.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "佛手瓜",
+            "calories": 19,
+            "protein": 0.8,
+            "carbs": 4.3,
+            "fat": 0.1,
+            "fiber": 2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含锌元素，可炒食或凉拌",
+            "vitamins": {
+                "A": 10,
+                "C": 13,
+                "D": 0,
+                "E": 0.13
+            },
+            "minerals": {
+                "calcium": 19,
+                "iron": 0.5,
+                "magnesium": 10,
+                "potassium": 190
+            }
+        },
+        {
+            "id": 26018.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "莴笋",
+            "calories": 15,
+            "protein": 1,
+            "carbs": 2.8,
+            "fat": 0.1,
+            "fiber": 1.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可食用茎和叶，营养丰富",
+            "vitamins": {
+                "A": 15,
+                "C": 4,
+                "D": 0,
+                "E": 0.19
+            },
+            "minerals": {
+                "calcium": 23,
+                "iron": 0.9,
+                "magnesium": 19,
+                "potassium": 212
+            }
+        },
+        {
+            "id": 26019.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "芦笋",
+            "calories": 20,
+            "protein": 2.2,
+            "carbs": 3.9,
+            "fat": 0.2,
+            "fiber": 2.1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "含多种氨基酸，口感鲜嫩",
+            "vitamins": {
+                "A": 17,
+                "C": 4,
+                "D": 0,
+                "E": 0.17
+            },
+            "minerals": {
+                "calcium": 10,
+                "iron": 1.4,
+                "magnesium": 18,
+                "potassium": 213
+            }
+        },
+        {
+            "id": 26020.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "竹笋",
+            "calories": 27,
+            "protein": 2.6,
+            "carbs": 5.8,
+            "fat": 0.2,
+            "fiber": 1.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "低脂肪高纤维，可鲜食或加工",
+            "vitamins": {
+                "A": 8,
+                "C": 5,
+                "D": 0,
+                "E": 0.05
+            },
+            "minerals": {
+                "calcium": 9,
+                "iron": 1,
+                "magnesium": 1,
+                "potassium": 389
+            }
+        },
+        {
+            "id": 26021.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "茭白",
+            "calories": 23,
+            "protein": 1.2,
+            "carbs": 5.9,
+            "fat": 0.2,
+            "fiber": 1.9,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "水生蔬菜，口感脆嫩",
+            "vitamins": {
+                "A": 5,
+                "C": 5,
+                "D": 0,
+                "E": 0.99
+            },
+            "minerals": {
+                "calcium": 4,
+                "iron": 8,
+                "magnesium": 9,
+                "potassium": 209
+            }
+        },
+        {
+            "id": 26022.0,
+            "type": "蔬菜",
+            "subType": "其它",
+            "name": "莲藕",
+            "calories": 73,
+            "protein": 1.9,
+            "carbs": 16.4,
+            "fat": 0.2,
+            "fiber": 2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可生食或烹饪，营养丰富",
+            "vitamins": {
+                "A": 3,
+                "C": 44,
+                "D": 0,
+                "E": 0.73
+            },
+            "minerals": {
+                "calcium": 39,
+                "iron": 1.4,
+                "magnesium": 29,
+                "potassium": 508
+            }
+        }
+    ]
+}

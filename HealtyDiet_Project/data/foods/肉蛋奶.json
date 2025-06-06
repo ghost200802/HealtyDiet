@@ -1,0 +1,1174 @@
+{
+    "肉蛋奶": [
+        {
+            "id": 31001.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "猪瘦肉",
+            "calories": 143,
+            "protein": 20.3,
+            "carbs": 1.5,
+            "fat": 6.2,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "常见肉类，蛋白质丰富，可炒、炖",
+            "vitamins": {
+                "A": 44,
+                "C": 0,
+                "D": 0.3,
+                "E": 0.35
+            },
+            "minerals": {
+                "calcium": 6,
+                "iron": 3,
+                "magnesium": 25,
+                "potassium": 305
+            }
+        },
+        {
+            "id": 31002.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "猪里脊肉",
+            "calories": 155,
+            "protein": 20.2,
+            "carbs": 0.7,
+            "fat": 7.9,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "肉质鲜嫩，适合多种烹饪方式",
+            "vitamins": {
+                "A": 44,
+                "C": 0,
+                "D": 0.3,
+                "E": 0.35
+            },
+            "minerals": {
+                "calcium": 6,
+                "iron": 3,
+                "magnesium": 25,
+                "potassium": 305
+            }
+        },
+        {
+            "id": 31003.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "猪排骨",
+            "calories": 264,
+            "protein": 18.3,
+            "carbs": 0,
+            "fat": 20.4,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "多用于煲汤、红烧，富含骨胶原",
+            "vitamins": {
+                "A": 11,
+                "C": 0,
+                "D": 0.1,
+                "E": 0.2
+            },
+            "minerals": {
+                "calcium": 14,
+                "iron": 1.7,
+                "magnesium": 14,
+                "potassium": 274
+            }
+        },
+        {
+            "id": 31004.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "猪蹄",
+            "calories": 260,
+            "protein": 23.6,
+            "carbs": 0,
+            "fat": 18.8,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含胶原蛋白，可美容养颜",
+            "vitamins": {
+                "A": 3,
+                "C": 0,
+                "D": 0.1,
+                "E": 0.09
+            },
+            "minerals": {
+                "calcium": 33,
+                "iron": 1.1,
+                "magnesium": 5,
+                "potassium": 54
+            }
+        },
+        {
+            "id": 31005.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "猪肚",
+            "calories": 110,
+            "protein": 15.2,
+            "carbs": 0.7,
+            "fat": 5.1,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可卤制、爆炒，口感脆嫩",
+            "vitamins": {
+                "A": 3,
+                "C": 0,
+                "D": 0.1,
+                "E": 0.09
+            },
+            "minerals": {
+                "calcium": 10,
+                "iron": 2.4,
+                "magnesium": 14,
+                "potassium": 171
+            }
+        },
+        {
+            "id": 31006.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "猪肝",
+            "calories": 129,
+            "protein": 19.3,
+            "carbs": 5,
+            "fat": 3.5,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含维生素 A 与铁，补铁护眼",
+            "vitamins": {
+                "A": 4972,
+                "C": 20,
+                "D": 4,
+                "E": 0.86
+            },
+            "minerals": {
+                "calcium": 6,
+                "iron": 22.6,
+                "magnesium": 21,
+                "potassium": 235
+            }
+        },
+        {
+            "id": 31007.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "猪血",
+            "calories": 55,
+            "protein": 12.2,
+            "carbs": 0.8,
+            "fat": 0.3,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "俗称 “血豆腐”，补铁佳品",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0
+            },
+            "minerals": {
+                "calcium": 4,
+                "iron": 8.7,
+                "magnesium": 1,
+                "potassium": 56
+            }
+        },
+        {
+            "id": 31008.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "牛肉",
+            "calories": 125,
+            "protein": 20.2,
+            "carbs": 1.2,
+            "fat": 2.3,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "高蛋白低脂肪，营养丰富",
+            "vitamins": {
+                "A": 6,
+                "C": 0,
+                "D": 0.2,
+                "E": 0.42
+            },
+            "minerals": {
+                "calcium": 23,
+                "iron": 2.8,
+                "magnesium": 20,
+                "potassium": 216
+            }
+        },
+        {
+            "id": 31009.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "牛里脊肉",
+            "calories": 107,
+            "protein": 20.2,
+            "carbs": 0.2,
+            "fat": 2.3,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "肉质鲜嫩，适合煎、炒",
+            "vitamins": {
+                "A": 6,
+                "C": 0,
+                "D": 0.2,
+                "E": 0.42
+            },
+            "minerals": {
+                "calcium": 23,
+                "iron": 2.8,
+                "magnesium": 20,
+                "potassium": 216
+            }
+        },
+        {
+            "id": 31010.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "牛腱子肉",
+            "calories": 122,
+            "protein": 20.2,
+            "carbs": 1.2,
+            "fat": 2.3,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "纹理清晰，适合卤制、红烧",
+            "vitamins": {
+                "A": 6,
+                "C": 0,
+                "D": 0.2,
+                "E": 0.42
+            },
+            "minerals": {
+                "calcium": 23,
+                "iron": 2.8,
+                "magnesium": 20,
+                "potassium": 216
+            }
+        },
+        {
+            "id": 31011.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "羊肉",
+            "calories": 118,
+            "protein": 20.5,
+            "carbs": 0.2,
+            "fat": 3.9,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "性温热，冬季滋补食材",
+            "vitamins": {
+                "A": 22,
+                "C": 0,
+                "D": 0.1,
+                "E": 0.26
+            },
+            "minerals": {
+                "calcium": 6,
+                "iron": 2.3,
+                "magnesium": 20,
+                "potassium": 232
+            }
+        },
+        {
+            "id": 31012.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "羊瘦肉",
+            "calories": 110,
+            "protein": 20.5,
+            "carbs": 0.2,
+            "fat": 3.9,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "脂肪含量相对较低，可炖、烤",
+            "vitamins": {
+                "A": 22,
+                "C": 0,
+                "D": 0.1,
+                "E": 0.26
+            },
+            "minerals": {
+                "calcium": 6,
+                "iron": 2.3,
+                "magnesium": 20,
+                "potassium": 232
+            }
+        },
+        {
+            "id": 31013.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "羊排骨",
+            "calories": 203,
+            "protein": 16.5,
+            "carbs": 0,
+            "fat": 13.5,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "适合炖煮、烧烤，肉香浓郁",
+            "vitamins": {
+                "A": 10,
+                "C": 0,
+                "D": 0.1,
+                "E": 0.15
+            },
+            "minerals": {
+                "calcium": 3,
+                "iron": 1.1,
+                "magnesium": 10,
+                "potassium": 120
+            }
+        },
+        {
+            "id": 31014.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "鸡肉",
+            "calories": 167,
+            "protein": 20.3,
+            "carbs": 1.7,
+            "fat": 9.4,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "常见家禽肉，烹饪方式多样",
+            "vitamins": {
+                "A": 16,
+                "C": 0,
+                "D": 0.2,
+                "E": 0.67
+            },
+            "minerals": {
+                "calcium": 3,
+                "iron": 0.6,
+                "magnesium": 28,
+                "potassium": 338
+            }
+        },
+        {
+            "id": 31015.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "鸡胸肉",
+            "calories": 165,
+            "protein": 31,
+            "carbs": 0,
+            "fat": 3.6,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "高蛋白低脂肪，健身优选",
+            "vitamins": {
+                "A": 16,
+                "C": 0,
+                "D": 0.2,
+                "E": 0.67
+            },
+            "minerals": {
+                "calcium": 3,
+                "iron": 0.6,
+                "magnesium": 28,
+                "potassium": 338
+            }
+        },
+        {
+            "id": 31016.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "鸭肉",
+            "calories": 113,
+            "protein": 15.5,
+            "carbs": 0.2,
+            "fat": 5.9,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可红烧、腌制，有独特风味",
+            "vitamins": {
+                "A": 52,
+                "C": 0,
+                "D": 0.2,
+                "E": 0.27
+            },
+            "minerals": {
+                "calcium": 6,
+                "iron": 2.2,
+                "magnesium": 18,
+                "potassium": 191
+            }
+        },
+        {
+            "id": 31017.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "鹅肉",
+            "calories": 145,
+            "protein": 17.9,
+            "carbs": 0.2,
+            "fat": 7.2,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "肉质紧实，适合炖、卤",
+            "vitamins": {
+                "A": 42,
+                "C": 0,
+                "D": 0.2,
+                "E": 0.35
+            },
+            "minerals": {
+                "calcium": 4,
+                "iron": 3.8,
+                "magnesium": 18,
+                "potassium": 232
+            }
+        },
+        {
+            "id": 31018.0,
+            "type": "肉蛋奶",
+            "subType": "畜禽肉",
+            "name": "兔肉",
+            "calories": 102,
+            "protein": 20.2,
+            "carbs": 0.2,
+            "fat": 2.2,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "高蛋白低脂肪，有 “保健肉” 之称",
+            "vitamins": {
+                "A": 21,
+                "C": 0,
+                "D": 0.1,
+                "E": 0.46
+            },
+            "minerals": {
+                "calcium": 12,
+                "iron": 2,
+                "magnesium": 16,
+                "potassium": 284
+            }
+        },
+        {
+            "id": 32001.0,
+            "type": "肉蛋奶",
+            "subType": "水产品",
+            "name": "草鱼",
+            "calories": 113,
+            "protein": 16.6,
+            "carbs": 0,
+            "fat": 5.2,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "常见淡水鱼，可红烧、清蒸",
+            "vitamins": {
+                "A": 11,
+                "C": 0,
+                "D": 0.5,
+                "E": 2.03
+            },
+            "minerals": {
+                "calcium": 38,
+                "iron": 0.8,
+                "magnesium": 31,
+                "potassium": 312
+            }
+        },
+        {
+            "id": 32002.0,
+            "type": "肉蛋奶",
+            "subType": "水产品",
+            "name": "鲫鱼",
+            "calories": 108,
+            "protein": 17.1,
+            "carbs": 3.8,
+            "fat": 2.7,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "适合煮汤，汤鲜味美",
+            "vitamins": {
+                "A": 17,
+                "C": 0,
+                "D": 0.6,
+                "E": 0.68
+            },
+            "minerals": {
+                "calcium": 79,
+                "iron": 1.3,
+                "magnesium": 41,
+                "potassium": 290
+            }
+        },
+        {
+            "id": 32003.0,
+            "type": "肉蛋奶",
+            "subType": "水产品",
+            "name": "鲈鱼",
+            "calories": 105,
+            "protein": 18.6,
+            "carbs": 0,
+            "fat": 3.4,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "肉质鲜嫩，清蒸最佳",
+            "vitamins": {
+                "A": 19,
+                "C": 0,
+                "D": 0.5,
+                "E": 0.75
+            },
+            "minerals": {
+                "calcium": 138,
+                "iron": 2,
+                "magnesium": 37,
+                "potassium": 205
+            }
+        },
+        {
+            "id": 32004.0,
+            "type": "肉蛋奶",
+            "subType": "水产品",
+            "name": "黑鱼",
+            "calories": 105,
+            "protein": 19.5,
+            "carbs": 1.2,
+            "fat": 1.2,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "适合做鱼片、鱼汤，滋补佳品",
+            "vitamins": {
+                "A": 26,
+                "C": 0,
+                "D": 0.5,
+                "E": 0.93
+            },
+            "minerals": {
+                "calcium": 152,
+                "iron": 0.7,
+                "magnesium": 32,
+                "potassium": 313
+            }
+        },
+        {
+            "id": 32005.0,
+            "type": "肉蛋奶",
+            "subType": "水产品",
+            "name": "鲳鱼",
+            "calories": 140,
+            "protein": 18.5,
+            "carbs": 0,
+            "fat": 7.3,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "海鱼，肉质细腻，可煎、烤",
+            "vitamins": {
+                "A": 24,
+                "C": 0,
+                "D": 0.5,
+                "E": 1.26
+            },
+            "minerals": {
+                "calcium": 15,
+                "iron": 1.1,
+                "magnesium": 39,
+                "potassium": 328
+            }
+        },
+        {
+            "id": 32006.0,
+            "type": "肉蛋奶",
+            "subType": "水产品",
+            "name": "鳜鱼",
+            "calories": 117,
+            "protein": 19.9,
+            "carbs": 0.7,
+            "fat": 4.2,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "肉质鲜美，清蒸能保留原汁原味",
+            "vitamins": {
+                "A": 12,
+                "C": 0,
+                "D": 0.5,
+                "E": 0.86
+            },
+            "minerals": {
+                "calcium": 63,
+                "iron": 1,
+                "magnesium": 32,
+                "potassium": 295
+            }
+        },
+        {
+            "id": 32007.0,
+            "type": "肉蛋奶",
+            "subType": "水产品",
+            "name": "鲶鱼",
+            "calories": 103,
+            "protein": 17.3,
+            "carbs": 3.7,
+            "fat": 2.3,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "无鳞，适合红烧、炖煮",
+            "vitamins": {
+                "A": 42,
+                "C": 0,
+                "D": 0.5,
+                "E": 0.54
+            },
+            "minerals": {
+                "calcium": 42,
+                "iron": 2.5,
+                "magnesium": 22,
+                "potassium": 351
+            }
+        },
+        {
+            "id": 32008.0,
+            "type": "肉蛋奶",
+            "subType": "水产品",
+            "name": "黄骨鱼",
+            "calories": 124,
+            "protein": 16.1,
+            "carbs": 2.3,
+            "fat": 7.1,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "肉质鲜嫩，刺少，适合煮汤",
+            "vitamins": {
+                "A": 10,
+                "C": 0,
+                "D": 0.5,
+                "E": 1.48
+            },
+            "minerals": {
+                "calcium": 59,
+                "iron": 1.4,
+                "magnesium": 32,
+                "potassium": 202
+            }
+        },
+        {
+            "id": 32009.0,
+            "type": "肉蛋奶",
+            "subType": "水产品",
+            "name": "马鲛鱼",
+            "calories": 121,
+            "protein": 21.2,
+            "carbs": 2.2,
+            "fat": 3.1,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "海鱼，可腌制、烤制",
+            "vitamins": {
+                "A": 19,
+                "C": 0,
+                "D": 0.5,
+                "E": 0.76
+            },
+            "minerals": {
+                "calcium": 35,
+                "iron": 0.9,
+                "magnesium": 37,
+                "potassium": 370
+            }
+        },
+        {
+            "id": 32010.0,
+            "type": "肉蛋奶",
+            "subType": "水产品",
+            "name": "沙丁鱼",
+            "calories": 89,
+            "protein": 19.8,
+            "carbs": 0,
+            "fat": 1.1,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含钙和 ω-3 脂肪酸",
+            "vitamins": {
+                "A": 14,
+                "C": 0,
+                "D": 1,
+                "E": 0.82
+            },
+            "minerals": {
+                "calcium": 184,
+                "iron": 1.4,
+                "magnesium": 30,
+                "potassium": 302
+            }
+        },
+        {
+            "id": 32011.0,
+            "type": "肉蛋奶",
+            "subType": "水产品",
+            "name": "秋刀鱼",
+            "calories": 125,
+            "protein": 20.4,
+            "carbs": 0,
+            "fat": 6.7,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "海鱼，适合香煎，味道鲜美",
+            "vitamins": {
+                "A": 14,
+                "C": 0,
+                "D": 0.5,
+                "E": 0.82
+            },
+            "minerals": {
+                "calcium": 37,
+                "iron": 1.3,
+                "magnesium": 34,
+                "potassium": 348
+            }
+        },
+        {
+            "id": 33001.0,
+            "type": "肉蛋奶",
+            "subType": "乳制品",
+            "name": "牛奶",
+            "calories": 54,
+            "protein": 3,
+            "carbs": 3.4,
+            "fat": 3.2,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "优质蛋白质与钙的来源",
+            "vitamins": {
+                "A": 24,
+                "C": 1,
+                "D": 0.3,
+                "E": 0.21
+            },
+            "minerals": {
+                "calcium": 104,
+                "iron": 0.3,
+                "magnesium": 11,
+                "potassium": 109
+            }
+        },
+        {
+            "id": 33002.0,
+            "type": "肉蛋奶",
+            "subType": "乳制品",
+            "name": "羊奶",
+            "calories": 59,
+            "protein": 1.5,
+            "carbs": 5.4,
+            "fat": 3.9,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "营养成分与牛奶相似，更易吸收",
+            "vitamins": {
+                "A": 89,
+                "C": 1,
+                "D": 0.3,
+                "E": 0.12
+            },
+            "minerals": {
+                "calcium": 89,
+                "iron": 0.5,
+                "magnesium": 12,
+                "potassium": 135
+            }
+        },
+        {
+            "id": 33003.0,
+            "type": "肉蛋奶",
+            "subType": "乳制品",
+            "name": "无糖酸奶",
+            "calories": 57,
+            "protein": 2.5,
+            "carbs": 9.3,
+            "fat": 0.9,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含益生菌，有助于肠道健康，适合控糖人群",
+            "vitamins": {
+                "A": 26,
+                "C": 1,
+                "D": 0.1,
+                "E": 0.1
+            },
+            "minerals": {
+                "calcium": 118,
+                "iron": 0.1,
+                "magnesium": 12,
+                "potassium": 150
+            }
+        },
+        {
+            "id": 34001.0,
+            "type": "肉蛋奶",
+            "subType": "蛋类",
+            "name": "鸡蛋",
+            "calories": 144,
+            "protein": 13.3,
+            "carbs": 2.8,
+            "fat": 8.8,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "营养全面，烹饪方式多样",
+            "vitamins": {
+                "A": 234,
+                "C": 1,
+                "D": 1,
+                "E": 1.84
+            },
+            "minerals": {
+                "calcium": 56,
+                "iron": 2,
+                "magnesium": 10,
+                "potassium": 154
+            }
+        },
+        {
+            "id": 34002.0,
+            "type": "肉蛋奶",
+            "subType": "蛋类",
+            "name": "鸭蛋",
+            "calories": 180,
+            "protein": 12.6,
+            "carbs": 3.1,
+            "fat": 13,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可腌制咸蛋，风味独特",
+            "vitamins": {
+                "A": 261,
+                "C": 4,
+                "D": 1.7,
+                "E": 4.98
+            },
+            "minerals": {
+                "calcium": 62,
+                "iron": 2.9,
+                "magnesium": 13,
+                "potassium": 135
+            }
+        },
+        {
+            "id": 34003.0,
+            "type": "肉蛋奶",
+            "subType": "蛋类",
+            "name": "鹅蛋",
+            "calories": 196,
+            "protein": 11.1,
+            "carbs": 2.8,
+            "fat": 15.6,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "蛋类中体型较大，营养丰富",
+            "vitamins": {
+                "A": 192,
+                "C": 3,
+                "D": 1.4,
+                "E": 4.5
+            },
+            "minerals": {
+                "calcium": 34,
+                "iron": 4.1,
+                "magnesium": 12,
+                "potassium": 98
+            }
+        },
+        {
+            "id": 34004.0,
+            "type": "肉蛋奶",
+            "subType": "蛋类",
+            "name": "鹌鹑蛋",
+            "calories": 160,
+            "protein": 12.8,
+            "carbs": 1.1,
+            "fat": 11.1,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "小巧营养，可卤制、煮汤",
+            "vitamins": {
+                "A": 337,
+                "C": 0,
+                "D": 1.6,
+                "E": 3.08
+            },
+            "minerals": {
+                "calcium": 47,
+                "iron": 3.2,
+                "magnesium": 11,
+                "potassium": 138
+            }
+        },
+        {
+            "id": 35001.0,
+            "type": "肉蛋奶",
+            "subType": "豆制品",
+            "name": "豆浆",
+            "calories": 16,
+            "protein": 1.8,
+            "carbs": 1.1,
+            "fat": 0.7,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "以大豆为原料，植物蛋白饮品，营养丰富",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0
+            },
+            "minerals": {
+                "calcium": 10,
+                "iron": 0.5,
+                "magnesium": 9,
+                "potassium": 48
+            }
+        },
+        {
+            "id": 35002.0,
+            "type": "肉蛋奶",
+            "subType": "豆制品",
+            "name": "北豆腐",
+            "calories": 98,
+            "protein": 12.2,
+            "carbs": 2.6,
+            "fat": 6.4,
+            "fiber": 0.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "质地较硬，适合煎、炒、炖等多种烹饪方式",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0
+            },
+            "minerals": {
+                "calcium": 138,
+                "iron": 2,
+                "magnesium": 37,
+                "potassium": 205
+            }
+        },
+        {
+            "id": 35003.0,
+            "type": "肉蛋奶",
+            "subType": "豆制品",
+            "name": "南豆腐",
+            "calories": 57,
+            "protein": 6.2,
+            "carbs": 2.5,
+            "fat": 2.8,
+            "fiber": 0.3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "质地细嫩，常用于凉拌、做汤",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0
+            },
+            "minerals": {
+                "calcium": 113,
+                "iron": 1.5,
+                "magnesium": 28,
+                "potassium": 163
+            }
+        },
+        {
+            "id": 35004.0,
+            "type": "肉蛋奶",
+            "subType": "豆制品",
+            "name": "嫩豆腐",
+            "calories": 59,
+            "protein": 6.6,
+            "carbs": 2.6,
+            "fat": 2.9,
+            "fiber": 0.3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "口感滑嫩，适合制作羹汤、甜品",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0
+            },
+            "minerals": {
+                "calcium": 118,
+                "iron": 1.5,
+                "magnesium": 28,
+                "potassium": 163
+            }
+        },
+        {
+            "id": 35005.0,
+            "type": "肉蛋奶",
+            "subType": "豆制品",
+            "name": "豆腐干",
+            "calories": 151,
+            "protein": 16.2,
+            "carbs": 11.5,
+            "fat": 3.6,
+            "fiber": 1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "蛋白质含量高，可直接食用或炒菜、卤制",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0
+            },
+            "minerals": {
+                "calcium": 140,
+                "iron": 3,
+                "magnesium": 45,
+                "potassium": 208
+            }
+        },
+        {
+            "id": 35006.0,
+            "type": "肉蛋奶",
+            "subType": "豆制品",
+            "name": "豆腐皮",
+            "calories": 409,
+            "protein": 44.6,
+            "carbs": 19.8,
+            "fat": 17.4,
+            "fiber": 1.2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "豆香浓郁，可凉拌、卷菜或煲汤",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0
+            },
+            "minerals": {
+                "calcium": 147,
+                "iron": 3.5,
+                "magnesium": 52,
+                "potassium": 238
+            }
+        },
+        {
+            "id": 35007.0,
+            "type": "肉蛋奶",
+            "subType": "豆制品",
+            "name": "腐竹",
+            "calories": 461,
+            "protein": 44.6,
+            "carbs": 22.3,
+            "fat": 21.7,
+            "fiber": 1.2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "由豆浆煮沸后挑皮干燥制成，需泡发后烹饪",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0
+            },
+            "minerals": {
+                "calcium": 147,
+                "iron": 3.5,
+                "magnesium": 52,
+                "potassium": 238
+            }
+        },
+        {
+            "id": 35008.0,
+            "type": "肉蛋奶",
+            "subType": "豆制品",
+            "name": "素捆鸡",
+            "calories": 242,
+            "protein": 17.1,
+            "carbs": 24.3,
+            "fat": 7.8,
+            "fiber": 1.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "豆制品，模拟荤菜口感，常卤制或炒制",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0
+            },
+            "minerals": {
+                "calcium": 105,
+                "iron": 2.5,
+                "magnesium": 38,
+                "potassium": 187
+            }
+        },
+        {
+            "id": 35009.0,
+            "type": "肉蛋奶",
+            "subType": "豆制品",
+            "name": "素肉",
+            "calories": 321,
+            "protein": 36.5,
+            "carbs": 21.6,
+            "fat": 14.6,
+            "fiber": 2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "以大豆蛋白等为原料，仿肉制品，适合多种烹饪",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0
+            },
+            "minerals": {
+                "calcium": 120,
+                "iron": 3,
+                "magnesium": 45,
+                "potassium": 220
+            }
+        }
+    ]
+}

@@ -1,0 +1,1252 @@
+{
+    "水果": [
+        {
+            "id": 41001.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "苹果",
+            "calories": 53,
+            "protein": 0.3,
+            "carbs": 13.6,
+            "fat": 0.2,
+            "fiber": 2.4,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含果胶，促进肠道蠕动，常见水果",
+            "vitamins": {
+                "A": 8,
+                "C": 4,
+                "D": 0,
+                "E": 0.22
+            },
+            "minerals": {
+                "calcium": 4,
+                "iron": 0.6,
+                "magnesium": 7,
+                "potassium": 83
+            }
+        },
+        {
+            "id": 41002.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "梨",
+            "calories": 44,
+            "protein": 0.4,
+            "carbs": 11.3,
+            "fat": 0.2,
+            "fiber": 3.1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "水分充足，有润肺止咳功效",
+            "vitamins": {
+                "A": 6,
+                "C": 6,
+                "D": 0,
+                "E": 0.21
+            },
+            "minerals": {
+                "calcium": 9,
+                "iron": 0.5,
+                "magnesium": 8,
+                "potassium": 90
+            }
+        },
+        {
+            "id": 41003.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "香蕉",
+            "calories": 93,
+            "protein": 1.1,
+            "carbs": 22.8,
+            "fat": 0.2,
+            "fiber": 2.6,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含钾元素，可快速补充能量",
+            "vitamins": {
+                "A": 10,
+                "C": 8,
+                "D": 0,
+                "E": 0.22
+            },
+            "minerals": {
+                "calcium": 5,
+                "iron": 0.2,
+                "magnesium": 42,
+                "potassium": 256
+            }
+        },
+        {
+            "id": 41004.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "橙子",
+            "calories": 48,
+            "protein": 0.8,
+            "carbs": 11.1,
+            "fat": 0.2,
+            "fiber": 2.4,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "维生素 C 丰富，酸甜可口",
+            "vitamins": {
+                "A": 27,
+                "C": 33,
+                "D": 0.45,
+                "E": 1.11
+            },
+            "minerals": {
+                "calcium": 20,
+                "iron": 0.2,
+                "magnesium": 6,
+                "potassium": 159
+            }
+        },
+        {
+            "id": 41005.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "橘子",
+            "calories": 44,
+            "protein": 0.8,
+            "carbs": 10.2,
+            "fat": 0.2,
+            "fiber": 1.4,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "果肉鲜嫩，有润肺化痰作用",
+            "vitamins": {
+                "A": 82,
+                "C": 25,
+                "D": 0,
+                "E": 0.45
+            },
+            "minerals": {
+                "calcium": 24,
+                "iron": 0.2,
+                "magnesium": 10,
+                "potassium": 140
+            }
+        },
+        {
+            "id": 41006.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "柚子",
+            "calories": 42,
+            "protein": 0.8,
+            "carbs": 9.6,
+            "fat": 0.1,
+            "fiber": 1.9,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "热量低，有降血脂功效",
+            "vitamins": {
+                "A": 10,
+                "C": 23,
+                "D": 0,
+                "E": 0.32
+            },
+            "minerals": {
+                "calcium": 4,
+                "iron": 0.3,
+                "magnesium": 11,
+                "potassium": 127
+            }
+        },
+        {
+            "id": 41007.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "柠檬",
+            "calories": 43,
+            "protein": 1.1,
+            "carbs": 9.3,
+            "fat": 1.2,
+            "fiber": 2.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "酸味浓郁，常用于调味或饮品",
+            "vitamins": {
+                "A": 8,
+                "C": 22,
+                "D": 0.025,
+                "E": 0.25
+            },
+            "minerals": {
+                "calcium": 101,
+                "iron": 0.8,
+                "magnesium": 7,
+                "potassium": 138
+            }
+        },
+        {
+            "id": 41008.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "草莓",
+            "calories": 32,
+            "protein": 1,
+            "carbs": 7.1,
+            "fat": 0.2,
+            "fiber": 2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含维生素 C 和抗氧化物质，口感酸甜",
+            "vitamins": {
+                "A": 5,
+                "C": 47,
+                "D": 0.075,
+                "E": 1.19
+            },
+            "minerals": {
+                "calcium": 18,
+                "iron": 1.8,
+                "magnesium": 4,
+                "potassium": 32
+            }
+        },
+        {
+            "id": 41009.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "蓝莓",
+            "calories": 57,
+            "protein": 0.7,
+            "carbs": 14.4,
+            "fat": 0.3,
+            "fiber": 2.4,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "含丰富花青素，护眼佳品",
+            "vitamins": {
+                "A": 9,
+                "C": 9.7,
+                "D": 0.2,
+                "E": 0.55
+            },
+            "minerals": {
+                "calcium": 6,
+                "iron": 0.2,
+                "magnesium": 5,
+                "potassium": 77
+            }
+        },
+        {
+            "id": 41010.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "葡萄",
+            "calories": 44,
+            "protein": 0.5,
+            "carbs": 10.3,
+            "fat": 0.2,
+            "fiber": 0.9,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可鲜食或酿酒，营养丰富",
+            "vitamins": {
+                "A": 8,
+                "C": 25,
+                "D": 0,
+                "E": 0.7
+            },
+            "minerals": {
+                "calcium": 5,
+                "iron": 0.4,
+                "magnesium": 7,
+                "potassium": 191
+            }
+        },
+        {
+            "id": 41011.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "提子",
+            "calories": 69,
+            "protein": 0.5,
+            "carbs": 16.7,
+            "fat": 0.2,
+            "fiber": 1.6,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "甜度较高，果肉紧实",
+            "vitamins": {
+                "A": 5,
+                "C": 20,
+                "D": 0,
+                "E": 0.7
+            },
+            "minerals": {
+                "calcium": 5,
+                "iron": 0.4,
+                "magnesium": 9,
+                "potassium": 242
+            }
+        },
+        {
+            "id": 41012.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "西瓜",
+            "calories": 31,
+            "protein": 0.6,
+            "carbs": 7.5,
+            "fat": 0.1,
+            "fiber": 0.4,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "水分足，夏季消暑解渴",
+            "vitamins": {
+                "A": 75,
+                "C": 6,
+                "D": 0.025,
+                "E": 0.07
+            },
+            "minerals": {
+                "calcium": 7,
+                "iron": 0.2,
+                "magnesium": 2,
+                "potassium": 87
+            }
+        },
+        {
+            "id": 41013.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "哈密瓜",
+            "calories": 34,
+            "protein": 0.5,
+            "carbs": 7.9,
+            "fat": 0.1,
+            "fiber": 0.9,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "香甜多汁，富含维生素 A",
+            "vitamins": {
+                "A": 153,
+                "C": 12,
+                "D": 0,
+                "E": 0.16
+            },
+            "minerals": {
+                "calcium": 4,
+                "iron": 0.3,
+                "magnesium": 19,
+                "potassium": 190
+            }
+        },
+        {
+            "id": 41014.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "香瓜",
+            "calories": 26,
+            "protein": 0.4,
+            "carbs": 6.2,
+            "fat": 0.1,
+            "fiber": 0.9,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "口感清爽，可消暑清热",
+            "vitamins": {
+                "A": 15,
+                "C": 18,
+                "D": 0,
+                "E": 0.09
+            },
+            "minerals": {
+                "calcium": 8,
+                "iron": 0.4,
+                "magnesium": 11,
+                "potassium": 112
+            }
+        },
+        {
+            "id": 41015.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "芒果",
+            "calories": 45,
+            "protein": 0.5,
+            "carbs": 10.9,
+            "fat": 0.2,
+            "fiber": 1.3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含维生素 A 和膳食纤维，味道香甜",
+            "vitamins": {
+                "A": 805,
+                "C": 36,
+                "D": 0.025,
+                "E": 4.59
+            },
+            "minerals": {
+                "calcium": 2,
+                "iron": 0.2,
+                "magnesium": 10,
+                "potassium": 168
+            }
+        },
+        {
+            "id": 41016.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "菠萝",
+            "calories": 44,
+            "protein": 0.5,
+            "carbs": 10.8,
+            "fat": 0.1,
+            "fiber": 1.4,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "含有菠萝蛋白酶，有助于消化",
+            "vitamins": {
+                "A": 3,
+                "C": 18,
+                "D": 0.47,
+                "E": 0.12
+            },
+            "minerals": {
+                "calcium": 12,
+                "iron": 0.5,
+                "magnesium": 8,
+                "potassium": 113
+            }
+        },
+        {
+            "id": 41017.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "榴莲",
+            "calories": 147,
+            "protein": 2.6,
+            "carbs": 28.3,
+            "fat": 3.3,
+            "fiber": 2.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "气味独特，营养丰富，被誉为 “水果之王”",
+            "vitamins": {
+                "A": 52,
+                "C": 2.8,
+                "D": 0,
+                "E": 2.3
+            },
+            "minerals": {
+                "calcium": 4,
+                "iron": 0.3,
+                "magnesium": 27,
+                "potassium": 436
+            }
+        },
+        {
+            "id": 41018.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "荔枝",
+            "calories": 70,
+            "protein": 0.9,
+            "carbs": 16.6,
+            "fat": 0.2,
+            "fiber": 0.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "果肉晶莹，味甜多汁，但不宜多食",
+            "vitamins": {
+                "A": 2,
+                "C": 41,
+                "D": 0,
+                "E": 0.17
+            },
+            "minerals": {
+                "calcium": 2,
+                "iron": 0.4,
+                "magnesium": 12,
+                "potassium": 151
+            }
+        },
+        {
+            "id": 41019.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "龙眼",
+            "calories": 71,
+            "protein": 1.2,
+            "carbs": 16.6,
+            "fat": 0.1,
+            "fiber": 0.4,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "补益心脾，可鲜食或晒干",
+            "vitamins": {
+                "A": 5,
+                "C": 43,
+                "D": 0,
+                "E": 0.12
+            },
+            "minerals": {
+                "calcium": 6,
+                "iron": 0.2,
+                "magnesium": 55,
+                "potassium": 129
+            }
+        },
+        {
+            "id": 41020.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "杨梅",
+            "calories": 30,
+            "protein": 0.8,
+            "carbs": 7.1,
+            "fat": 0.2,
+            "fiber": 1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "酸甜开胃，富含果酸",
+            "vitamins": {
+                "A": 7,
+                "C": 9,
+                "D": 0,
+                "E": 0.8
+            },
+            "minerals": {
+                "calcium": 14,
+                "iron": 1,
+                "magnesium": 10,
+                "potassium": 149
+            }
+        },
+        {
+            "id": 41021.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "樱桃",
+            "calories": 46,
+            "protein": 1.1,
+            "carbs": 10.2,
+            "fat": 0.2,
+            "fiber": 0.3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "含铁量高，色泽诱人",
+            "vitamins": {
+                "A": 35,
+                "C": 10,
+                "D": 0,
+                "E": 0.22
+            },
+            "minerals": {
+                "calcium": 11,
+                "iron": 0.4,
+                "magnesium": 12,
+                "potassium": 222
+            }
+        },
+        {
+            "id": 41022.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "猕猴桃",
+            "calories": 61,
+            "protein": 0.8,
+            "carbs": 14.5,
+            "fat": 0.6,
+            "fiber": 2.6,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "维生素 C 含量高，有 “维 C 之王” 之称",
+            "vitamins": {
+                "A": 22,
+                "C": 62,
+                "D": 0,
+                "E": 2.43
+            },
+            "minerals": {
+                "calcium": 27,
+                "iron": 1.2,
+                "magnesium": 29,
+                "potassium": 322
+            }
+        },
+        {
+            "id": 41023.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "火龙果",
+            "calories": 51,
+            "protein": 1.1,
+            "carbs": 13.3,
+            "fat": 0.2,
+            "fiber": 2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "分白心和红心，富含膳食纤维",
+            "vitamins": {
+                "A": 6,
+                "C": 5,
+                "D": 0,
+                "E": 0.42
+            },
+            "minerals": {
+                "calcium": 6,
+                "iron": 0.3,
+                "magnesium": 12,
+                "potassium": 209
+            }
+        },
+        {
+            "id": 41024.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "山竹",
+            "calories": 69,
+            "protein": 0.4,
+            "carbs": 18,
+            "fat": 0.2,
+            "fiber": 1.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "与榴莲并称 “果中皇后”，清热降火",
+            "vitamins": {
+                "A": 3,
+                "C": 1.2,
+                "D": 0,
+                "E": 0.12
+            },
+            "minerals": {
+                "calcium": 11,
+                "iron": 0.3,
+                "magnesium": 18,
+                "potassium": 100
+            }
+        },
+        {
+            "id": 41025.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "木瓜",
+            "calories": 43,
+            "protein": 0.4,
+            "carbs": 10.8,
+            "fat": 0.1,
+            "fiber": 0.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含木瓜蛋白酶，有助于消化",
+            "vitamins": {
+                "A": 145,
+                "C": 62,
+                "D": 0,
+                "E": 0.35
+            },
+            "minerals": {
+                "calcium": 17,
+                "iron": 0.2,
+                "magnesium": 12,
+                "potassium": 257
+            }
+        },
+        {
+            "id": 41026.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "椰子",
+            "calories": 241,
+            "protein": 4,
+            "carbs": 31.3,
+            "fat": 12.1,
+            "fiber": 9,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "椰肉可食，椰汁可饮，营养丰富",
+            "vitamins": {
+                "A": 2,
+                "C": 6,
+                "D": 0,
+                "E": 3.09
+            },
+            "minerals": {
+                "calcium": 2,
+                "iron": 1.8,
+                "magnesium": 47,
+                "potassium": 475
+            }
+        },
+        {
+            "id": 41027.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "甘蔗",
+            "calories": 64,
+            "protein": 0.4,
+            "carbs": 16,
+            "fat": 0.1,
+            "fiber": 1.7,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "主要用于制糖，也可直接嚼食",
+            "vitamins": {
+                "A": 2,
+                "C": 2,
+                "D": 0,
+                "E": 0.1
+            },
+            "minerals": {
+                "calcium": 14,
+                "iron": 0.4,
+                "magnesium": 8,
+                "potassium": 95
+            }
+        },
+        {
+            "id": 41028.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "橄榄",
+            "calories": 49,
+            "protein": 0.8,
+            "carbs": 11.1,
+            "fat": 0.2,
+            "fiber": 4,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可生食或腌制，有生津止渴功效",
+            "vitamins": {
+                "A": 10,
+                "C": 3,
+                "D": 0,
+                "E": 3.81
+            },
+            "minerals": {
+                "calcium": 49,
+                "iron": 0.6,
+                "magnesium": 13,
+                "potassium": 145
+            }
+        },
+        {
+            "id": 41029.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "山楂",
+            "calories": 98,
+            "protein": 0.5,
+            "carbs": 25.1,
+            "fat": 0.6,
+            "fiber": 3.1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "开胃消食，富含有机酸",
+            "vitamins": {
+                "A": 80,
+                "C": 53,
+                "D": 0,
+                "E": 0.72
+            },
+            "minerals": {
+                "calcium": 52,
+                "iron": 0.9,
+                "magnesium": 19,
+                "potassium": 299
+            }
+        },
+        {
+            "id": 41030.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "红枣",
+            "calories": 122,
+            "protein": 3.2,
+            "carbs": 28.6,
+            "fat": 0.2,
+            "fiber": 3.1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "补气养血，可直接食用或煲汤",
+            "vitamins": {
+                "A": 10,
+                "C": 140,
+                "D": 0,
+                "E": 0.66
+            },
+            "minerals": {
+                "calcium": 22,
+                "iron": 1.2,
+                "magnesium": 25,
+                "potassium": 524
+            }
+        },
+        {
+            "id": 41031.0,
+            "type": "水果",
+            "subType": "鲜果",
+            "name": "黑枣",
+            "calories": 228,
+            "protein": 3.7,
+            "carbs": 57.8,
+            "fat": 1.1,
+            "fiber": 3.7,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "滋补佳品，富含多种营养",
+            "vitamins": {
+                "A": 12,
+                "C": 2,
+                "D": 0,
+                "E": 0.9
+            },
+            "minerals": {
+                "calcium": 122,
+                "iron": 1.7,
+                "magnesium": 34,
+                "potassium": 375
+            }
+        },
+        {
+            "id": 42001.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "蜜枣",
+            "calories": 321,
+            "protein": 1.2,
+            "carbs": 81.4,
+            "fat": 0.2,
+            "fiber": 1.2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "糖分含量高，口感甜腻",
+            "vitamins": {
+                "A": 1,
+                "C": 3,
+                "D": 0,
+                "E": 0.1
+            },
+            "minerals": {
+                "calcium": 2,
+                "iron": 0.2,
+                "magnesium": 5,
+                "potassium": 100
+            }
+        },
+        {
+            "id": 42002.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "葡萄干",
+            "calories": 341,
+            "protein": 3.2,
+            "carbs": 81.8,
+            "fat": 0.4,
+            "fiber": 3.7,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含铁和膳食纤维，可做零食或烘焙",
+            "vitamins": {
+                "A": 5,
+                "C": 5,
+                "D": 0,
+                "E": 0.9
+            },
+            "minerals": {
+                "calcium": 52,
+                "iron": 0.4,
+                "magnesium": 40,
+                "potassium": 995
+            }
+        },
+        {
+            "id": 42003.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "柿饼",
+            "calories": 250,
+            "protein": 1.8,
+            "carbs": 62.8,
+            "fat": 0.2,
+            "fiber": 2.6,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "由柿子制成，口感软糯甘甜",
+            "vitamins": {
+                "A": 20,
+                "C": 36,
+                "D": 0,
+                "E": 0.8
+            },
+            "minerals": {
+                "calcium": 54,
+                "iron": 2.7,
+                "magnesium": 33,
+                "potassium": 236
+            }
+        },
+        {
+            "id": 42004.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "桂圆干",
+            "calories": 273,
+            "protein": 4.6,
+            "carbs": 65.6,
+            "fat": 1,
+            "fiber": 2.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "滋补气血，常用于煲汤、煮粥",
+            "vitamins": {
+                "A": 3,
+                "C": 43,
+                "D": 0,
+                "E": 0.8
+            },
+            "minerals": {
+                "calcium": 30,
+                "iron": 4.4,
+                "magnesium": 11,
+                "potassium": 248
+            }
+        },
+        {
+            "id": 42005.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "无花果干",
+            "calories": 302,
+            "protein": 3.3,
+            "carbs": 74.2,
+            "fat": 0.9,
+            "fiber": 6.9,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含膳食纤维，可直接食用",
+            "vitamins": {
+                "A": 5,
+                "C": 27,
+                "D": 0,
+                "E": 1.2
+            },
+            "minerals": {
+                "calcium": 62,
+                "iron": 2,
+                "magnesium": 36,
+                "potassium": 169
+            }
+        },
+        {
+            "id": 42006.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "杏干",
+            "calories": 313,
+            "protein": 4.5,
+            "carbs": 78.3,
+            "fat": 0.4,
+            "fiber": 3.3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "酸甜可口，保留较多营养",
+            "vitamins": {
+                "A": 750,
+                "C": 27.9,
+                "D": 0,
+                "E": 1.5
+            },
+            "minerals": {
+                "calcium": 14,
+                "iron": 0.6,
+                "magnesium": 44,
+                "potassium": 149
+            }
+        },
+        {
+            "id": 42007.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "桃干",
+            "calories": 310,
+            "protein": 2.1,
+            "carbs": 78.3,
+            "fat": 0.4,
+            "fiber": 3.6,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可作为零食，也可用于烹饪",
+            "vitamins": {
+                "A": 10,
+                "C": 3,
+                "D": 0,
+                "E": 0.7
+            },
+            "minerals": {
+                "calcium": 6,
+                "iron": 0.7,
+                "magnesium": 30,
+                "potassium": 200
+            }
+        },
+        {
+            "id": 42008.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "李干",
+            "calories": 238,
+            "protein": 2.1,
+            "carbs": 59.6,
+            "fat": 0.6,
+            "fiber": 1.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "酸甜开胃，有生津止渴作用",
+            "vitamins": {
+                "A": 10,
+                "C": 3,
+                "D": 0,
+                "E": 0.6
+            },
+            "minerals": {
+                "calcium": 16,
+                "iron": 0.5,
+                "magnesium": 18,
+                "potassium": 200
+            }
+        },
+        {
+            "id": 42009.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "梅干",
+            "calories": 239,
+            "protein": 1.4,
+            "carbs": 63.4,
+            "fat": 0.6,
+            "fiber": 1.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "常用于制作甜点或调味",
+            "vitamins": {
+                "A": 5,
+                "C": 2,
+                "D": 0,
+                "E": 0.5
+            },
+            "minerals": {
+                "calcium": 11,
+                "iron": 0.3,
+                "magnesium": 15,
+                "potassium": 200
+            }
+        },
+        {
+            "id": 42010.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "杨梅干",
+            "calories": 303,
+            "protein": 1.3,
+            "carbs": 76.2,
+            "fat": 0.4,
+            "fiber": 1.4,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "保留杨梅风味，可直接食用",
+            "vitamins": {
+                "A": 5,
+                "C": 5,
+                "D": 0,
+                "E": 0.4
+            },
+            "minerals": {
+                "calcium": 10,
+                "iron": 0.5,
+                "magnesium": 12,
+                "potassium": 150
+            }
+        },
+        {
+            "id": 42011.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "草莓干",
+            "calories": 336,
+            "protein": 3.5,
+            "carbs": 79.6,
+            "fat": 0.6,
+            "fiber": 4.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "浓缩草莓营养，口感香甜",
+            "vitamins": {
+                "A": 5,
+                "C": 15,
+                "D": 0,
+                "E": 1.2
+            },
+            "minerals": {
+                "calcium": 32,
+                "iron": 2.2,
+                "magnesium": 20,
+                "potassium": 150
+            }
+        },
+        {
+            "id": 42012.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "蓝莓干",
+            "calories": 329,
+            "protein": 4.4,
+            "carbs": 81.1,
+            "fat": 0.5,
+            "fiber": 3.6,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "方便食用，富含花青素",
+            "vitamins": {
+                "A": 9,
+                "C": 9.7,
+                "D": 0,
+                "E": 0.6
+            },
+            "minerals": {
+                "calcium": 6,
+                "iron": 0.2,
+                "magnesium": 10,
+                "potassium": 150
+            }
+        },
+        {
+            "id": 42013.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "芒果干",
+            "calories": 307,
+            "protein": 2.3,
+            "carbs": 77.3,
+            "fat": 0.5,
+            "fiber": 2.7,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "保留芒果香甜，可作零食",
+            "vitamins": {
+                "A": 805,
+                "C": 36,
+                "D": 0,
+                "E": 3
+            },
+            "minerals": {
+                "calcium": 2,
+                "iron": 0.2,
+                "magnesium": 15,
+                "potassium": 150
+            }
+        },
+        {
+            "id": 42014.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "菠萝干",
+            "calories": 300,
+            "protein": 1.3,
+            "carbs": 75.8,
+            "fat": 0.6,
+            "fiber": 2.3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "甜酸可口，富含膳食纤维",
+            "vitamins": {
+                "A": 3,
+                "C": 18,
+                "D": 0,
+                "E": 0.3
+            },
+            "minerals": {
+                "calcium": 12,
+                "iron": 0.5,
+                "magnesium": 10,
+                "potassium": 150
+            }
+        },
+        {
+            "id": 42015.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "榴莲干",
+            "calories": 386,
+            "protein": 4.2,
+            "carbs": 81.1,
+            "fat": 2.9,
+            "fiber": 3.8,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "由新鲜榴莲脱水制成，保留浓郁风味，热量较高，富含糖分",
+            "vitamins": {
+                "A": 52,
+                "C": 2.8,
+                "D": 0,
+                "E": 1.5
+            },
+            "minerals": {
+                "calcium": 4,
+                "iron": 0.3,
+                "magnesium": 18,
+                "potassium": 200
+            }
+        },
+        {
+            "id": 42016.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "荔枝干",
+            "calories": 321,
+            "protein": 4.3,
+            "carbs": 79.1,
+            "fat": 0.4,
+            "fiber": 1.3,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "经晾晒或烘干制成，有滋补作用，常用于煲汤、煮粥",
+            "vitamins": {
+                "A": 2,
+                "C": 41,
+                "D": 0,
+                "E": 0.2
+            },
+            "minerals": {
+                "calcium": 2,
+                "iron": 0.4,
+                "magnesium": 10,
+                "potassium": 150
+            }
+        },
+        {
+            "id": 42017.0,
+            "type": "水果",
+            "subType": "果干",
+            "name": "龙眼干",
+            "calories": 273,
+            "protein": 4.6,
+            "carbs": 65.6,
+            "fat": 1,
+            "fiber": 2.5,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "又名桂圆干，可补益心脾、养血安神，是常见滋补食材",
+            "vitamins": {
+                "A": 5,
+                "C": 43,
+                "D": 0,
+                "E": 0.8
+            },
+            "minerals": {
+                "calcium": 6,
+                "iron": 0.2,
+                "magnesium": 11,
+                "potassium": 248
+            }
+        }
+    ]
+}

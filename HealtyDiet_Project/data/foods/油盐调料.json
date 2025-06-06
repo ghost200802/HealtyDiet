@@ -1,0 +1,394 @@
+{
+    "油盐调料": [
+        {
+            "id": 51001.0,
+            "type": "油盐调料",
+            "subType": "食用油",
+            "name": "大豆油",
+            "calories": 899,
+            "protein": 0,
+            "carbs": 0,
+            "fat": 99.9,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "从大豆中提取，富含不饱和脂肪酸，常用烹饪油",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 9
+            },
+            "minerals": {
+                "calcium": 0,
+                "iron": 1.4,
+                "magnesium": 0,
+                "potassium": 0
+            }
+        },
+        {
+            "id": 51002.0,
+            "type": "油盐调料",
+            "subType": "食用油",
+            "name": "玉米油",
+            "calories": 895,
+            "protein": 0,
+            "carbs": 0.5,
+            "fat": 99.2,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "以玉米胚芽为原料，油烟少，适合多种烹饪方式",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 50.9
+            },
+            "minerals": {
+                "calcium": 0,
+                "iron": 1.4,
+                "magnesium": 0,
+                "potassium": 0
+            }
+        },
+        {
+            "id": 51003.0,
+            "type": "油盐调料",
+            "subType": "食用油",
+            "name": "花生油",
+            "calories": 899,
+            "protein": 0,
+            "carbs": 0,
+            "fat": 99.9,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "具有浓郁花生香味，营养丰富，炒菜香气足",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 42.1
+            },
+            "minerals": {
+                "calcium": 0,
+                "iron": 0,
+                "magnesium": 0,
+                "potassium": 0
+            }
+        },
+        {
+            "id": 51004.0,
+            "type": "油盐调料",
+            "subType": "食用油",
+            "name": "橄榄油",
+            "calories": 899,
+            "protein": 0,
+            "carbs": 0,
+            "fat": 99.9,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "富含单不饱和脂肪酸，适合凉拌、低温烹饪",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 14.7
+            },
+            "minerals": {
+                "calcium": 0,
+                "iron": 0,
+                "magnesium": 0,
+                "potassium": 0
+            }
+        },
+        {
+            "id": 51005.0,
+            "type": "油盐调料",
+            "subType": "食用油",
+            "name": "菜籽油",
+            "calories": 899,
+            "protein": 0,
+            "carbs": 0,
+            "fat": 99.9,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "芥酸含量低的品种较健康，经济实惠，常用食用油",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 9.6
+            },
+            "minerals": {
+                "calcium": 0,
+                "iron": 0,
+                "magnesium": 0,
+                "potassium": 0
+            }
+        },
+        {
+            "id": 52001.0,
+            "type": "油盐调料",
+            "subType": "调料",
+            "name": "盐（精制盐）",
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "fat": 0,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "主要成分氯化钠，调味、维持生理平衡，需适量摄入",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0
+            },
+            "minerals": {
+                "calcium": 0,
+                "iron": 0,
+                "magnesium": 0,
+                "potassium": 0
+            }
+        },
+        {
+            "id": 52002.0,
+            "type": "油盐调料",
+            "subType": "调料",
+            "name": "酱油（生抽）",
+            "calories": 63,
+            "protein": 5.6,
+            "carbs": 9.9,
+            "fat": 0.7,
+            "fiber": 0.2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "提鲜、增色，富含氨基酸，烹饪常用调味料",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0.1
+            },
+            "minerals": {
+                "calcium": 44,
+                "iron": 2.5,
+                "magnesium": 3,
+                "potassium": 300
+            }
+        },
+        {
+            "id": 52003.0,
+            "type": "油盐调料",
+            "subType": "调料",
+            "name": "醋（陈醋）",
+            "calories": 24,
+            "protein": 0.4,
+            "carbs": 4.9,
+            "fat": 0.1,
+            "fiber": 0.1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "增加食欲、去腥解腻，含多种有机酸，有陈醋、米醋等",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0.1
+            },
+            "minerals": {
+                "calcium": 17,
+                "iron": 1.2,
+                "magnesium": 1,
+                "potassium": 25
+            }
+        },
+        {
+            "id": 52004.0,
+            "type": "油盐调料",
+            "subType": "调料",
+            "name": "料酒",
+            "calories": 66,
+            "protein": 0.5,
+            "carbs": 1.8,
+            "fat": 0.1,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "去腥增香，主要用于烹饪肉类、海鲜等食材",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0.1
+            },
+            "minerals": {
+                "calcium": 1,
+                "iron": 0.1,
+                "magnesium": 1,
+                "potassium": 10
+            }
+        },
+        {
+            "id": 52005.0,
+            "type": "油盐调料",
+            "subType": "调料",
+            "name": "白糖",
+            "calories": 397,
+            "protein": 0,
+            "carbs": 99.9,
+            "fat": 0,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "由甘蔗或甜菜制成，提供能量，烹饪中常用甜味剂",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0
+            },
+            "minerals": {
+                "calcium": 0,
+                "iron": 0,
+                "magnesium": 0,
+                "potassium": 0
+            }
+        },
+        {
+            "id": 52006.0,
+            "type": "油盐调料",
+            "subType": "调料",
+            "name": "红糖",
+            "calories": 389,
+            "protein": 0.7,
+            "carbs": 96.6,
+            "fat": 0.2,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "保留较多矿物质，有特殊风味，常用于甜品、滋补汤品",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0
+            },
+            "minerals": {
+                "calcium": 157,
+                "iron": 2.2,
+                "magnesium": 24,
+                "potassium": 240
+            }
+        },
+        {
+            "id": 52007.0,
+            "type": "油盐调料",
+            "subType": "调料",
+            "name": "冰糖",
+            "calories": 397,
+            "protein": 0,
+            "carbs": 99.9,
+            "fat": 0,
+            "fiber": 0,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "纯度高，质地坚硬，常用于烹饪、制作甜品",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0
+            },
+            "minerals": {
+                "calcium": 0,
+                "iron": 0,
+                "magnesium": 0,
+                "potassium": 0
+            }
+        },
+        {
+            "id": 52008.0,
+            "type": "油盐调料",
+            "subType": "调料",
+            "name": "蜂蜜",
+            "calories": 304,
+            "protein": 0.4,
+            "carbs": 76.2,
+            "fat": 0.3,
+            "fiber": 0.2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "天然甜味剂，含多种营养，有润肠、润肺等功效",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0.1
+            },
+            "minerals": {
+                "calcium": 4,
+                "iron": 0.5,
+                "magnesium": 2,
+                "potassium": 52
+            }
+        },
+        {
+            "id": 52009.0,
+            "type": "油盐调料",
+            "subType": "调料",
+            "name": "豆瓣酱",
+            "calories": 178,
+            "protein": 13.6,
+            "carbs": 17.1,
+            "fat": 6.8,
+            "fiber": 1,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "有浓郁豆香，可调味、制作酱料，川菜常用调料",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0.6
+            },
+            "minerals": {
+                "calcium": 53,
+                "iron": 16.4,
+                "magnesium": 30,
+                "potassium": 772
+            }
+        },
+        {
+            "id": 52010.0,
+            "type": "油盐调料",
+            "subType": "调料",
+            "name": "豆豉",
+            "calories": 224,
+            "protein": 20.4,
+            "carbs": 25.1,
+            "fat": 1.9,
+            "fiber": 2,
+            "servingSize": 100,
+            "unit": "g",
+            "description": "可调味、入药，富含蛋白质，有淡豆豉、香辣豆豉等",
+            "vitamins": {
+                "A": 0,
+                "C": 0,
+                "D": 0,
+                "E": 0.5
+            },
+            "minerals": {
+                "calcium": 200,
+                "iron": 7,
+                "magnesium": 50,
+                "potassium": 700
+            }
+        }
+    ]
+}

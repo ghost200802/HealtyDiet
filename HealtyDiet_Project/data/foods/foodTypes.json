@@ -1,1 +1,48 @@
-{"foodTypes":{"Staple":{"name":"主食"},"Vegetable":{"name":"蔬菜"},"MeatEggsDairy":{"name":"肉蛋奶"},"Fruit":{"name":"水果"},"OilSaltSeasoning":{"name":"油盐调料"},"MedicinalFood":{"name":"药食同源"}}}
+{
+    "foodTypes": {
+        "主食": {
+            "subTypes": [
+                "精制谷物",
+                "全谷物",
+                "豆类",
+                "薯类"
+            ],
+            "fileName": "主食.json"
+        },
+        "蔬菜": {
+            "subTypes": [
+                "绿叶菜",
+                "浅色蔬菜",
+                "深色蔬菜​​",
+                "菌藻类",
+                "辣椒类",
+                "其它"
+            ],
+            "fileName": "蔬菜.json"
+        },
+        "肉蛋奶": {
+            "subTypes": [
+                "畜禽肉",
+                "水产品",
+                "乳制品",
+                "蛋类",
+                "豆制品"
+            ],
+            "fileName": "肉蛋奶.json"
+        },
+        "水果": {
+            "subTypes": [
+                "鲜果",
+                "果干"
+            ],
+            "fileName": "水果.json"
+        },
+        "油盐调料": {
+            "subTypes": [
+                "食用油",
+                "调料"
+            ],
+            "fileName": "油盐调料.json"
+        }
+    }
+}
