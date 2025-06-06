@@ -20,10 +20,11 @@ import FoodDetailDialog from '../../components/food/FoodDetailDialog';
 import FoodAddDialog from '../../components/food/FoodAddDialog';
 
 // 导入工具函数和服务
-import { calculateTotalNutrition } from '../../services/NutritionService';
+import { calculateTotalNutrition, calculateRecipeItem } from '../../services/NutritionService';
 import { saveRecipe, deleteRecipe, getUserRecipes, getAllFoods, updateFoodInRecipe } from './RecipeService';
-import { generateRecipeByDailyNeeds, flattenCategoryRecipe } from './RecipeAutoGenerator';
+import { generateRecipeByDailyNeeds, flattenCategoryRecipe, optimizeRecipeByUserData } from './RecipeAutoGenerator';
 import dailyNeeds from '../../../../data/needs/DailyNeeds.json';
+import { calculateRecipeScoreWithUserData } from '../../services/RecipeScoreService';
 
 const Recipe = ({ user }) => {
   const navigate = useNavigate();
@@ -144,7 +145,6 @@ const Recipe = ({ user }) => {
     const food = foods.find(f => f.id === updatedItems[index].foodId);
     if (food) {
       // 使用NutritionService计算更新后的营养素含量
-      const { calculateRecipeItem } = require('../../services/NutritionService');
       updatedItems[index] = calculateRecipeItem(food, newAmount);
       setRecipeItems(updatedItems);
     }
@@ -176,9 +176,6 @@ const Recipe = ({ user }) => {
   // 加载食谱
   const handleLoadRecipe = (recipe) => {
     setRecipeName(recipe.name);
-    
-    // 导入NutritionService
-    const { calculateRecipeItem } = require('../../services/NutritionService');
     
     // 转换食谱项目格式
     const items = recipe.items.map(item => {
@@ -232,8 +229,23 @@ const Recipe = ({ user }) => {
       // 根据每日标准需求生成食谱
       const categoryRecipe = await generateRecipeByDailyNeeds(foods, dailyNeeds);
       
+      // 根据用户数据优化食谱中食物的重量
+      const optimizedRecipe = optimizeRecipeByUserData(categoryRecipe, user, dailyNeeds);
+      
+      // 添加日志输出，列出优化后食谱中的食物和数量
+      console.log('优化后的食谱食物列表:');
+      Object.keys(optimizedRecipe).forEach(category => {
+        console.log(`类别: ${category}`);
+        optimizedRecipe[category].forEach(item => {
+          console.log(`  - ${item.food.name}: ${item.amount}g`);
+        });
+      });
+      
+      // 添加日志输出，检查优化后的食谱得分
+      console.log('优化后的食谱得分:', calculateRecipeScoreWithUserData(optimizedRecipe, user, dailyNeeds.standardNeeds));
+      
       // 将分类食谱转换为扁平列表
-      const flatRecipe = flattenCategoryRecipe(categoryRecipe);
+      const flatRecipe = flattenCategoryRecipe(optimizedRecipe);
       
       // 转换为食谱项目格式
       const newItems = flatRecipe.map(item => ({
