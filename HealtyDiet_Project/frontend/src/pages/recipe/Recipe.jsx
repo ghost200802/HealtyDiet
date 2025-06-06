@@ -20,7 +20,7 @@ import FoodDetailDialog from '../../components/food/FoodDetailDialog';
 import FoodAddDialog from '../../components/food/FoodAddDialog';
 
 // 导入工具函数和服务
-import { calculateTotalNutrition } from './RecipeUtils';
+import { calculateTotalNutrition } from '../../services/NutritionService';
 import { saveRecipe, deleteRecipe, getUserRecipes, getAllFoods, updateFoodInRecipe } from './RecipeService';
 import { generateRecipeByDailyNeeds, flattenCategoryRecipe } from './RecipeAutoGenerator';
 import dailyNeeds from '../../../../data/needs/DailyNeeds.json';
@@ -55,7 +55,8 @@ const Recipe = ({ user }) => {
     calories: 0,
     protein: 0,
     carbs: 0,
-    fat: 0
+    fat: 0,
+    fiber: 0
   });
   
   // 获取所有食物和用户的食谱
@@ -103,15 +104,9 @@ const Recipe = ({ user }) => {
       return;
     }
     
-    const newItem = {
-      foodId: selectedFood.id,
-      foodName: selectedFood.name,
-      amount: amount,
-      calories: selectedFood.calories * (amount / (selectedFood.servingSize || 100)),
-      protein: selectedFood.protein * (amount / (selectedFood.servingSize || 100)),
-      carbs: selectedFood.carbs * (amount / (selectedFood.servingSize || 100)),
-      fat: selectedFood.fat * (amount / (selectedFood.servingSize || 100))
-    };
+    // 使用NutritionService计算食谱项目的营养素含量
+    const { calculateRecipeItem } = require('../../services/NutritionService');
+    const newItem = calculateRecipeItem(selectedFood, amount);
     
     // 检查是否已存在该食物，如果存在则更新数量
     const existingItemIndex = recipeItems.findIndex(item => item.foodId === selectedFood.id);
@@ -121,14 +116,8 @@ const Recipe = ({ user }) => {
       const oldAmount = updatedItems[existingItemIndex].amount;
       const newAmount = oldAmount + amount;
       
-      updatedItems[existingItemIndex] = {
-        ...updatedItems[existingItemIndex],
-        amount: newAmount,
-        calories: selectedFood.calories * (newAmount / (selectedFood.servingSize || 100)),
-        protein: selectedFood.protein * (newAmount / (selectedFood.servingSize || 100)),
-        carbs: selectedFood.carbs * (newAmount / (selectedFood.servingSize || 100)),
-        fat: selectedFood.fat * (newAmount / (selectedFood.servingSize || 100))
-      };
+      // 使用NutritionService计算更新后的营养素含量
+      updatedItems[existingItemIndex] = calculateRecipeItem(selectedFood, newAmount);
       
       setRecipeItems(updatedItems);
     } else {
@@ -154,14 +143,9 @@ const Recipe = ({ user }) => {
     const updatedItems = [...recipeItems];
     const food = foods.find(f => f.id === updatedItems[index].foodId);
     if (food) {
-      updatedItems[index] = {
-        ...updatedItems[index],
-        amount: newAmount,
-        calories: food.calories * (newAmount / (food.servingSize || 100)),
-        protein: food.protein * (newAmount / (food.servingSize || 100)),
-        carbs: food.carbs * (newAmount / (food.servingSize || 100)),
-        fat: food.fat * (newAmount / (food.servingSize || 100))
-      };
+      // 使用NutritionService计算更新后的营养素含量
+      const { calculateRecipeItem } = require('../../services/NutritionService');
+      updatedItems[index] = calculateRecipeItem(food, newAmount);
       setRecipeItems(updatedItems);
     }
   };
@@ -193,20 +177,16 @@ const Recipe = ({ user }) => {
   const handleLoadRecipe = (recipe) => {
     setRecipeName(recipe.name);
     
+    // 导入NutritionService
+    const { calculateRecipeItem } = require('../../services/NutritionService');
+    
     // 转换食谱项目格式
     const items = recipe.items.map(item => {
       const food = foods.find(f => f.id === item.foodId);
       if (!food) return null;
       
-      return {
-        foodId: food.id,
-        foodName: food.name,
-        amount: item.amount,
-        calories: food.calories * (item.amount / (food.servingSize || 100)),
-        protein: food.protein * (item.amount / (food.servingSize || 100)),
-        carbs: food.carbs * (item.amount / (food.servingSize || 100)),
-        fat: food.fat * (item.amount / (food.servingSize || 100))
-      };
+      // 使用NutritionService计算营养素含量
+      return calculateRecipeItem(food, item.amount);
     }).filter(Boolean);
     
     setRecipeItems(items);
@@ -264,6 +244,7 @@ const Recipe = ({ user }) => {
         protein: item.nutritionInfo.protein,
         carbs: item.nutritionInfo.carbs,
         fat: item.nutritionInfo.fat,
+        fiber: item.nutritionInfo.fiber || 0, // 添加纤维素，如果没有则默认为0
         category: item.category,
         subType: item.subType
       }));

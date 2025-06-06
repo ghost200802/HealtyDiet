@@ -26,7 +26,8 @@ export const saveRecipe = async ({ name, user, recipeItems, totalNutrition, reci
       calories: totalNutrition.calories,
       protein: totalNutrition.protein,
       carbs: totalNutrition.carbs,
-      fat: totalNutrition.fat
+      fat: totalNutrition.fat,
+      fiber: totalNutrition.fiber // 添加纤维素
     },
     mainIngredients: getMainIngredients(recipeItems),
     saveAsFile: saveAsFile // 添加按文件保存选项
@@ -139,6 +140,9 @@ export const getAllFoods = async () => {
  * 处理食物详情更新
  */
 export const updateFoodInRecipe = (updatedFood, foods, recipeItems) => {
+  // 导入NutritionService
+  const { calculateRecipeItem } = require('../services/NutritionService');
+  
   // 更新本地食物列表中的食物数据
   const updatedFoods = foods.map(food => {
     if (food.id === updatedFood.id) {
@@ -154,14 +158,8 @@ export const updateFoodInRecipe = (updatedFood, foods, recipeItems) => {
   if (foodInRecipe) {
     updatedRecipeItems = recipeItems.map(item => {
       if (item.foodId === updatedFood.id) {
-        const ratio = item.amount / (updatedFood.servingSize || 100);
-        return {
-          ...item,
-          calories: updatedFood.calories * ratio,
-          protein: updatedFood.protein * ratio,
-          carbs: updatedFood.carbs * ratio,
-          fat: updatedFood.fat * ratio
-        };
+        // 使用NutritionService计算更新后的营养素含量
+        return calculateRecipeItem(updatedFood, item.amount);
       }
       return item;
     });

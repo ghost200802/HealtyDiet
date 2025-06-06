@@ -8,39 +8,17 @@ import {
   Box,
 } from '@mui/material';
 import ClassicPieChart from '../../components/charts/ClassicPieChart';
+import { calculateEnergyDistribution } from '../../services/NutritionService';
 
 /**
  * 食谱营养总览组件
  */
 const NutritionOverview = ({ totalNutrition, user }) => {
-  // 计算三大营养素的能量占比
+  // 获取能量数据
   const calculateEnergyData = () => {
-    // 蛋白质、碳水和脂肪的能量转换系数（千卡/克）
-    const proteinFactor = 4;
-    const carbsFactor = 4;
-    const fatFactor = 9;
-    
-    // 计算各营养素提供的能量
-    const proteinEnergy = totalNutrition.protein * proteinFactor;
-    const carbsEnergy = totalNutrition.carbs * carbsFactor;
-    const fatEnergy = totalNutrition.fat * fatFactor;
-    
-    // 计算总能量
-    const totalEnergy = proteinEnergy + carbsEnergy + fatEnergy;
-    
-    // 计算各营养素能量占比
-    const proteinPercent = (proteinEnergy / totalEnergy) * 100;
-    const carbsPercent = (carbsEnergy / totalEnergy) * 100;
-    const fatPercent = (fatEnergy / totalEnergy) * 100;
-    
-    return [
-      { name: '蛋白质', value: proteinEnergy, percent: proteinPercent },
-      { name: '碳水化合物', value: carbsEnergy, percent: carbsPercent },
-      { name: '脂肪', value: fatEnergy, percent: fatPercent }
-    ];
+    return calculateEnergyDistribution(totalNutrition);
   };
 
-  // 获取能量数据
   const energyData = calculateEnergyData();
 
   return (

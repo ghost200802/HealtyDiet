@@ -169,6 +169,7 @@ function calculateNutrition(items) {
     protein: 0,
     carbs: 0,
     fat: 0,
+    fiber: 0, // 添加纤维素
     vitamins: { A: 0, C: 0, D: 0, E: 0 },
     minerals: { calcium: 0, iron: 0, magnesium: 0, potassium: 0 }
   };
@@ -185,11 +186,13 @@ function calculateNutrition(items) {
       const protein = food.protein || 0;
       const carbs = food.carbs || 0;
       const fat = food.fat || 0;
+      const fiber = food.fiber || 0; // 添加纤维素
       
       nutrition.calories += calories * ratio;
       nutrition.protein += protein * ratio;
       nutrition.carbs += carbs * ratio;
       nutrition.fat += fat * ratio;
+      nutrition.fiber += fiber * ratio; // 添加纤维素计算
       
       // 累加维生素
       for (const vitamin in food.vitamins) {
@@ -214,6 +217,7 @@ function calculateNutrition(items) {
   nutrition.protein = Math.round(nutrition.protein * 100) / 100;
   nutrition.carbs = Math.round(nutrition.carbs * 100) / 100;
   nutrition.fat = Math.round(nutrition.fat * 100) / 100;
+  nutrition.fiber = Math.round(nutrition.fiber * 100) / 100; // 添加纤维素四舍五入
   
   for (const vitamin in nutrition.vitamins) {
     nutrition.vitamins[vitamin] = Math.round(nutrition.vitamins[vitamin] * 100) / 100;

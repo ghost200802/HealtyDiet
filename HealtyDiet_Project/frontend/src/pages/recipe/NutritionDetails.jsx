@@ -8,7 +8,7 @@ import {
   CardContent,
 } from '@mui/material';
 import HorizontalBarChart from '../../components/charts/HorizontalBarChart';
-import { prepareNutritionData } from './RecipeUtils';
+import { prepareNutritionData } from '../../services/NutritionService';
 
 /**
  * 食谱营养详情组件，显示各营养素的分布图表
@@ -64,6 +64,18 @@ const NutritionDetails = ({ recipeItems, totalNutrition }) => {
                 data={prepareNutritionData(recipeItems, totalNutrition, 'fat')} 
                 unit="g" 
                 type="fat" 
+              />
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardHeader title="纤维素分布" />
+            <CardContent>
+              <HorizontalBarChart 
+                data={prepareNutritionData(recipeItems, totalNutrition, 'fiber')} 
+                unit="g" 
+                type="fiber" 
               />
             </CardContent>
           </Card>

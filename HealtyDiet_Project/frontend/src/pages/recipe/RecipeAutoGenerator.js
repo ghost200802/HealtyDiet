@@ -5,6 +5,7 @@
  */
 
 import axios from 'axios';
+import { calculateFoodNutrition } from '../../services/NutritionService';
 
 /**
  * 将食物按类别分组
@@ -101,19 +102,13 @@ export const generateRecipeByDailyNeeds = async (foods, dailyNeeds) => {
         const randomIndex = Math.floor(Math.random() * availableFoods.length);
         const selectedFood = availableFoods[randomIndex];
         
-        // 计算营养成分
-        const servingSize = selectedFood.servingSize || 100;
-        const ratio = subTypeWeight / servingSize;
+        // 使用NutritionService计算营养成分
+        const nutritionInfo = calculateFoodNutrition(selectedFood, subTypeWeight);
         
         subTypeItems.push({
           food: selectedFood,
           amount: subTypeWeight,
-          nutritionInfo: {
-            calories: selectedFood.calories * ratio,
-            protein: selectedFood.protein * ratio,
-            carbs: selectedFood.carbs * ratio,
-            fat: selectedFood.fat * ratio
-          },
+          nutritionInfo,
           subType: subType
         });
         
@@ -128,16 +123,9 @@ export const generateRecipeByDailyNeeds = async (foods, dailyNeeds) => {
       
       // 更新重量和营养成分
       const newAmount = item.amount + remainingWeight;
-      const servingSize = item.food.servingSize || 100;
-      const ratio = newAmount / servingSize;
       
       item.amount = newAmount;
-      item.nutritionInfo = {
-        calories: item.food.calories * ratio,
-        protein: item.food.protein * ratio,
-        carbs: item.food.carbs * ratio,
-        fat: item.food.fat * ratio
-      };
+      item.nutritionInfo = calculateFoodNutrition(item.food, newAmount);
     }
     
     recipe[category] = subTypeItems;
