@@ -229,61 +229,63 @@ const FoodAddDialog = ({
             <Typography variant="h6" gutterBottom>
               食物分类
             </Typography>
-            <List>
-              <ListItem 
-                button 
-                selected={selectedCategory === '全部'}
-                onClick={() => {
-                  setSelectedCategory('全部');
-                  setSelectedSubCategory(null);
-                }}
-              >
-                <ListItemText primary="全部" />
-              </ListItem>
-              
-              {Object.keys(foodTypes).map((type) => {
-                const isExpanded = expandedCategories[type] || false;
+            <Box sx={{ height: '600px', overflow: 'auto' }}>
+              <List>
+                <ListItem 
+                  button 
+                  selected={selectedCategory === '全部'}
+                  onClick={() => {
+                    setSelectedCategory('全部');
+                    setSelectedSubCategory(null);
+                  }}
+                >
+                  <ListItemText primary="全部" />
+                </ListItem>
                 
-                return (
-                  <React.Fragment key={type}>
-                    <ListItem 
-                      button 
-                      selected={selectedCategory === type && !selectedSubCategory}
-                      onClick={() => {
-                        setSelectedCategory(type);
-                        setSelectedSubCategory(null);
-                        setExpandedCategories(prev => ({
-                          ...prev,
-                          [type]: !isExpanded
-                        }));
-                      }}
-                    >
-                      <ListItemText primary={type} />
-                      {isExpanded ? <ExpandLess /> : <ExpandMore />}
-                    </ListItem>
-                    
-                    <Collapse in={isExpanded} timeout="auto" unmountOnExit>
-                      <List component="div" disablePadding>
-                        {foodTypes[type] && foodTypes[type].subTypes && foodTypes[type].subTypes.map((subType) => (
-                          <ListItem 
-                            key={`${type}-${subType}`} 
-                            button 
-                            selected={selectedCategory === type && selectedSubCategory === subType}
-                            sx={{ pl: 4 }}
-                            onClick={() => {
-                              setSelectedCategory(type);
-                              setSelectedSubCategory(subType);
-                            }}
-                          >
-                            <ListItemText primary={subType} />
-                          </ListItem>
-                        ))}
-                      </List>
-                    </Collapse>
-                  </React.Fragment>
-                );
-              })}
-            </List>
+                {Object.keys(foodTypes).map((type) => {
+                  const isExpanded = expandedCategories[type] || false;
+                  
+                  return (
+                    <React.Fragment key={type}>
+                      <ListItem 
+                        button 
+                        selected={selectedCategory === type && !selectedSubCategory}
+                        onClick={() => {
+                          setSelectedCategory(type);
+                          setSelectedSubCategory(null);
+                          setExpandedCategories(prev => ({
+                            ...prev,
+                            [type]: !isExpanded
+                          }));
+                        }}
+                      >
+                        <ListItemText primary={type} />
+                        {isExpanded ? <ExpandLess /> : <ExpandMore />}
+                      </ListItem>
+                      
+                      <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                          {foodTypes[type] && foodTypes[type].subTypes && foodTypes[type].subTypes.map((subType) => (
+                            <ListItem 
+                              key={`${type}-${subType}`} 
+                              button 
+                              selected={selectedCategory === type && selectedSubCategory === subType}
+                              sx={{ pl: 4 }}
+                              onClick={() => {
+                                setSelectedCategory(type);
+                                setSelectedSubCategory(subType);
+                              }}
+                            >
+                              <ListItemText primary={subType} />
+                            </ListItem>
+                          ))}
+                        </List>
+                      </Collapse>
+                    </React.Fragment>
+                  );
+                })}
+              </List>
+            </Box>
           </Grid>
           
           {/* 右侧食物列表 */}
@@ -291,19 +293,21 @@ const FoodAddDialog = ({
             <Typography variant="h6" gutterBottom>
               食物列表
             </Typography>
-            {filteredFoods.length === 0 ? (
-              <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', py: 3 }}>
-                没有找到匹配的食物
-              </Typography>
-            ) : (
-              <Grid container spacing={2}>
-                {filteredFoods.map(food => (
-                  <Grid item xs={12} sm={6} md={4} key={food.id}>
-                    {renderFoodCard(food)}
-                  </Grid>
-                ))}
-              </Grid>
-            )}
+            <Box sx={{ height: '600px', overflow: 'auto' }}>
+              {filteredFoods.length === 0 ? (
+                <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', py: 3 }}>
+                  没有找到匹配的食物
+                </Typography>
+              ) : (
+                <Grid container spacing={2}>
+                  {filteredFoods.map(food => (
+                    <Grid item xs={12} sm={6} md={4} key={food.id}>
+                      {renderFoodCard(food)}
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
+            </Box>
           </Grid>
         </Grid>
       </DialogContent>
