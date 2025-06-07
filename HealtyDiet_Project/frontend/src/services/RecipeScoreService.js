@@ -94,7 +94,7 @@ const calculateRecipeScore = async (recipe, targetValues, standardNeeds) => {
   console.log(`类别限制得分: ${categoryLimitsScore}, 违规数量: ${categoryViolations}`);
   
   // 计算总得分
-  const totalScore = caloriesScore + proteinScore + carbsScore + fatScore + fiberScore + categoryLimitsScore;
+  const totalScore = caloriesScore + proteinScore + carbsScore + fatScore + fiberScore;
   
   // 详细的调试输出
   console.log('===== 食谱评分详情 =====');

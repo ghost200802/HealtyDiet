@@ -186,24 +186,12 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
   let bestScore = -Infinity;
   let bestRecipe = JSON.parse(JSON.stringify(optimizedRecipe));
   
+  console.log(`my input: `, recipe);
   // 优化循环
   while (currentIteration < maxIterations) {
     // 计算当前食谱的得分
-    console.log(`my input: `, recipe);
-    let currentScore = await calculateRecipeScoreWithUserData(recipe, userData, standardNeeds);
-    
-    // 初始化本轮迭代的前一个得分，用于比较是否有改进
-    let previousScore = currentScore;
     let hasImprovement = false;
-    
-    // 如果当前得分是最佳得分，保存当前食谱
-    if (currentScore > bestScore) {
-      bestScore = currentScore;
-      bestRecipe = JSON.parse(JSON.stringify(optimizedRecipe));
-    }
-
-    console.log(`my optimizedRecipe: `, optimizedRecipe);
-    
+    let currentScore = await calculateRecipeScoreWithUserData(recipe, userData, standardNeeds);      
 
     // 遍历该类别中的每个食物
     for (const item of optimizedRecipe)  {
@@ -254,17 +242,9 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
         // 更新当前得分
         currentScore = maxScore;
         hasImprovement = true;
-        
-        // 如果当前得分是最佳得分，保存当前食谱
-        if (currentScore > bestScore) {
-          bestScore = currentScore;
-          bestRecipe = JSON.parse(JSON.stringify(optimizedRecipe));
-        }
-      }
-      
-      // 如果已经找到改进，提前结束类别遍历
-      if (hasImprovement) {
-        break;
+
+        bestScore = currentScore;
+        bestRecipe = JSON.parse(JSON.stringify(optimizedRecipe));
       }
     }
     
