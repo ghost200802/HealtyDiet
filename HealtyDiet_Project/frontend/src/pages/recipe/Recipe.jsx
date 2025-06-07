@@ -228,23 +228,32 @@ const Recipe = ({ user }) => {
   // 加载食谱
   const handleLoadRecipe = (recipe) => {
     setRecipeName(recipe.name);
-
-    setSuccess('食谱加载 recipe：', recipe);
     
     // 转换食谱项目格式
-    const items = recipe.items.map(item => {
-      const food = foods.find(f => f.id === item.foodId);
-      if (!food) return null;
-      
-      // 使用NutritionService计算营养素含量
-      return calculateRecipeItem(food, item.amount);
-    }).filter(Boolean);
+    const loadItems = async () => {
+      try {
+        // 并行处理所有食谱项目
+        const itemPromises = recipe.items.map(item => {
+          return calculateRecipeItem(item.foodId, item.amount);
+        });
+        
+        // 等待所有项目处理完成
+        const items = await Promise.all(itemPromises);
+        
+        // 过滤掉null值
+        const validItems = items.filter(Boolean);
+        
+        setRecipeItems(validItems);
+        setRecipeDialogOpen(false);
+        setSuccess('食谱加载成功');
+      } catch (error) {
+        console.error('加载食谱时出错:', error);
+        setError('加载食谱时出错: ' + error.message);
+      }
+    };
     
-    setSuccess('食谱加载 items：', items);
-
-    setRecipeItems(items);
-    setRecipeDialogOpen(false);
-    setSuccess('食谱加载成功');
+    // 执行加载
+    loadItems();
     
     // 3秒后清除成功消息
     setTimeout(() => setSuccess(''), 3000);
