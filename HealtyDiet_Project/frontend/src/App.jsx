@@ -4,6 +4,9 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import axios from 'axios';
 
+// 导入健康指标计算服务
+import { calculateHealthMetrics } from './services/HealthMetricsService';
+
 // 组件导入
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
@@ -117,87 +120,29 @@ function App() {
     console.log('开始计算营养指标，传入的profileData:', profileData);
     console.log('开始计算营养指标，传入的userData:', userData);
     
-    // 计算年龄
-    const calculateAge = (birthDate) => {
-      const today = new Date();
-      const birth = new Date(birthDate);
-      let age = today.getFullYear() - birth.getFullYear();
-      const monthDiff = today.getMonth() - birth.getMonth();
-      
-      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-        age--;
-      }
-      
-      return age;
-    };
+    // 使用健康指标计算服务计算所有指标
+    const metrics = calculateHealthMetrics(profileData);
     
-    // 计算BMR
-    const calculateBMR = (weight, height, age, gender) => {
-      // 使用Mifflin-St Jeor公式
-      if (gender === 'male') {
-        return Math.round(10 * weight + 6.25 * height - 5 * age + 5);
-      } else {
-        return Math.round(10 * weight + 6.25 * height - 5 * age - 161);
-      }
-    };
-    
-    const calculatedAge = calculateAge(profileData.birthDate);
-    
-    const calculatedBMR = profileData.weight && profileData.height && profileData.gender ? 
-      calculateBMR(
-        profileData.weight,
-        profileData.height,
-        calculatedAge,
-        profileData.gender
-      ) : 0;
-    
-    // 活动水平乘数
-    const activityLevels = [
-      { value: 'sedentary', multiplier: 1.2, proteinCoefficient: 1.2 },
-      { value: 'light', multiplier: 1.375, proteinCoefficient: 1.5 },
-      { value: 'moderate', multiplier: 1.55, proteinCoefficient: 1.8 },
-      { value: 'active', multiplier: 1.725, proteinCoefficient: 2.2 },
-      { value: 'very_active', multiplier: 1.9, proteinCoefficient: 2.5 }
-    ];
-    
-    // 查找活动水平乘数
-    const activityLevel = activityLevels.find(level => level.value === profileData.activityLevel);
-    const multiplier = activityLevel ? activityLevel.multiplier : 1.2;
-    const proteinCoefficient = activityLevel ? activityLevel.proteinCoefficient : 1.0;
-    
-    // 计算TDEE (总能量消耗)
-    const tdeeValue = calculatedBMR ? Math.round(calculatedBMR * multiplier) : 0;
-    
-    // 获取热量缺口值（默认0千卡）
-    const calorieDeficit = profileData.calorieDeficit || 0;
-    const dciValue = Math.max(tdeeValue - calorieDeficit, 1200); // 确保不低于基础代谢
-    
-    // 计算蛋白质需求
-    const proteinValue = Math.round(profileData.weight * proteinCoefficient);
-    
-    // 脂肪(25% TDEE, 9千卡/克)
-    const fatValue = Math.round(dciValue * 0.25 / 9);
-    
-    // 计算碳水化合物需求 (TDEE - (蛋白质*4 + 脂肪*9)) / 4
-    const proteinCalories = proteinValue * 4;
-    const fatCalories = fatValue * 9;
-    const carbsValue = Math.round((dciValue - proteinCalories - fatCalories) / 4);
+    if (!metrics) {
+      console.warn('计算健康指标失败，可能是缺少必要的用户数据');
+      return;
+    }
     
     // 更新用户对象，添加营养数据
     setUser(prevUser => ({
       ...prevUser,
-      protein: proteinValue,
-      carbs: carbsValue,
-      fat: fatValue,
-      dci: dciValue
+      protein: metrics.protein,
+      carbs: metrics.carbs,
+      fat: metrics.fat,
+      dci: metrics.dci
     }));
     
     // 更新营养数据状态
     setNutritionData({
-      protein: proteinValue,
-      carbs: carbsValue,
-      fat: fatValue,
-      dci: dciValue
+      protein: metrics.protein,
+      carbs: metrics.carbs,
+      fat: metrics.fat,
+      dci: metrics.dci
     });
   };
   
@@ -253,7 +198,7 @@ function App() {
             
             <Route path="/recipe" element={
               <PrivateRoute isAuthenticated={isAuthenticated}>
-                <Recipe user={user} />
+                <Recipe user={user} nutritionData={nutritionData} />
               </PrivateRoute>
             } />
             

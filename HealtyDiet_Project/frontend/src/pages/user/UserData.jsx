@@ -21,6 +21,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import zhCN from 'date-fns/locale/zh-CN';
 
+// 导入健康指标计算服务
+import { 
+  activityLevels, 
+  calculateHealthMetrics 
+} from '../../services/HealthMetricsService';
+
 // 用户数据表单验证模式
 const UserDataSchema = Yup.object().shape({
   birthDate: Yup.date()
@@ -49,55 +55,6 @@ const UserDataSchema = Yup.object().shape({
     .max(2000, '热量缺口不能超过2000千卡')
     .nullable()
 });
-
-// 活动水平选项
-const activityLevels = [
-  { value: 'sedentary', label: '久坐不动 (几乎不运动)', multiplier: 1.2, proteinCoefficient: 1.2 },
-  { value: 'light', label: '轻度活动 (每周运动1-3天)', multiplier: 1.375, proteinCoefficient: 1.5 },
-  { value: 'moderate', label: '中度活动 (每周运动3-5天)', multiplier: 1.55, proteinCoefficient: 1.8 },
-  { value: 'active', label: '积极活动 (每周运动6-7天)', multiplier: 1.725, proteinCoefficient: 2.2 },
-  { value: 'very_active', label: '非常活跃 (每天高强度运动)', multiplier: 1.9, proteinCoefficient: 2.5 }
-];
-
-// 计算年龄
-const calculateAge = (birthDate) => {
-  const today = new Date();
-  const birth = new Date(birthDate);
-  let age = today.getFullYear() - birth.getFullYear();
-  const monthDiff = today.getMonth() - birth.getMonth();
-  
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-    age--;
-  }
-  
-  return age;
-};
-
-// 计算BMI
-const calculateBMI = (weight, height) => {
-  // 身高从厘米转换为米
-  const heightInMeters = height / 100;
-  const bmi = weight / (heightInMeters * heightInMeters);
-  return Math.round(bmi * 10) / 10; // 四舍五入到一位小数
-};
-
-// 计算基础代谢率 (BMR)
-const calculateBMR = (weight, height, age, gender) => {
-  // 使用Mifflin-St Jeor公式
-  if (gender === 'male') {
-    return Math.round(10 * weight + 6.25 * height - 5 * age + 5);
-  } else {
-    return Math.round(10 * weight + 6.25 * height - 5 * age - 161);
-  }
-};
-
-// 获取BMI分类
-const getBMICategory = (bmi) => {
-  if (bmi < 18.5) return { category: '体重过轻', color: '#2196f3' };
-  if (bmi < 24) return { category: '正常体重', color: '#4caf50' };
-  if (bmi < 28) return { category: '超重', color: '#ff9800' };
-  return { category: '肥胖', color: '#f44336' };
-};
 
 const UserData = ({ user, onNutritionDataUpdate }) => {
   const [userData, setUserData] = useState(null);
@@ -131,7 +88,7 @@ const UserData = ({ user, onNutritionDataUpdate }) => {
         const profileData = response.data.profile;
         setUserData(profileData);
         
-        // 如果有用户数据，计算BMR、TDEE和BMI
+        // 如果有用户数据，计算健康指标
         if (profileData) {
           updateHealthMetrics(profileData);
         }
@@ -150,59 +107,26 @@ const UserData = ({ user, onNutritionDataUpdate }) => {
   const updateHealthMetrics = (profileData) => {
     if (!profileData) return;
     
-    const calculatedAge = calculateAge(profileData.birthDate);
-    setAge(calculatedAge);
+    // 使用健康指标计算服务计算所有指标
+    const metrics = calculateHealthMetrics(profileData);
     
-    const calculatedBMI = profileData.weight && profileData.height ? calculateBMI(profileData.weight, profileData.height) : 0;
-    setBmi(calculatedBMI);
-    setBmiCategory(getBMICategory(calculatedBMI || 0));
-    
-    const calculatedBMR = profileData.weight && profileData.height && profileData.gender ? 
-      calculateBMR(
-        profileData.weight,
-        profileData.height,
-        calculatedAge,
-        profileData.gender
-      ) : 0;
-    setBmr(calculatedBMR);
-    
-    // 查找活动水平乘数
-    const activityLevel = activityLevels.find(level => level.value === profileData.activityLevel);
-    console.log('当前活动水平:', activityLevel);
-    const multiplier = activityLevel ? activityLevel.multiplier : 1.2;
-    
-    // 计算TDEE (总能量消耗)
-    const tdeeValue = calculatedBMR ? Math.round(calculatedBMR * multiplier) : 0;
-    
-    // 获取热量缺口值（默认500千卡）
-    const calorieDeficit = profileData.calorieDeficit || 0;
-    const adjustedTdee = Math.max(tdeeValue - calorieDeficit, 1200); // 确保不低于基础代谢
-    setTdee(adjustedTdee);
-    
-    // 计算每日营养素推荐摄入量  
-    // 根据活动水平确定蛋白质系数
-    const proteinCoefficient = activityLevel ? activityLevel.proteinCoefficient : 1.0;
-    
-    // 计算蛋白质需求
-    const proteinValue = Math.round(profileData.weight * proteinCoefficient);
-    setProtein(proteinValue);
-    // 脂肪(25% TDEE, 9千卡/克)
-    const fatValue = Math.round(adjustedTdee * 0.25 / 9);
-    setFat(fatValue);
-    
-    // 计算碳水化合物需求 (TDEE - (蛋白质*4 + 脂肪*9)) / 4
-    const proteinCalories = proteinValue * 4;
-    const fatCalories = fatValue * 9;
-    const carbsValue = Math.round((adjustedTdee - proteinCalories - fatCalories) / 4);
-    setCarbs(carbsValue);
+    // 更新状态
+    setAge(metrics.age);
+    setBmi(metrics.bmi);
+    setBmiCategory(metrics.bmiCategory);
+    setBmr(metrics.bmr);
+    setTdee(metrics.dci); // 注意这里使用dci作为TDEE
+    setProtein(metrics.protein);
+    setFat(metrics.fat);
+    setCarbs(metrics.carbs);
     
     // 如果有回调函数，将营养数据传递给父组件
     if (onNutritionDataUpdate) {
       onNutritionDataUpdate({
-        protein: proteinValue,
-        carbs: carbsValue,
-        fat: fatValue,
-        tdee: adjustedTdee
+        protein: metrics.protein,
+        carbs: metrics.carbs,
+        fat: metrics.fat,
+        tdee: metrics.dci
       });
     }
   };
