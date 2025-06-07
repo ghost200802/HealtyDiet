@@ -65,13 +65,13 @@ const calculateRecipeScore = async (recipe, targetValues, standardNeeds) => {
   
   // 计算各项得分（越接近目标值，得分越高）
   // 能量得分（占比5%）
-  const caloriesScore = 5 * (1 - Math.abs(nutrition.calories - targetCalories) / targetCalories);
+  const caloriesScore = 10 * (1 - Math.abs(nutrition.calories - targetCalories) / targetCalories);
   
   // 三大营养素和纤维素得分（各占比20%）
-  const proteinScore = 20 * (1 - Math.abs(nutrition.protein - targetProtein) / targetProtein);
-  const carbsScore = 20 * (1 - Math.abs(nutrition.carbs - targetCarbs) / targetCarbs);
+  const proteinScore = 30 * (1 - Math.abs(nutrition.protein - targetProtein) / targetProtein);
+  const carbsScore = 30 * (1 - Math.abs(nutrition.carbs - targetCarbs) / targetCarbs);
   const fatScore = 20 * (1 - Math.abs(nutrition.fat - targetFat) / targetFat);
-  const fiberScore = 5 * (1 - Math.abs(nutrition.fiber - targetFiber) / targetFiber);
+  const fiberScore = 10 * (1 - Math.abs(nutrition.fiber - targetFiber) / targetFiber);
   
   console.log('各项得分计算结果:', {
     caloriesScore,

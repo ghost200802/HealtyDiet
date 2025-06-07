@@ -141,7 +141,7 @@ export const getAllFoods = async () => {
  */
 export const updateFoodInRecipe = (updatedFood, foods, recipeItems) => {
   // 导入NutritionService
-  const { calculateRecipeItem } = require('../services/NutritionService');
+  const { calculateRecipeItem } = require('../../services/NutritionService');
   
   // 更新本地食物列表中的食物数据
   const updatedFoods = foods.map(food => {
