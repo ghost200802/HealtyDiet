@@ -120,7 +120,7 @@ const UserData = ({ user, onNutritionDataUpdate }) => {
         if (!user || !user.id) return;
         
         const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:5000/api/users/profile/${user.id}`, {
+        const response = await axios.get(`/api/users/profile/${user.id}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -216,7 +216,7 @@ const UserData = ({ user, onNutritionDataUpdate }) => {
       const token = localStorage.getItem('token');
       console.log('提交的用户数据:', values);
       const response = await axios.put(
-        `http://localhost:5000/api/users/profile/${user.id}`,
+        `/api/users/profile/${user.id}`,
         { profile: values },
         {
           headers: {

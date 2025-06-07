@@ -89,7 +89,7 @@ const FoodAdd = () => {
       };
       
       // 发送添加食物请求到后端API
-      const response = await axios.post('http://localhost:5000/api/foods', foodData);
+      const response = await axios.post('/api/foods', foodData);
       
       // 添加成功
       setSuccess('食物添加成功！');

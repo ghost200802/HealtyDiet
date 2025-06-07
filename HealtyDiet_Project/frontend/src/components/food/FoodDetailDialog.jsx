@@ -53,7 +53,7 @@ const FoodDetailDialog = ({ open, onClose, food, onFoodUpdate }) => {
   const handleSaveChanges = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/foods/${editedFood.id}`, editedFood, {
+      await axios.put(`/api/foods/${editedFood.id}`, editedFood, {
         headers: {
           Authorization: `Bearer ${token}`
         }

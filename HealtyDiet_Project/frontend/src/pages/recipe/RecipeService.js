@@ -43,7 +43,7 @@ export const saveRecipe = async ({ name, user, recipeItems, totalNutrition, reci
       // 更新现有食谱
       console.log(`更新现有食谱 ID: ${existingRecipe.id}`);
       await axios.put(
-        `http://localhost:5000/api/recipes/${existingRecipe.id}`,
+        `/api/recipes/${existingRecipe.id}`,
         recipeData,
         {
           headers: {
@@ -55,7 +55,7 @@ export const saveRecipe = async ({ name, user, recipeItems, totalNutrition, reci
       // 创建新食谱
       console.log('创建新食谱');
       await axios.post(
-        'http://localhost:5000/api/recipes',
+        '/api/recipes',
         recipeData,
         {
           headers: {
@@ -68,7 +68,7 @@ export const saveRecipe = async ({ name, user, recipeItems, totalNutrition, reci
     // 重新获取用户的食谱
     console.log(`获取用户 ${user.id} 的食谱列表`);
     const recipesResponse = await axios.get(
-      `http://localhost:5000/api/recipes/user/${user.id}`,
+      `/api/recipes/user/${user.id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -93,7 +93,7 @@ export const deleteRecipe = async (recipeId, user) => {
   
   const token = localStorage.getItem('token');
   await axios.delete(
-    `http://localhost:5000/api/recipes/${recipeId}`,
+    `/api/recipes/${recipeId}`,
     {
       headers: {
         Authorization: `Bearer ${token}`
@@ -112,7 +112,7 @@ export const getUserRecipes = async (user) => {
   
   const token = localStorage.getItem('token');
   const response = await axios.get(
-    `http://localhost:5000/api/recipes/user/${user.id}`,
+    `/api/recipes/user/${user.id}`,
     {
       headers: {
         Authorization: `Bearer ${token}`
@@ -128,7 +128,7 @@ export const getUserRecipes = async (user) => {
  */
 export const getAllFoods = async () => {
   try {
-    const response = await axios.get('http://localhost:5000/api/foods');
+    const response = await axios.get('/api/foods');
     return response.data;
   } catch (error) {
     console.error('获取食物数据失败:', error);

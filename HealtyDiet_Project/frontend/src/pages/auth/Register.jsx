@@ -42,7 +42,7 @@ const Register = () => {
       setSuccess('');
       
       // 发送注册请求到后端API
-      const response = await axios.post('http://localhost:5000/api/users/register', {
+      const response = await axios.post('/api/users/register', {
         username: values.username,
         email: values.email,
         password: values.password

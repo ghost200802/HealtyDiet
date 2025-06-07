@@ -81,7 +81,7 @@ const getFoodById = async (id) => {
     }
     
     // 缓存中没有，从服务器获取
-    const response = await axios.get(`http://localhost:5000/api/foods/${id}`);
+    const response = await axios.get(`/api/foods/${id}`);
     const food = response.data;
     
     // 添加到缓存
@@ -124,7 +124,7 @@ const getFoodsByIds = async (ids) => {
     }
     
     // 从服务器批量获取未缓存的食物
-    const response = await axios.post('http://localhost:5000/api/foods/batch', { ids: uncachedIds });
+    const response = await axios.post('/api/foods/batch', { ids: uncachedIds });
     const fetchedFoods = response.data;
     
     // 添加到缓存
@@ -144,7 +144,7 @@ const getFoodsByIds = async (ids) => {
  */
 const getAllFoods = async () => {
   try {
-    const response = await axios.get('http://localhost:5000/api/foods');
+    const response = await axios.get('/api/foods');
     const foods = response.data;
     
     // 添加到缓存
@@ -168,7 +168,7 @@ const searchFoods = async (query) => {
       return getAllFoods();
     }
     
-    const response = await axios.get(`http://localhost:5000/api/foods/search/${query}`);
+    const response = await axios.get(`/api/foods/search/${query}`);
     const foods = response.data;
     
     // 添加到缓存

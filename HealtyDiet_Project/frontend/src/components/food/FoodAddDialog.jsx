@@ -48,7 +48,7 @@ const FoodAddDialog = ({
     const fetchFoodTypes = async () => {
       try {
         // 直接获取完整的食物类型数据
-        const response = await axios.get('http://localhost:5000/api/foods/types/full');
+        const response = await axios.get('/api/foods/types/full');
         
         if (response.data && response.data.foodTypes) {
           setFoodTypes(response.data.foodTypes);

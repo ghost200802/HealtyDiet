@@ -42,7 +42,7 @@ const Profile = ({ user }) => {
         if (!user || !user.id) return;
         
         const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:5000/api/users/profile/${user.id}`, {
+        const response = await axios.get(`/api/users/profile/${user.id}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -78,7 +78,7 @@ const Profile = ({ user }) => {
       
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5000/api/users/profile/${user.id}`,
+        `/api/users/profile/${user.id}`,
         updateData,
         {
           headers: {

@@ -38,7 +38,7 @@ const FoodSearch = () => {
         setLoading(true);
         setError('');
         
-        const response = await axios.get('http://localhost:5000/api/foods');
+        const response = await axios.get('/api/foods');
         setFoods(response.data);
       } catch (err) {
         console.error('获取食物数据失败:', err);
@@ -61,7 +61,7 @@ const FoodSearch = () => {
         setLoading(true);
         setError('');
         
-        const response = await axios.get('http://localhost:5000/api/foods');
+        const response = await axios.get('/api/foods');
         setFoods(response.data);
       } catch (err) {
         console.error('获取食物数据失败:', err);
@@ -76,7 +76,7 @@ const FoodSearch = () => {
       setLoading(true);
       setError('');
       
-      const response = await axios.get(`http://localhost:5000/api/foods/search/${searchQuery}`);
+      const response = await axios.get(`/api/foods/search/${searchQuery}`);
       setFoods(response.data);
       
       if (response.data.length === 0) {

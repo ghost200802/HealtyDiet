@@ -9,7 +9,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // 中间件
-app.use(cors());
+app.use(cors({
+  origin: '*', // 允许所有来源的请求
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(bodyParser.json());
 
 // 确保数据目录和文件存在
@@ -39,6 +43,6 @@ app.get('/', (req, res) => {
 });
 
 // 启动服务器
-app.listen(PORT, () => {
-  console.log(`服务器运行在端口: ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`服务器运行在端口: ${PORT}，可通过局域网访问`);
 });

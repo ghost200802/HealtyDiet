@@ -6,7 +6,7 @@ start "后端服务" npm run start
 
 REM 启动前端服务
 cd ..\frontend
-start "前端应用" npm start
+start "前端应用" npm start -- --host
 
 REM 返回项目根目录
 cd ..\..

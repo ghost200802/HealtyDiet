@@ -29,7 +29,7 @@ const Login = ({ onLogin }) => {
       setError('');
       
       // 发送登录请求到后端API
-      const response = await axios.post('http://localhost:5000/api/users/login', {
+      const response = await axios.post('/api/users/login', {
         username: values.username,
         password: values.password
       });

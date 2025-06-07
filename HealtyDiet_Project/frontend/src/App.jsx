@@ -90,7 +90,7 @@ function App() {
     try {
       if (!userData || !userData.id) return;
       
-      const response = await axios.get(`http://localhost:5000/api/users/profile/${userData.id}`, {
+      const response = await axios.get(`/api/users/profile/${userData.id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
