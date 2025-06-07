@@ -345,6 +345,79 @@ const Recipe = ({ user }) => {
     }
   };
 
+  // 自动优化食谱
+  const handleAutoOptimize = async () => {
+    try {
+      if (recipeItems.length === 0) {
+        setError('食谱为空，无法进行优化');
+        return;
+      }
+
+      // 将recipeItems转换为optimizeRecipeByUserData函数所需的格式
+      const simplifiedRecipe = recipeItems.map(item => ({
+        foodId: item.foodId,
+        amount: item.amount
+      }));
+
+      // 调用优化函数
+      const optimizedRecipe = await optimizeRecipeByUserData(simplifiedRecipe, user, dailyNeeds);
+
+      // 添加日志输出，列出优化后食谱中的食物和数量
+      console.log('优化后的食谱食物列表:', optimizedRecipe);
+      
+      // 添加日志输出，检查优化后的食谱得分
+      console.log('优化后的食谱得分:', await calculateRecipeScoreWithUserData(optimizedRecipe, user, dailyNeeds.standardNeeds));
+      
+      // 转换为食谱项目格式
+      const processItems = async () => {
+        try {
+          // 从FoodService获取食物数据和计算营养信息
+          const { getFoodById } = await import('../../services/FoodService');
+          const { calculateFoodNutrition } = await import('../../services/NutritionService');
+          
+          // 并行处理所有项目
+          const itemPromises = optimizedRecipe.map(async (item) => {
+            // 获取食物详细信息
+            const food = await getFoodById(item.foodId);
+            // 计算营养信息
+            const nutritionInfo = await calculateFoodNutrition(item.foodId, item.amount);
+            
+            return {
+              foodId: item.foodId,
+              foodName: food.name,
+              amount: item.amount,
+              calories: nutritionInfo.calories,
+              protein: nutritionInfo.protein,
+              carbs: nutritionInfo.carbs,
+              fat: nutritionInfo.fat,
+              fiber: nutritionInfo.fiber || 0,
+              category: food.category || food.type,
+              subType: food.subCategory || food.subType
+            };
+          });
+          
+          // 等待所有项目处理完成
+          const processedItems = await Promise.all(itemPromises);
+          setRecipeItems(processedItems);
+        } catch (error) {
+          console.error('处理食谱项目时出错:', error);
+          setError('处理食谱项目时出错: ' + error.message);
+        }
+      };
+      
+      // 执行处理
+      processItems();
+      
+      setSuccess('已根据用户数据优化食谱');
+      
+      // 3秒后清除成功消息
+      setTimeout(() => setSuccess(''), 2000);
+    } catch (err) {
+      console.error('自动优化食谱失败:', err);
+      setError(err.message || '自动优化食谱失败，请重试');
+    }
+  };
+
   if (loading) {
     return (
       <Container sx={{ py: 4, textAlign: 'center' }}>
@@ -366,6 +439,7 @@ const Recipe = ({ user }) => {
         onLoad={() => setRecipeDialogOpen(true)}
         onAdd={() => setFoodAddDialogOpen(true)}
         onAutoGenerate={handleAutoGenerate}
+        onAutoOptimize={handleAutoOptimize}
       />
       
       {/* 消息提示 */}
