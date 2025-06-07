@@ -188,12 +188,18 @@ const Recipe = ({ user }) => {
   // 更新食物数量
   const handleAmountChange = (index, newAmount) => {
     const updatedItems = [...recipeItems];
-    const food = foods.find(f => f.id === updatedItems[index].foodId);
-    if (food) {
-      // 使用NutritionService计算更新后的营养素含量
-      updatedItems[index] = calculateRecipeItem(food, newAmount);
-      setRecipeItems(updatedItems);
-    }
+    const foodId = updatedItems[index].foodId;
+    
+    // 使用NutritionService计算更新后的营养素含量
+    calculateRecipeItem(foodId, newAmount)
+      .then(updatedItem => {
+        updatedItems[index] = updatedItem;
+        setRecipeItems(updatedItems);
+      })
+      .catch(error => {
+        console.error('更新食物数量时出错:', error);
+        setError('更新食物数量时出错: ' + error.message);
+      });
   };
   
   // 保存食谱
