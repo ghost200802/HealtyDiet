@@ -302,7 +302,9 @@ const Recipe = ({ user }) => {
       
       // 添加日志输出，检查优化后的食谱得分
       // 将分类食谱转换为扁平列表，以便计算得分
-      console.log('优化后的食谱得分:', await calculateRecipeScoreWithUserData(optimizedRecipe, user, dailyNeeds.standardNeeds));
+      const scoreResult = await calculateRecipeScoreWithUserData(optimizedRecipe, user, dailyNeeds.standardNeeds);
+      console.log('优化后的食谱得分:', scoreResult.score);
+      console.log('优化后的食谱得分详情:', scoreResult.detail);
       
       // 转换为食谱项目格式
       const newItems = [];
@@ -381,7 +383,9 @@ const Recipe = ({ user }) => {
       console.log('优化后的食谱食物列表:', optimizedRecipe);
       
       // 添加日志输出，检查优化后的食谱得分
-      console.log('优化后的食谱得分:', await calculateRecipeScoreWithUserData(optimizedRecipe, user, dailyNeeds.standardNeeds));
+      const scoreResult = await calculateRecipeScoreWithUserData(optimizedRecipe, user, dailyNeeds.standardNeeds);
+      console.log('优化后的食谱得分:', scoreResult.score);
+      console.log('优化后的食谱得分详情:', scoreResult.detail);
       
       // 转换为食谱项目格式
       const processItems = async () => {

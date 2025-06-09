@@ -215,7 +215,8 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
   while (currentIteration < maxIterations) {
     // 计算当前食谱的得分
     let hasImprovement = false;
-    let currentScore = await calculateRecipeScoreWithUserData(recipe, userData, standardNeeds);      
+    let currentScoreResult = await calculateRecipeScoreWithUserData(recipe, userData, standardNeeds);
+    let currentScore = currentScoreResult.score;      
 
     // 遍历该类别中的每个食物
     for (const item of optimizedRecipe)  {
@@ -225,7 +226,8 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
       // 尝试增加10g
       item.amount += 10;
       
-      const increaseScore = await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
+      const increaseScoreResult = await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
+      const increaseScore = increaseScoreResult.score;
       
       // 恢复原始重量
       item.amount = originalAmount;
@@ -234,7 +236,8 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
       let decreaseScore = -Infinity;
       if (originalAmount >= 20) {
         item.amount -= 10;
-        decreaseScore = await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
+        const decreaseScoreResult = await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
+        decreaseScore = decreaseScoreResult.score;
         
         // 恢复原始重量
         item.amount = originalAmount;
@@ -286,7 +289,9 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
   }
   
   console.log(`优化完成，最佳得分: ${bestScore.toFixed(2)}，迭代次数: ${currentIteration}`);
-  console.log(`最终返回最佳食谱，而不是当前食谱。最佳得分: ${bestScore.toFixed(2)}，当前得分: ${(await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds)).toFixed(2)}`);
+  const finalScoreResult = await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
+  console.log(`最终返回最佳食谱，而不是当前食谱。最佳得分: ${bestScore.toFixed(2)}，当前得分: ${finalScoreResult.score.toFixed(2)}`);
+  console.log('当前食谱得分详情:', finalScoreResult.detail);
   
   // 返回优化后的最佳食谱
   return bestRecipe;

@@ -24,8 +24,10 @@ const NutritionOverview = ({ totalNutrition, user, recipeItems }) => {
 
   const energyData = calculateEnergyData();
 
-  // 使用useState存储食谱评分
+  // 使用useState存储食谱评分和详细信息
   const [recipeScore, setRecipeScore] = useState(0);
+  const [scoreDetails, setScoreDetails] = useState(null);
+  const [scoreSuggestions, setScoreSuggestions] = useState(null);
 
   // 使用useEffect处理异步评分计算
   useEffect(() => {
@@ -40,12 +42,16 @@ const NutritionOverview = ({ totalNutrition, user, recipeItems }) => {
       
       try {
         // 调用RecipeScoreService中的评分函数
-        const score = await calculateRecipeScoreWithUserData(recipeItems, user, dailyNeeds);
-        console.log('计算得到的评分：', score);
-        setRecipeScore(score);
+        const result = await calculateRecipeScoreWithUserData(recipeItems, user, dailyNeeds);
+        console.log('计算得到的评分：', result);
+        setRecipeScore(result.score);
+        setScoreDetails(result.detail);
+        setScoreSuggestions(result.suggestions);
       } catch (error) {
         console.error('计算评分时出错：', error);
         setRecipeScore(0);
+        setScoreDetails(null);
+        setScoreSuggestions(null);
       }
     };
     
@@ -208,6 +214,184 @@ const NutritionOverview = ({ totalNutrition, user, recipeItems }) => {
                      recipeScore > 50 ? '这份食谱基本符合您的营养需求，可以适当调整。' : 
                      '这份食谱与您的营养需求有较大差距，建议调整食物种类和数量。'}
                   </Typography>
+                  
+                  {/* 营养建议 */}
+                  {scoreSuggestions && (
+                    <Box sx={{ mt: 2, textAlign: 'left' }}>
+                      {/* 使用卡片式布局显示建议 */}
+                      <Box sx={{ 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        gap: 0.5,
+                        pr: 1
+                      }}>
+                        {/* 热量建议 */}
+                        <Box sx={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          p: 0.75, 
+                          borderRadius: 1,
+                          bgcolor: `${scoreSuggestions.calories.color}.light`,
+                          opacity: 0.9
+                        }}>
+                          <Box 
+                            component="span" 
+                            sx={{ 
+                              width: 8, 
+                              height: 8, 
+                              borderRadius: '50%', 
+                              bgcolor: scoreSuggestions.calories.color,
+                              mr: 1,
+                              flexShrink: 0
+                            }} 
+                          />
+                          <Typography 
+                            variant="body2" 
+                            color={scoreSuggestions.calories.color}
+                            sx={{ 
+                              fontSize: '0.8rem',
+                              lineHeight: 1.3,
+                              wordBreak: 'break-word'
+                            }}
+                          >
+                            {scoreSuggestions.calories.text}
+                          </Typography>
+                        </Box>
+                        
+                        {/* 蛋白质建议 */}
+                        <Box sx={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          p: 0.75, 
+                          borderRadius: 1,
+                          bgcolor: `${scoreSuggestions.protein.color}.light`,
+                          opacity: 0.9
+                        }}>
+                          <Box 
+                            component="span" 
+                            sx={{ 
+                              width: 8, 
+                              height: 8, 
+                              borderRadius: '50%', 
+                              bgcolor: scoreSuggestions.protein.color,
+                              mr: 1,
+                              flexShrink: 0
+                            }} 
+                          />
+                          <Typography 
+                            variant="body2" 
+                            color={scoreSuggestions.protein.color}
+                            sx={{ 
+                              fontSize: '0.8rem',
+                              lineHeight: 1.3,
+                              wordBreak: 'break-word'
+                            }}
+                          >
+                            {scoreSuggestions.protein.text}
+                          </Typography>
+                        </Box>
+                        
+                        {/* 碳水化合物建议 */}
+                        <Box sx={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          p: 0.75, 
+                          borderRadius: 1,
+                          bgcolor: `${scoreSuggestions.carbs.color}.light`,
+                          opacity: 0.9
+                        }}>
+                          <Box 
+                            component="span" 
+                            sx={{ 
+                              width: 8, 
+                              height: 8, 
+                              borderRadius: '50%', 
+                              bgcolor: scoreSuggestions.carbs.color,
+                              mr: 1,
+                              flexShrink: 0
+                            }} 
+                          />
+                          <Typography 
+                            variant="body2" 
+                            color={scoreSuggestions.carbs.color}
+                            sx={{ 
+                              fontSize: '0.8rem',
+                              lineHeight: 1.3,
+                              wordBreak: 'break-word'
+                            }}
+                          >
+                            {scoreSuggestions.carbs.text}
+                          </Typography>
+                        </Box>
+                        
+                        {/* 脂肪建议 */}
+                        <Box sx={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          p: 0.75, 
+                          borderRadius: 1,
+                          bgcolor: `${scoreSuggestions.fat.color}.light`,
+                          opacity: 0.9
+                        }}>
+                          <Box 
+                            component="span" 
+                            sx={{ 
+                              width: 8, 
+                              height: 8, 
+                              borderRadius: '50%', 
+                              bgcolor: scoreSuggestions.fat.color,
+                              mr: 1,
+                              flexShrink: 0
+                            }} 
+                          />
+                          <Typography 
+                            variant="body2" 
+                            color={scoreSuggestions.fat.color}
+                            sx={{ 
+                              fontSize: '0.8rem',
+                              lineHeight: 1.3,
+                              wordBreak: 'break-word'
+                            }}
+                          >
+                            {scoreSuggestions.fat.text}
+                          </Typography>
+                        </Box>
+                        
+                        {/* 膳食纤维建议 */}
+                        <Box sx={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          p: 0.75, 
+                          borderRadius: 1,
+                          bgcolor: `${scoreSuggestions.fiber.color}.light`,
+                          opacity: 0.9
+                        }}>
+                          <Box 
+                            component="span" 
+                            sx={{ 
+                              width: 8, 
+                              height: 8, 
+                              borderRadius: '50%', 
+                              bgcolor: scoreSuggestions.fiber.color,
+                              mr: 1,
+                              flexShrink: 0
+                            }} 
+                          />
+                          <Typography 
+                            variant="body2" 
+                            color={scoreSuggestions.fiber.color}
+                            sx={{ 
+                              fontSize: '0.8rem',
+                              lineHeight: 1.3,
+                              wordBreak: 'break-word'
+                            }}
+                          >
+                            {scoreSuggestions.fiber.text}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Box>
+                  )}
                 </Box>
               ) : (
                 <Typography variant="body1">无法计算评分，请确保已添加食物并设置用户数据</Typography>
