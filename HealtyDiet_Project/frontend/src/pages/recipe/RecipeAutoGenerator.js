@@ -165,8 +165,32 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
     throw new Error('食谱为空，无法进行优化');
   }
   
-  if (!userData || !userData.dci) {
+  // 检查用户数据是否完整，如果不完整则使用HealthMetricsService补全
+  if (!userData) {
     throw new Error('用户数据无效，无法进行优化');
+  }
+  
+  // 如果用户数据不包含dci等营养素需求，则使用HealthMetricsService计算
+  if (!userData.dci || !userData.protein || !userData.fat || !userData.carbs) {
+    // 导入HealthMetricsService
+    const { calculateHealthMetrics } = await import('../../services/HealthMetricsService');
+    
+    // 计算健康指标
+    const healthMetrics = calculateHealthMetrics(userData);
+    
+    // 如果计算结果有效，则补充到用户数据中
+    if (healthMetrics) {
+      userData = {
+        ...userData,
+        dci: healthMetrics.dci || userData.dci,
+        protein: healthMetrics.protein || userData.protein,
+        fat: healthMetrics.fat || userData.fat,
+        carbs: healthMetrics.carbs || userData.carbs
+      };
+      console.log('用户数据已补全:', userData);
+    } else {
+      throw new Error('无法计算用户健康指标，请完善用户资料');
+    }
   }
   
   if (!dailyNeeds || !dailyNeeds.standardNeeds) {
