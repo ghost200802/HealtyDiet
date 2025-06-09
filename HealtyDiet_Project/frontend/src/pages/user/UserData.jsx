@@ -50,6 +50,9 @@ const UserDataSchema = Yup.object().shape({
   activityLevel: Yup.string()
     .oneOf(['sedentary', 'light', 'moderate', 'active', 'very_active'], '请选择有效的活动水平')
     .required('活动水平不能为空'),
+  proteinLevel: Yup.string()
+    .oneOf(['low', 'normal', 'moderate', 'high'], '请选择有效的蛋白质水平')
+    .required('蛋白质水平不能为空'),
   calorieDeficit: Yup.number()
     .min(0, '热量缺口不能为负数')
     .max(2000, '热量缺口不能超过2000千卡')
@@ -221,6 +224,7 @@ const UserData = ({ user, onNutritionDataUpdate }) => {
               weight: userData?.weight || '',
               bodyFat: userData?.bodyFat || '',
               activityLevel: userData?.activityLevel || 'moderate',
+              proteinLevel: userData?.proteinLevel || 'normal',
               calorieDeficit: userData?.calorieDeficit || ''
             }}
             validationSchema={UserDataSchema}
@@ -355,6 +359,27 @@ const UserData = ({ user, onNutritionDataUpdate }) => {
                     </Field>
                   </Grid>
                   
+                  <Grid item xs={12} sm={6}>
+                    <Field name="proteinLevel">
+                      {({ field }) => (
+                        <TextField
+                          {...field}
+                          select
+                          fullWidth
+                          id="proteinLevel"
+                          label="蛋白质水平"
+                          error={touched.proteinLevel && Boolean(errors.proteinLevel)}
+                          helperText={touched.proteinLevel && errors.proteinLevel}
+                        >
+                          <MenuItem value="low">低蛋白质饮食 (0.5g/kg)</MenuItem>
+                          <MenuItem value="normal">正常饮食 (1.2g/kg)</MenuItem>
+                          <MenuItem value="moderate">轻度增肌 (1.6g/kg)</MenuItem>
+                          <MenuItem value="high">高强度增肌 (2.0g/kg)</MenuItem>
+                        </TextField>
+                      )}
+                    </Field>
+                  </Grid>
+                  
                   <Grid item xs={12}>
                     <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
                       <Button
@@ -474,7 +499,13 @@ const UserData = ({ user, onNutritionDataUpdate }) => {
               {protein}克
             </Typography>
             <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
-              基于TDEE计算
+              基于体重和蛋白质水平计算
+            </Typography>
+            <Typography variant="body2" color="text.secondary" align="center">
+              {userData.proteinLevel === 'low' && '低蛋白质饮食 (0.5g/kg)'}
+              {userData.proteinLevel === 'normal' && '正常饮食 (1.2g/kg)'}
+              {userData.proteinLevel === 'moderate' && '轻度增肌 (1.6g/kg)'}
+              {userData.proteinLevel === 'high' && '高强度增肌 (2.0g/kg)'}
             </Typography>
           </CardContent>
         </Card>
@@ -490,8 +521,8 @@ const UserData = ({ user, onNutritionDataUpdate }) => {
               {carbs}克
             </Typography>
             <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
-              基于TDEE计算
-            </Typography>
+                基于TDEE计算
+              </Typography>
           </CardContent>
         </Card>
       </Grid>
@@ -506,8 +537,8 @@ const UserData = ({ user, onNutritionDataUpdate }) => {
               {fat}克
             </Typography>
             <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
-              基于TDEE计算
-            </Typography>
+                基于TDEE计算
+              </Typography>
           </CardContent>
         </Card>
       </Grid>

@@ -103,7 +103,27 @@ export const calculateHealthMetrics = (profileData) => {
   // 查找活动水平乘数
   const activityLevel = activityLevels.find(level => level.value === profileData.activityLevel);
   const multiplier = activityLevel ? activityLevel.multiplier : 1.2;
-  const proteinCoefficient = activityLevel ? activityLevel.proteinCoefficient : 1.0;
+  // 根据用户选择的蛋白质水平确定系数
+  let proteinCoefficient = 1.2; // 默认为正常饮食
+  
+  if (profileData.proteinLevel) {
+    switch (profileData.proteinLevel) {
+      case 'low':
+        proteinCoefficient = 0.5; // 低蛋白质饮食
+        break;
+      case 'normal':
+        proteinCoefficient = 1.2; // 正常饮食
+        break;
+      case 'moderate':
+        proteinCoefficient = 1.6; // 轻度增肌
+        break;
+      case 'high':
+        proteinCoefficient = 2.0; // 高强度增肌
+        break;
+      default:
+        proteinCoefficient = 1.2; // 默认为正常饮食
+    }
+  }
   
   // 计算TDEE (总能量消耗)
   const tdeeValue = calculatedBMR ? Math.round(calculatedBMR * multiplier) : 0;
@@ -113,7 +133,7 @@ export const calculateHealthMetrics = (profileData) => {
   const dciValue = Math.max(tdeeValue - calorieDeficit, 1200); // 确保不低于基础代谢
   
   // 计算蛋白质需求
-  const proteinValue = Math.round(profileData.weight * 1.2);
+  const proteinValue = Math.round(profileData.weight * proteinCoefficient);
   
   // 脂肪(25% TDEE, 9千卡/克)
   const fatValue = Math.round(dciValue * 0.25 / 9);
