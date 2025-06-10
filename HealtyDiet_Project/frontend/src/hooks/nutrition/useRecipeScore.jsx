@@ -24,11 +24,11 @@ const useRecipeScore = (recipeItems, user) => {
         return;
       }
       
-      console.log('计算评分的输入参数：', { recipeItems, user, dailyNeeds });
+      console.log('计算评分的输入参数：', { recipeItems, user, standardNeeds: dailyNeeds.standardNeeds });
       
       try {
         // 调用RecipeScoreService中的评分函数
-        const result = calculateRecipeScoreWithUserData(recipeItems, user, dailyNeeds);
+        const result = calculateRecipeScoreWithUserData(recipeItems, user, dailyNeeds.standardNeeds);
         console.log('计算得到的评分：', result);
         setRecipeScore(result.score);
         

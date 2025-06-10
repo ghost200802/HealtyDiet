@@ -139,43 +139,40 @@ const Recipe = ({ user }) => {
       return;
     }
     
-    // 使用已导入的calculateRecipeItem函数计算食谱项目的营养素含量
-    calculateRecipeItem(selectedFood.id, amount)
-      .then(newItem => {
-        // 检查是否已存在该食物，如果存在则更新数量
-        const existingItemIndex = recipeItems.findIndex(item => item.foodId === selectedFood.id);
+    try {
+      // 使用已导入的calculateRecipeItem函数计算食谱项目的营养素含量（同步调用）
+      const newItem = calculateRecipeItem(selectedFood.id, amount);
+      
+      // 检查是否已存在该食物，如果存在则更新数量
+      const existingItemIndex = recipeItems.findIndex(item => item.foodId === selectedFood.id);
+      
+      if (existingItemIndex !== -1) {
+        const updatedItems = [...recipeItems];
+        const oldAmount = updatedItems[existingItemIndex].amount;
+        const newAmount = oldAmount + amount;
         
-        if (existingItemIndex !== -1) {
-          const updatedItems = [...recipeItems];
-          const oldAmount = updatedItems[existingItemIndex].amount;
-          const newAmount = oldAmount + amount;
-          
-          // 使用NutritionService计算更新后的营养素含量
-          calculateRecipeItem(selectedFood.id, newAmount)
-            .then(updatedItem => {
-              updatedItems[existingItemIndex] = updatedItem;
-              setRecipeItems(updatedItems);
-              
-              setFoodAddDialogOpen(false);
-              setSuccess('食物已添加到食谱');
-              
-              // 3秒后清除成功消息
-              setTimeout(() => setSuccess(''), 3000);
-            });
-        } else {
-          setRecipeItems([...recipeItems, newItem]);
-          
-          setFoodAddDialogOpen(false);
-          setSuccess('食物已添加到食谱');
-          
-          // 3秒后清除成功消息
-          setTimeout(() => setSuccess(''), 3000);
-        }
-      })
-      .catch(error => {
-        console.error('添加食物时出错:', error);
-        setError('添加食物时出错: ' + error.message);
-      });
+        // 使用NutritionService计算更新后的营养素含量（同步调用）
+        const updatedItem = calculateRecipeItem(selectedFood.id, newAmount);
+        updatedItems[existingItemIndex] = updatedItem;
+        setRecipeItems(updatedItems);
+        
+        setFoodAddDialogOpen(false);
+        setSuccess('食物已添加到食谱');
+        
+        // 3秒后清除成功消息
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setRecipeItems([...recipeItems, newItem]);
+        
+        setFoodAddDialogOpen(false);
+        setSuccess('食物已添加到食谱');
+        
+        // 3秒后清除成功消息
+        setTimeout(() => setSuccess(''), 3000);
+      }
+    } catch (error) {
+      setError(`添加食物失败: ${error.message}`);
+    }
   };
   
   // 从食谱中移除食物
@@ -187,19 +184,18 @@ const Recipe = ({ user }) => {
   
   // 更新食物数量
   const handleAmountChange = (index, newAmount) => {
-    const updatedItems = [...recipeItems];
-    const foodId = updatedItems[index].foodId;
-    
-    // 使用NutritionService计算更新后的营养素含量
-    calculateRecipeItem(foodId, newAmount)
-      .then(updatedItem => {
-        updatedItems[index] = updatedItem;
-        setRecipeItems(updatedItems);
-      })
-      .catch(error => {
-        console.error('更新食物数量时出错:', error);
-        setError('更新食物数量时出错: ' + error.message);
-      });
+    try {
+      const updatedItems = [...recipeItems];
+      const foodId = updatedItems[index].foodId;
+      
+      // 使用NutritionService计算更新后的营养素含量（同步调用）
+      const updatedItem = calculateRecipeItem(foodId, newAmount);
+      updatedItems[index] = updatedItem;
+      setRecipeItems(updatedItems);
+    } catch (error) {
+      console.error('更新食物数量时出错:', error);
+      setError(`更新食物数量时出错: ${error.message}`);
+    }
   };
   
   // 保存食谱
@@ -229,34 +225,25 @@ const Recipe = ({ user }) => {
   const handleLoadRecipe = (recipe) => {
     setRecipeName(recipe.name);
     
-    // 转换食谱项目格式
-    const loadItems = async () => {
-      try {
-        // 并行处理所有食谱项目
-        const itemPromises = recipe.items.map(item => {
-          return calculateRecipeItem(item.foodId, item.amount);
-        });
-        
-        // 等待所有项目处理完成
-        const items = await Promise.all(itemPromises);
-        
-        // 过滤掉null值
-        const validItems = items.filter(Boolean);
-        
-        setRecipeItems(validItems);
-        setRecipeDialogOpen(false);
-        setSuccess('食谱加载成功');
-      } catch (error) {
-        console.error('加载食谱时出错:', error);
-        setError('加载食谱时出错: ' + error.message);
-      }
-    };
-    
-    // 执行加载
-    loadItems();
-    
-    // 3秒后清除成功消息
-    setTimeout(() => setSuccess(''), 3000);
+    try {
+      // 处理所有食谱项目（同步调用）
+      const items = recipe.items.map(item => {
+        return calculateRecipeItem(item.foodId, item.amount);
+      });
+      
+      // 过滤掉null值
+      const validItems = items.filter(Boolean);
+      
+      setRecipeItems(validItems);
+      setRecipeDialogOpen(false);
+      setSuccess('食谱加载成功');
+      
+      // 3秒后清除成功消息
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (error) {
+      console.error('加载食谱时出错:', error);
+      setError(`加载食谱时出错: ${error.message}`);
+    }
   };
   
   // 删除食谱

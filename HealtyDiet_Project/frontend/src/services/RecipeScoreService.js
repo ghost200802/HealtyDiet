@@ -4,6 +4,61 @@
  */
 
 import { calculateTotalNutrition } from './NutritionService';
+import { getFoodByIdSync } from './FoodService';
+
+/**
+ * 计算食谱中各类型和子类型的食物重量
+ * @param {Array} items - 食谱项目，格式为[{foodId, amount}]
+ * @param {Object} standardNeeds - 标准需求数据
+ * @returns {Object} - 包含类型和子类型重量统计的对象
+ */
+const calculateFoodTypeWeights = (items, standardNeeds) => {
+  // 按类型和子类型统计食物重量
+  const typeWeights = {};
+  const subtypeWeights = {};
+  
+  // 初始化类型和子类型的重量统计
+  Object.keys(standardNeeds).forEach(type => {
+    if (standardNeeds[type]) {
+      typeWeights[type] = 0;
+      subtypeWeights[type] = {};
+      
+      if (standardNeeds[type]?.subTypes) {
+        Object.keys(standardNeeds[type].subTypes).forEach(subType => {
+          subtypeWeights[type][subType] = 0;
+        });
+      }
+    }
+  });
+  
+  // 统计各类型和子类型的食物重量
+  for (const item of items) {
+    try {
+      const food = getFoodByIdSync(item.foodId);
+      if (food && food.type) {
+        // 累加类型重量
+        if (typeWeights[food.type] !== undefined) {
+          typeWeights[food.type] += item.amount;
+        } else {
+          console.log(`警告: 食物类型 ${food.type} 不在标准需求中`);
+        }
+        
+        // 累加子类型重量
+        if (food.subType && subtypeWeights[food.type]) {
+          if (subtypeWeights[food.type][food.subType] !== undefined) {
+            subtypeWeights[food.type][food.subType] += item.amount;
+          } else {
+            console.log(`警告: 食物子类型 ${food.type}/${food.subType} 不在标准需求中`);
+          }
+        }
+      }
+    } catch (error) {
+      console.error(`获取食物信息失败:`, error);
+    }
+  }
+  
+  return { typeWeights, subtypeWeights };
+};
 
 
 /**
@@ -81,6 +136,48 @@ const calculateRecipeScore = (recipe, targetValues, standardNeeds) => {
   let categoryLimitsScore = 0;
   let categoryViolations = 0;
   
+  // 根据食物类型和子类型计算重量限制得分
+  if (standardNeeds && typeof standardNeeds === 'object') {
+    // 计算各类型和子类型的食物重量
+    const { typeWeights, subtypeWeights } = calculateFoodTypeWeights(items, standardNeeds);
+    
+    console.log('类型重量统计:', typeWeights);
+    console.log('子类型重量统计:', subtypeWeights);
+    
+    // 检查各类型和子类型是否满足标准需求
+    Object.keys(standardNeeds).forEach(type => {
+      const typeRange = standardNeeds[type]?.total;
+      const typeWeight = typeWeights[type];
+      
+      // 检查类型重量是否在范围内
+      if (typeRange && (typeWeight < typeRange[0] || typeWeight > typeRange[1])) {
+        categoryViolations++;
+        // 类型不满足扣15分
+        categoryLimitsScore -= 15;
+        console.log(`${type}类别重量不满足要求: ${typeWeight}g, 应为${typeRange[0]}-${typeRange[1]}g`);
+      }
+      
+      // 检查子类型重量
+      if (standardNeeds[type]?.subTypes) {
+        Object.keys(standardNeeds[type].subTypes).forEach(subType => {
+          const subTypeRange = standardNeeds[type].subTypes[subType];
+          const subTypeWeight = subtypeWeights[type]?.[subType];
+          
+          // 检查子类型重量是否在范围内
+          if (subTypeRange && subTypeWeight !== undefined && (subTypeWeight < subTypeRange[0] || subTypeWeight > subTypeRange[1])) {
+            categoryViolations++;
+            // 子类型不满足扣5分
+            categoryLimitsScore -= 5;
+            console.log(`${type}类别的${subType}子类别重量不满足要求: ${subTypeWeight}g, 应为${subTypeRange[0]}-${subTypeRange[1]}g`);
+          }
+        });
+      }
+    });
+  }
+  
+  // 确保得分不会低于-100
+  categoryLimitsScore = Math.max(categoryLimitsScore, -100);
+  
   console.log('各项得分计算结果:', {
     caloriesScore,
     proteinScore,
@@ -94,24 +191,25 @@ const calculateRecipeScore = (recipe, targetValues, standardNeeds) => {
 
   // 计算总得分（根据各项占比）
   const totalScore = 
-    caloriesScore * 10 + // 能量占比5%
-    proteinScore * 30 + // 蛋白质占比20%
-    carbsScore * 30 + // 碳水占比20%
-    fatScore * 10 + // 脂肪占比20%
-    fiberScore * 20;// 纤维素占比5%
+    caloriesScore * 10 + // 能量占比10%
+    proteinScore * 20 + // 蛋白质占比20%
+    carbsScore * 20 + // 碳水占比20%
+    fatScore * 10 + // 脂肪占比10%
+    fiberScore * 10 + // 纤维素占比10%
+    categoryLimitsScore * 0.3; // 类别限制得分占比30%
   
-  // // 详细的调试输出
-  // console.log('===== 食谱评分详情 =====');
-  // console.log(`营养成分: 热量=${nutrition.calories}kcal, 蛋白质=${nutrition.protein}g, 碳水=${nutrition.carbs}g, 脂肪=${nutrition.fat}g, 纤维素=${nutrition.fiber}g`);
-  // console.log(`目标值: 热量=${targetCalories}kcal, 蛋白质=${targetProtein}g, 碳水=${targetCarbs}g, 脂肪=${targetFat}g, 纤维素=${targetFiber}g`);
-  // console.log(`热量得分: ${caloriesScore.toFixed(2)} (占比5%)`);
-  // console.log(`蛋白质得分: ${proteinScore.toFixed(2)} (占比20%)`);
-  // console.log(`碳水得分: ${carbsScore.toFixed(2)} (占比20%)`);
-  // console.log(`脂肪得分: ${fatScore.toFixed(2)} (占比20%)`);
-  // console.log(`纤维素得分: ${fiberScore.toFixed(2)} (占比5%)`);
-  // console.log(`类别限制得分: ${categoryLimitsScore.toFixed(2)} (占比30%)`);
-  // console.log(`总得分: ${totalScore.toFixed(2)}`);
-  // console.log('========================');
+  // 详细的调试输出
+  console.log('===== 食谱评分详情 =====');
+  console.log(`营养成分: 热量=${nutrition.calories}kcal, 蛋白质=${nutrition.protein}g, 碳水=${nutrition.carbs}g, 脂肪=${nutrition.fat}g, 纤维素=${nutrition.fiber}g`);
+  console.log(`目标值: 热量=${targetCalories}kcal, 蛋白质=${targetProtein}g, 碳水=${targetCarbs}g, 脂肪=${targetFat}g, 纤维素=${targetFiber}g`);
+  console.log(`热量得分: ${caloriesScore.toFixed(2)} (占比10%)`);
+  console.log(`蛋白质得分: ${proteinScore.toFixed(2)} (占比20%)`);
+  console.log(`碳水得分: ${carbsScore.toFixed(2)} (占比20%)`);
+  console.log(`脂肪得分: ${fatScore.toFixed(2)} (占比10%)`);
+  console.log(`纤维素得分: ${fiberScore.toFixed(2)} (占比10%)`);
+  console.log(`类别限制得分: ${categoryLimitsScore.toFixed(2)} (占比30%), 违规数量: ${categoryViolations}`);
+  console.log(`总得分: ${totalScore.toFixed(2)}`);
+  console.log('========================');
 
   return {
     score: totalScore,
