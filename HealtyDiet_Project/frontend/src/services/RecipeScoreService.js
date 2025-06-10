@@ -11,9 +11,9 @@ import { calculateTotalNutrition } from './NutritionService';
  * @param {Array} recipe - 要计算得分的食谱，简化的[{foodId, amount}]数组格式
  * @param {Object} user - 用户数据
  * @param {Object} standardNeeds - 标准需求数据
- * @returns {Promise<Object>} - 包含总得分和各项得分详情的对象
+ * @returns {Object} - 包含总得分和各项得分详情的对象
  */
-export const calculateRecipeScoreWithUserData = async (recipe, user, standardNeeds) => {
+export const calculateRecipeScoreWithUserData = (recipe, user, standardNeeds) => {
   console.log('开始计算食谱得分WithUserData...');
   console.log('recipe:',recipe);
   return calculateRecipeScore(recipe, {
@@ -30,9 +30,9 @@ export const calculateRecipeScoreWithUserData = async (recipe, user, standardNee
  * @param {Array} recipe - 要计算得分的食谱，简化的[{foodId, amount}]数组格式
  * @param {Object} targetValues - 目标营养值
  * @param {Object} standardNeeds - 标准需求数据
- * @returns {Promise<Object>} - 包含总得分和各项得分详情的对象
+ * @returns {Object} - 包含总得分和各项得分详情的对象
  */
-const calculateRecipeScore = async (recipe, targetValues, standardNeeds) => {
+const calculateRecipeScore = (recipe, targetValues, standardNeeds) => {
   console.log('开始计算食谱得分...');
   console.log('recipe:',recipe);
   console.log('目标值:', targetValues);
@@ -45,7 +45,7 @@ const calculateRecipeScore = async (recipe, targetValues, standardNeeds) => {
   
   // 计算总营养成分
   console.log('调用calculateTotalNutrition计算总营养成分...');
-  const nutrition = await calculateTotalNutrition(recipe);
+  const nutrition = calculateTotalNutrition(recipe);
   console.log('计算得到的总营养成分:', nutrition);
   
   // 获取目标值

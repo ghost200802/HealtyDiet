@@ -15,9 +15,9 @@ const useRecipeScore = (recipeItems, user) => {
   const [scoreDetails, setScoreDetails] = useState(null);
   const [scoreSuggestions, setScoreSuggestions] = useState(null);
 
-  // 使用useEffect处理异步评分计算
+  // 使用useEffect处理评分计算
   useEffect(() => {
-    const getScore = async () => {
+    const getScore = () => {
       if (!recipeItems || recipeItems.length === 0 || !user) {
         console.log('无法计算评分：recipeItems或user不存在', { recipeItems, user });
         setRecipeScore(0);
@@ -28,7 +28,7 @@ const useRecipeScore = (recipeItems, user) => {
       
       try {
         // 调用RecipeScoreService中的评分函数
-        const result = await calculateRecipeScoreWithUserData(recipeItems, user, dailyNeeds);
+        const result = calculateRecipeScoreWithUserData(recipeItems, user, dailyNeeds);
         console.log('计算得到的评分：', result);
         setRecipeScore(result.score);
         

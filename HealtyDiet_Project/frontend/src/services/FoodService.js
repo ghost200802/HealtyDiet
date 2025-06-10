@@ -5,7 +5,7 @@ const foodCache = {
   // 食物ID到食物对象的映射
   foods: {},
   // 缓存过期时间（毫秒）
-  expirationTime: 5 * 60 * 1000, // 默认5分钟
+  expirationTime: 60 * 60 * 1000, // 默认60分钟
   // 缓存时间戳
   timestamp: Date.now()
 };
@@ -38,13 +38,13 @@ const addFoodsToCache = (foods) => {
  * @returns {Object|null} 食物对象或null
  */
 const getFoodFromCache = (id) => {
-  // 检查缓存是否过期
-  if (Date.now() - foodCache.timestamp > foodCache.expirationTime) {
-    // 清空缓存
-    foodCache.foods = {};
-    foodCache.timestamp = Date.now();
-    return null;
-  }
+  // // 检查缓存是否过期
+  // if (Date.now() - foodCache.timestamp > foodCache.expirationTime) {
+  //   // 清空缓存
+  //   foodCache.foods = {};
+  //   foodCache.timestamp = Date.now();
+  //   return null;
+  // }
   
   return foodCache.foods[id] || null;
 };
@@ -181,11 +181,62 @@ const searchFoods = async (query) => {
   }
 };
 
+/**
+ * 根据ID获取食物信息（同步版本）
+ * @param {string} id 食物ID
+ * @returns {Object} 食物对象
+ * @throws {Error} 如果缓存中找不到食物则抛出错误
+ */
+const getFoodByIdSync = (id) => {
+  // 从缓存中获取
+  const cachedFood = getFoodFromCache(id);
+  if (cachedFood) {
+    return cachedFood;
+  }
+  
+  // 缓存中没有，直接抛出错误
+  throw new Error(`食物ID为${id}的数据不在缓存中，请先使用异步方法获取`);
+};
+
+/**
+ * 批量获取食物信息（同步版本）
+ * @param {Array<string>} ids 食物ID数组
+ * @returns {Array<Object>} 食物对象数组
+ * @throws {Error} 如果任何食物ID不在缓存中则抛出错误
+ */
+const getFoodsByIdsSync = (ids) => {
+  if (!ids || !Array.isArray(ids) || ids.length === 0) {
+    return [];
+  }
+  
+  // 检查所有ID是否都在缓存中
+  const missingIds = [];
+  const cachedFoods = [];
+  
+  ids.forEach(id => {
+    const cachedFood = getFoodFromCache(id);
+    if (cachedFood) {
+      cachedFoods.push(cachedFood);
+    } else {
+      missingIds.push(id);
+    }
+  });
+  
+  // 如果有任何ID不在缓存中，抛出错误
+  if (missingIds.length > 0) {
+    throw new Error(`以下食物ID不在缓存中: ${missingIds.join(', ')}，请先使用异步方法获取`);
+  }
+  
+  return cachedFoods;
+};
+
 export {
   getFoodById,
   getFoodsByIds,
   getAllFoods,
   searchFoods,
+  getFoodByIdSync,
+  getFoodsByIdsSync,
   clearCache,
   setCacheExpirationTime
 };

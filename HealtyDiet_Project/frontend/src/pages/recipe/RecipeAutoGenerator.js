@@ -215,7 +215,7 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
   while (currentIteration < maxIterations) {
     // 计算当前食谱的得分
     let hasImprovement = false;
-    let currentScoreResult = await calculateRecipeScoreWithUserData(recipe, userData, standardNeeds);
+    let currentScoreResult = calculateRecipeScoreWithUserData(recipe, userData, standardNeeds);
     let currentScore = currentScoreResult.score;      
 
     // 遍历该类别中的每个食物
@@ -226,7 +226,7 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
       // 尝试增加10g
       item.amount += 10;
       
-      const increaseScoreResult = await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
+      const increaseScoreResult = calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
       const increaseScore = increaseScoreResult.score;
       
       // 恢复原始重量
@@ -236,7 +236,7 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
       let decreaseScore = -Infinity;
       if (originalAmount >= 20) {
         item.amount -= 10;
-        const decreaseScoreResult = await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
+        const decreaseScoreResult = calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
         decreaseScore = decreaseScoreResult.score;
         
         // 恢复原始重量
@@ -289,7 +289,7 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
   }
   
   console.log(`优化完成，最佳得分: ${bestScore.toFixed(2)}，迭代次数: ${currentIteration}`);
-  const finalScoreResult = await calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
+  const finalScoreResult = calculateRecipeScoreWithUserData(optimizedRecipe, userData, standardNeeds);
   console.log(`最终返回最佳食谱，而不是当前食谱。最佳得分: ${bestScore.toFixed(2)}，当前得分: ${finalScoreResult.score.toFixed(2)}`);
   console.log('当前食谱得分详情:', finalScoreResult.detail);
   
@@ -338,7 +338,7 @@ export const saveGeneratedRecipe = async (recipe, userData, recipes) => {
   // 计算总营养成分
   console.log('准备计算总营养成分的recipe:', recipe);
   // 计算总营养成分
-  const totalNutrition = await calculateTotalNutrition(recipe);
+  const totalNutrition = calculateTotalNutrition(recipe);
   
   // 生成食谱名称
   const recipeName = `${new Date().toLocaleDateString()}自动生成食谱`;

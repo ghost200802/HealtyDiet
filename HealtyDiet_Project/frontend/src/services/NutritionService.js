@@ -4,6 +4,8 @@
  * 以及营养素评分和建议功能
  */
 
+import { getFoodById, getFoodsByIds, getFoodByIdSync, getFoodsByIdsSync } from './FoodService';
+
 /**
  * 计算单个食物的营养素含量
  * @param {string} foodId - 食物ID
@@ -11,7 +13,7 @@
  * @param {Array} nutrients - 需要计算的营养素列表，默认为所有基本营养素
  * @returns {Object} - 计算后的营养素含量
  */
-export const calculateFoodNutrition = async (foodId, amount, nutrients = ['calories', 'protein', 'carbs', 'fat', 'fiber']) => {
+export const calculateFoodNutrition = (foodId, amount, nutrients = ['calories', 'protein', 'carbs', 'fat', 'fiber']) => {
   if (!foodId) {
     throw new Error('食物ID不能为空');
   }
@@ -20,9 +22,7 @@ export const calculateFoodNutrition = async (foodId, amount, nutrients = ['calor
     throw new Error('食物重量必须大于0');
   }
   
-  // 从FoodService获取食物信息
-  const { getFoodById } = await import('./FoodService');
-  const food = await getFoodById(foodId);
+  const food = getFoodByIdSync(foodId);
   
   if (!food) {
     throw new Error(`未找到ID为${foodId}的食物`);
@@ -51,9 +51,9 @@ export const calculateFoodNutrition = async (foodId, amount, nutrients = ['calor
  * 计算食谱项目的营养素含量
  * @param {string} foodId - 食物ID
  * @param {number} amount - 食物重量(克)
- * @returns {Promise<Object>} - 食谱项目对象，包含食物ID、名称、重量和营养素含量
+ * @returns {Object} - 食谱项目对象，包含食物ID、名称、重量和营养素含量
  */
-export const calculateRecipeItem = async (foodId, amount) => {
+export const calculateRecipeItem = (foodId, amount) => {
   if (!foodId) {
     throw new Error('食物ID不能为空');
   }
@@ -62,15 +62,14 @@ export const calculateRecipeItem = async (foodId, amount) => {
     throw new Error('食物重量必须大于0');
   }
   
-  // 从FoodService获取食物信息以获取名称
-  const { getFoodById } = await import('./FoodService');
-  const food = await getFoodById(foodId);
+  
+  const food = getFoodByIdSync(foodId);
   
   if (!food) {
     throw new Error(`未找到ID为${foodId}的食物`);
   }
   
-  const nutrition = await calculateFoodNutrition(foodId, amount);
+  const nutrition = calculateFoodNutrition(foodId, amount);
   
   return {
     foodId: foodId,
@@ -83,9 +82,9 @@ export const calculateRecipeItem = async (foodId, amount) => {
 /**
  * 计算食谱的总营养成分
  * @param {Array} recipeItems - 食谱中的食物项目，简化格式为[{foodId, amount}]
- * @returns {Promise<Object>} - 总营养成分
+ * @returns {Object} - 总营养成分
  */
-export const calculateTotalNutrition = async (recipeItems) => {
+export const calculateTotalNutrition = (recipeItems) => {
   console.log('calculateTotalNutrition 调用:', { recipeItemsLength: recipeItems?.length });
   
   // 检查参数
@@ -111,7 +110,7 @@ export const calculateTotalNutrition = async (recipeItems) => {
   console.log('计算总营养成分的recipeItems:', recipeItems);
   for(const item of recipeItems) {
     try {
-      const nutrition = await calculateFoodNutrition(item.foodId, item.amount);
+      const nutrition = calculateFoodNutrition(item.foodId, item.amount);
       totals.calories += nutrition.calories;
       totals.protein += nutrition.protein;
       totals.carbs += nutrition.carbs;
@@ -176,9 +175,9 @@ export const calculateEnergyDistribution = (totalNutrition) => {
  * @param {Array} recipeItems - 食谱中的食物项目，格式为[{foodId, amount}]
  * @param {Object} totalNutrition - 食谱的总营养成分
  * @param {string} type - 营养素类型 (calories, protein, carbs, fat, fiber)
- * @returns {Promise<Array>} 排序后的营养素数据
+ * @returns {Array} 排序后的营养素数据
  */
-export const prepareNutritionData = async (recipeItems, totalNutrition, type) => {
+export const prepareNutritionData = (recipeItems, totalNutrition, type) => {
   if (recipeItems.length === 0) return [];
   
   // 防止除以0的情况
@@ -186,14 +185,11 @@ export const prepareNutritionData = async (recipeItems, totalNutrition, type) =>
     return [];
   }
   
-  // 导入FoodService
-  const { getFoodsByIds } = await import('./FoodService');
-  
   // 收集所有foodId
   const foodIds = recipeItems.map(item => item.foodId);
   
   // 获取食物数据
-  const foods = await getFoodsByIds(foodIds);
+  const foods = getFoodsByIdsSync(foodIds);
   
   // 创建foodId到食物的映射
   const foodMap = {};

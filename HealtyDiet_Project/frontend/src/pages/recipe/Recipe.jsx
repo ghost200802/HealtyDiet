@@ -113,7 +113,7 @@ const Recipe = ({ user }) => {
     // 使用异步版本的calculateTotalNutrition
     const calculateNutrition = async () => {
       try {
-        const totals = await calculateTotalNutrition(recipeItems);
+        const totals = calculateTotalNutrition(recipeItems);
         console.log('计算得到的总营养成分:', totals);
         setTotalNutrition(totals);
       } catch (error) {
@@ -302,7 +302,7 @@ const Recipe = ({ user }) => {
       
       // 添加日志输出，检查优化后的食谱得分
       // 将分类食谱转换为扁平列表，以便计算得分
-      const scoreResult = await calculateRecipeScoreWithUserData(optimizedRecipe, user, dailyNeeds.standardNeeds);
+      const scoreResult = calculateRecipeScoreWithUserData(optimizedRecipe, user, dailyNeeds.standardNeeds);
       console.log('优化后的食谱得分:', scoreResult.score);
       console.log('优化后的食谱得分详情:', scoreResult.detail);
       
@@ -355,7 +355,7 @@ const Recipe = ({ user }) => {
       setSuccess('已根据每日营养需求标准生成食谱');
       
       // 3秒后清除成功消息
-      setTimeout(() => setSuccess(''), 2000);
+      setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       console.error('自动生成食谱失败:', err);
       setError(err.message || '自动生成食谱失败，请重试');
@@ -430,7 +430,7 @@ const Recipe = ({ user }) => {
       setSuccess('已根据用户数据优化食谱');
       
       // 3秒后清除成功消息
-      setTimeout(() => setSuccess(''), 2000);
+      setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       console.error('自动优化食谱失败:', err);
       setError(err.message || '自动优化食谱失败，请重试');
