@@ -66,68 +66,104 @@ export const generateRecipeByDailyNeeds = async (foods, dailyNeeds) => {
     }
     
     const needsData = standardNeeds[category];
-    const totalRange = needsData.total;
-    
-    // 确定该类别的总重量范围
-    const minTotal = totalRange[0];
-    const maxTotal = totalRange[1];
-    
-    // 随机生成该类别的总重量（以10g为基准）
-    const targetTotal = Math.floor((minTotal + Math.random() * (maxTotal - minTotal)) / 10) * 10;
-    
-    // 根据子类型的比例分配重量
     const subTypes = needsData.subTypes;
     const subTypeItems = [];
-    let remainingWeight = targetTotal;
     
-    // 为每个子类型选择食物
+    // 第一步：为每个下限>0的子类别随机分配一个食物，并设置为随机下限
     for (const subType of Object.keys(subTypes)) {
-      if (remainingWeight <= 0) continue;
-      
       const subTypeRange = subTypes[subType];
-      const minSubWeight = Math.min(subTypeRange[0], remainingWeight);
-      const maxSubWeight = Math.min(subTypeRange[1], remainingWeight);
+      const minSubWeight = subTypeRange[0];
       
-      // 如果最小值为0且最大值也为0，则跳过此子类型
-      if (minSubWeight === 0 && maxSubWeight === 0) continue;
-      
-      // 随机生成该子类型的重量（以10g为基准）
-      const subTypeWeight = Math.floor((minSubWeight + Math.random() * (maxSubWeight - minSubWeight)) / 10) * 10;
-      if (subTypeWeight <= 0) continue;
-      
-      // 从该类别中随机选择一个食物
-      const availableFoods = foodGroups[category].filter(food => 
-        food.subCategory === subType || !food.subCategory
-      );
-      
-      if (availableFoods.length > 0) {
-        const randomIndex = Math.floor(Math.random() * availableFoods.length);
-        const selectedFood = availableFoods[randomIndex];
+      // 只处理下限>0的子类别
+      if (minSubWeight > 0) {
+        // 从该类别中随机选择一个食物
+        const availableFoods = foodGroups[category].filter(food => 
+          food.subCategory === subType || !food.subCategory
+        );
         
-        // 使用NutritionService计算营养成分
-        const nutritionInfo = await calculateFoodNutrition(selectedFood.id, subTypeWeight);
-        
-        subTypeItems.push({
-          food: selectedFood,
-          amount: subTypeWeight,
-          nutritionInfo,
-          subType: subType
-        });
-        
-        remainingWeight -= subTypeWeight;
+        if (availableFoods.length > 0) {
+          const randomIndex = Math.floor(Math.random() * availableFoods.length);
+          const selectedFood = availableFoods[randomIndex];
+          
+          // 设置为随机下限（以10g为基准）
+          const subTypeWeight = Math.floor(minSubWeight / 10) * 10;
+          
+          // 使用NutritionService计算营养成分
+          const nutritionInfo = await calculateFoodNutrition(selectedFood.id, subTypeWeight);
+          
+          subTypeItems.push({
+            food: selectedFood,
+            amount: subTypeWeight,
+            nutritionInfo,
+            subType: subType
+          });
+        }
       }
     }
     
-    // 如果还有剩余重量，随机分配给已有的食物项目
+    // 第二步：随机生成该类别的总重量（以10g为基准）
+    const totalRange = needsData.total;
+    const minTotal = totalRange[0];
+    const maxTotal = totalRange[1];
+    const targetTotal = Math.floor((minTotal + Math.random() * (maxTotal - minTotal)) / 10) * 10;
+    
+    // 计算当前已分配的总重量
+    let currentTotal = subTypeItems.reduce((sum, item) => sum + item.amount, 0);
+    
+    // 第三步：计算剩余可分配的重量
+    let remainingWeight = targetTotal - currentTotal;
+    
+    // 第四步：将剩余重量随机分配给大类别下，还没有达到随机上限的子类别
     if (remainingWeight > 0 && subTypeItems.length > 0) {
-      const randomItemIndex = Math.floor(Math.random() * subTypeItems.length);
-      const item = subTypeItems[randomItemIndex];
+      // 创建可以接收额外重量的子类别列表
+      const eligibleItems = subTypeItems.filter(item => {
+        const subTypeRange = subTypes[item.subType];
+        const maxSubWeight = subTypeRange[1];
+        return item.amount < maxSubWeight; // 只有未达到上限的子类别才能接收额外重量
+      });
       
-      // 更新重量和营养成分
-      const newAmount = item.amount + remainingWeight;
+      // 如果有可以接收额外重量的子类别
+      while (remainingWeight > 0 && eligibleItems.length > 0) {
+        // 随机选择一个子类别
+        const randomItemIndex = Math.floor(Math.random() * eligibleItems.length);
+        const item = eligibleItems[randomItemIndex];
+        
+        // 计算该子类别还能接收的最大额外重量
+        const subTypeRange = subTypes[item.subType];
+        const maxSubWeight = subTypeRange[1];
+        const maxAdditional = Math.min(maxSubWeight - item.amount, remainingWeight);
+        
+        // 随机分配10g的倍数的重量
+        const additionalWeight = Math.min(maxAdditional, Math.floor(Math.random() * (maxAdditional / 10) + 1) * 10);
+        
+        if (additionalWeight > 0) {
+          // 更新重量和营养成分
+          const newAmount = item.amount + additionalWeight;
+          item.amount = newAmount;
+          item.nutritionInfo = await calculateFoodNutrition(item.food.id, newAmount);
+          
+          remainingWeight -= additionalWeight;
+        }
+        
+        // 如果该子类别已达到上限，从列表中移除
+        if (item.amount >= maxSubWeight) {
+          const index = eligibleItems.indexOf(item);
+          if (index > -1) {
+            eligibleItems.splice(index, 1);
+          }
+        }
+      }
       
-      item.amount = newAmount;
-      item.nutritionInfo = await calculateFoodNutrition(item.food.id, newAmount);
+      // 如果还有剩余重量且没有可接收的子类别，随机分配给任意子类别
+      if (remainingWeight > 0 && subTypeItems.length > 0) {
+        const randomItemIndex = Math.floor(Math.random() * subTypeItems.length);
+        const item = subTypeItems[randomItemIndex];
+        
+        // 更新重量和营养成分
+        const newAmount = item.amount + remainingWeight;
+        item.amount = newAmount;
+        item.nutritionInfo = await calculateFoodNutrition(item.food.id, newAmount);
+      }
     }
     
     recipe[category] = subTypeItems;
