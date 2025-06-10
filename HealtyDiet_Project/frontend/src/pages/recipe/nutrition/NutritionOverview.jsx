@@ -6,13 +6,13 @@ import {
 } from '@mui/material';
 
 // 导入子组件
-import CaloriesDisplay from './components/CaloriesDisplay';
-import EnergyDistribution from './components/EnergyDistribution';
-import RecipeScoreDisplay from './components/RecipeScoreDisplay';
-import NutrientCardsGroup from './components/NutrientCardsGroup';
+import CaloriesDisplay from '../../../components/nutrition/CaloriesDisplay';
+import EnergyDistribution from '../../../components/nutrition/EnergyDistribution';
+import RecipeScoreDisplay from '../../../components/nutrition/RecipeScoreDisplay';
+import NutrientCardsGroup from '../../../components/nutrition/NutrientCardsGroup';
 
 // 导入钩子
-import useRecipeScore from './hooks/useRecipeScore';
+import useRecipeScore from '../../../hooks/nutrition/useRecipeScore';
 
 /**
  * 食谱营养总览组件

@@ -7,10 +7,10 @@ import {
 } from '@mui/material';
 
 // 导入自定义Hook
-import useNutritionDetails from './hooks/useNutritionDetails';
+import useNutritionDetails from '../../../hooks/nutrition/useNutritionDetails';
 
 // 导入组件
-import NutritionDetailsCard from './components/NutritionDetailsCard';
+import NutritionDetailsCard from '../../../components/nutrition/NutritionDetailsCard';
 
 /**
  * 食谱营养详情组件，显示各营养素的分布图表

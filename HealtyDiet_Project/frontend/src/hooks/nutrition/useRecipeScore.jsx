@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { calculateRecipeScoreWithUserData } from '../../../../services/RecipeScoreService';
-import { calculateNutrientScore, getSuggestionByScore } from '../utils/NutritionScoreUtils';
+import { calculateRecipeScoreWithUserData } from '../../services/RecipeScoreService';
+import { calculateNutrientScore, getSuggestionByScore } from '../../services/NutritionService';
 import dailyNeeds from '@data/needs/DailyNeeds.json';
 
 /**

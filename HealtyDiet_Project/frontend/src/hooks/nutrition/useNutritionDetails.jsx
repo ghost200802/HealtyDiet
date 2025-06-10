@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { prepareNutritionData } from '../../../../services/NutritionService';
+import { prepareNutritionData } from '../../services/NutritionService';
 
 /**
  * 自定义Hook，用于加载和处理食谱营养详情数据
