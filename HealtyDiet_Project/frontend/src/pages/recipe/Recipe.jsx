@@ -10,7 +10,7 @@ import {
 
 // 导入拆分后的组件
 import RecipeHeader from './RecipeHeader';
-import NutritionOverview from './NutritionOverview';
+import NutritionOverview from './nutrition/NutritionOverview';
 import RecipeItemsTable from './RecipeItemsTable';
 import NutritionDetails from './NutritionDetails';
 import RecipeDialog from './RecipeDialog';
@@ -23,7 +23,7 @@ import FoodAddDialog from '../../components/food/FoodAddDialog';
 import { calculateTotalNutrition, calculateRecipeItem } from '../../services/NutritionService';
 import { saveRecipe, deleteRecipe, getUserRecipes, updateFoodInRecipe } from './RecipeService';
 import { generateRecipeByDailyNeeds, optimizeRecipeByUserData, saveGeneratedRecipe } from './RecipeAutoGenerator';
-import dailyNeeds from '../../../../data/needs/DailyNeeds.json';
+import dailyNeeds from '@data/needs/DailyNeeds.json';
 import { calculateRecipeScoreWithUserData } from '../../services/RecipeScoreService';
 // 导入FoodService
 import { getAllFoods as getFoodsFromService } from '../../services/FoodService';
