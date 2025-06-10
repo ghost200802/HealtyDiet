@@ -10,9 +10,9 @@ import {
 
 // 导入拆分后的组件
 import RecipeHeader from './RecipeHeader';
-import NutritionOverview from './nutrition/NutritionOverview';
+import NutritionOverview from './NutritionOverview';
 import RecipeItemsTable from './RecipeItemsTable';
-import NutritionDetails from './nutrition/NutritionDetails';
+import NutritionDetails from './NutritionDetails';
 import RecipeDialog from './RecipeDialog';
 
 // 导入对话框组件
