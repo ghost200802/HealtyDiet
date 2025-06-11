@@ -28,6 +28,7 @@ import DietCardGroup from '@/components/diet/DietCardGroup';
 import { calculateTotalNutrition } from '@/services/NutritionService';
 import { getUserDiets } from '@/pages/diet/DietService';
 import { savePlan, getUserPlans } from '@/pages/plan/PlanService'; // 导入PlanService
+import { getFoodsByIds } from '@/services/FoodService'; // 导入FoodService
 
 // 导入存储服务
 import { PLAN_PAGE_STATE_KEY, saveToLocalStorage, getFromLocalStorage, removeFromLocalStorage } from '@/services/StorageService';
@@ -51,6 +52,9 @@ const Plan = ({ user }) => {
   const [foodAddDialogOpen, setFoodAddDialogOpen] = useState(false);
   const [shoppingListDialogOpen, setShoppingListDialogOpen] = useState(false);
   const [planLoadDialogOpen, setPlanLoadDialogOpen] = useState(false); // 添加PlanLoadDialog状态
+  
+  // 购物清单数据
+  const [groupedShoppingItems, setGroupedShoppingItems] = useState({});
   
   // 营养成分总计
   const [totalNutrition, setTotalNutrition] = useState({
@@ -309,14 +313,68 @@ const Plan = ({ user }) => {
   };
   
   // 生成购物清单
-  const handleGenerateShoppingList = () => {
+  const handleGenerateShoppingList = async () => {
     if (diets.length === 0) {
       setError('食谱规划为空，无法生成购物清单');
       return;
     }
     
-    // 打开购物清单对话框
-    setShoppingListDialogOpen(true);
+    try {
+      setLoading(true);
+      
+      // 收集所有食材ID
+      const allFoodIds = new Set();
+      diets.forEach(diet => {
+        if (diet.items && diet.items.length > 0) {
+          diet.items.forEach(item => {
+            if (item.foodId) {
+              allFoodIds.add(item.foodId);
+            }
+          });
+        }
+      });
+      
+      // 获取所有食材信息
+      const foodsData = await getFoodsByIds([...allFoodIds]);
+      
+      // 星期几的中文名称
+      const WEEKDAYS = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+      
+      // 按周几分组食材
+      const groupedItems = {};
+      
+      diets.forEach((diet, index) => {
+        const weekday = WEEKDAYS[index % 7];
+        if (!groupedItems[weekday]) {
+          groupedItems[weekday] = [];
+        }
+        
+        if (diet.items && diet.items.length > 0) {
+          // 添加食材名称
+          const itemsWithNames = diet.items.map(item => {
+            const food = foodsData.find(f => f.id === item.foodId);
+            return {
+              ...item,
+              foodName: food ? food.name : `食材ID: ${item.foodId}`
+            };
+          });
+          
+          groupedItems[weekday] = [...groupedItems[weekday], ...itemsWithNames];
+        }
+      });
+      
+      // 设置分组后的食材数据
+      setGroupedShoppingItems(groupedItems);
+      
+      // 打开购物清单对话框
+      setShoppingListDialogOpen(true);
+      
+    } catch (error) {
+      console.error('生成购物清单失败:', error);
+      setError('生成购物清单失败，请重试');
+    } finally {
+      setLoading(false);
+    }
   };
   
   // 添加食谱到规划
@@ -442,7 +500,8 @@ const Plan = ({ user }) => {
       <ShoppingListDialog
         open={shoppingListDialogOpen}
         onClose={() => setShoppingListDialogOpen(false)}
-        items={diets.flatMap(diet => diet.items || [])}
+        items={Object.values(groupedShoppingItems).flat()} // 使用处理过的带有foodName的数据
+        groupedItems={groupedShoppingItems}
       />
     </Container>
   );
