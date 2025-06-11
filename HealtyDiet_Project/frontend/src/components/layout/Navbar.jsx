@@ -101,7 +101,7 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
                     <Typography textAlign="center">添加食物</Typography>
                   </MenuItem>
                   <MenuItem onClick={() => handleMenuClick('/recipe')}>
-                    <Typography textAlign="center">食谱分析</Typography>
+                    <Typography textAlign="center">每日食谱</Typography>
                   </MenuItem>
                   <MenuItem onClick={() => handleMenuClick('/plan')}>
                     <Typography textAlign="center">食谱规划</Typography>
@@ -175,7 +175,7 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
                   onClick={() => handleMenuClick('/recipe')}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
-                  食谱分析
+                  每日食谱
                 </Button>
                 <Button
                   onClick={() => handleMenuClick('/plan')}
