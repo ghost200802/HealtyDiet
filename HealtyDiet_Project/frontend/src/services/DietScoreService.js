@@ -136,47 +136,47 @@ const calculateDietScore = (diet, targetValues, standardNeeds) => {
   let categoryLimitsScore = 0;
   let categoryViolations = 0;
   
-  // 根据食物类型和子类型计算重量限制得分
-  if (standardNeeds && typeof standardNeeds === 'object') {
-    // 计算各类型和子类型的食物重量
-    const { typeWeights, subtypeWeights } = calculateFoodTypeWeights(items, standardNeeds);
+  // // 根据食物类型和子类型计算重量限制得分
+  // if (standardNeeds && typeof standardNeeds === 'object') {
+  //   // 计算各类型和子类型的食物重量
+  //   const { typeWeights, subtypeWeights } = calculateFoodTypeWeights(items, standardNeeds);
     
-    console.log('类型重量统计:', typeWeights);
-    console.log('子类型重量统计:', subtypeWeights);
+  //   console.log('类型重量统计:', typeWeights);
+  //   console.log('子类型重量统计:', subtypeWeights);
     
-    // 检查各类型和子类型是否满足标准需求
-    Object.keys(standardNeeds).forEach(type => {
-      const typeRange = standardNeeds[type]?.total;
-      const typeWeight = typeWeights[type];
+  //   // 检查各类型和子类型是否满足标准需求
+  //   Object.keys(standardNeeds).forEach(type => {
+  //     const typeRange = standardNeeds[type]?.total;
+  //     const typeWeight = typeWeights[type];
       
-      // 检查类型重量是否在范围内
-      if (typeRange && (typeWeight < typeRange[0] || typeWeight > typeRange[1])) {
-        categoryViolations++;
-        // 类型不满足扣15分
-        categoryLimitsScore -= 15;
-        console.log(`${type}类别重量不满足要求: ${typeWeight}g, 应为${typeRange[0]}-${typeRange[1]}g`);
-      }
+  //     // 检查类型重量是否在范围内
+  //     if (typeRange && (typeWeight < typeRange[0] || typeWeight > typeRange[1])) {
+  //       categoryViolations++;
+  //       // 类型不满足扣15分
+  //       categoryLimitsScore -= 15;
+  //       console.log(`${type}类别重量不满足要求: ${typeWeight}g, 应为${typeRange[0]}-${typeRange[1]}g`);
+  //     }
       
-      // 检查子类型重量
-      if (standardNeeds[type]?.subTypes) {
-        Object.keys(standardNeeds[type].subTypes).forEach(subType => {
-          const subTypeRange = standardNeeds[type].subTypes[subType];
-          const subTypeWeight = subtypeWeights[type]?.[subType];
+  //     // 检查子类型重量
+  //     if (standardNeeds[type]?.subTypes) {
+  //       Object.keys(standardNeeds[type].subTypes).forEach(subType => {
+  //         const subTypeRange = standardNeeds[type].subTypes[subType];
+  //         const subTypeWeight = subtypeWeights[type]?.[subType];
           
-          // 检查子类型重量是否在范围内
-          if (subTypeRange && subTypeWeight !== undefined && (subTypeWeight < subTypeRange[0] || subTypeWeight > subTypeRange[1])) {
-            categoryViolations++;
-            // 子类型不满足扣5分
-            categoryLimitsScore -= 5;
-            console.log(`${type}类别的${subType}子类别重量不满足要求: ${subTypeWeight}g, 应为${subTypeRange[0]}-${subTypeRange[1]}g`);
-          }
-        });
-      }
-    });
-  }
+  //         // 检查子类型重量是否在范围内
+  //         if (subTypeRange && subTypeWeight !== undefined && (subTypeWeight < subTypeRange[0] || subTypeWeight > subTypeRange[1])) {
+  //           categoryViolations++;
+  //           // 子类型不满足扣5分
+  //           categoryLimitsScore -= 5;
+  //           console.log(`${type}类别的${subType}子类别重量不满足要求: ${subTypeWeight}g, 应为${subTypeRange[0]}-${subTypeRange[1]}g`);
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
   
-  // 确保得分不会低于-100
-  categoryLimitsScore = Math.max(categoryLimitsScore, -100);
+  // // 确保得分不会低于-100
+  // categoryLimitsScore = Math.max(categoryLimitsScore, -100);
   
   console.log('各项得分计算结果:', {
     caloriesScore,
@@ -191,9 +191,9 @@ const calculateDietScore = (diet, targetValues, standardNeeds) => {
 
   // 计算总得分（根据各项占比）
   const totalScore = 
-    caloriesScore * 10 + // 能量占比10%
-    proteinScore * 20 + // 蛋白质占比20%
-    carbsScore * 20 + // 碳水占比20%
+    caloriesScore * 20 + // 能量占比20%
+    proteinScore * 30 + // 蛋白质占比30%
+    carbsScore * 30 + // 碳水占比30%
     fatScore * 10 + // 脂肪占比10%
     fiberScore * 10 + // 纤维素占比10%
     categoryLimitsScore * 0.3; // 类别限制得分占比30%
