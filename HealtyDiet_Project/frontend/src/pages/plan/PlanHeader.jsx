@@ -6,28 +6,24 @@ import {
   Button,
 } from '@mui/material';
 import {
-  Add as AddIcon,
   Save as SaveIcon,
   CloudDownload as CloudDownloadIcon,
   AutoFixHigh as AutoFixHighIcon,
-  Tune as TuneIcon,
   ShoppingCart as ShoppingCartIcon,
   Delete as DeleteIcon,
 } from '@mui/icons-material';
 
 /**
- * 食谱页面的标题和操作按钮组件
+ * 食谱规划页面的标题和操作按钮组件
  */
-const DietHeader = ({ 
-  dietName, 
-  setDietName, 
+const PlanHeader = ({ 
+  planName, 
+  setPlanName, 
   onSave, 
   onLoad, 
-  onAdd,
   onAutoGenerate,
-  onAutoOptimize,
   onGenerateShoppingList,
-  onClearDiet
+  onClearPlan
 }) => {
   return (
     <Box sx={{ 
@@ -53,13 +49,13 @@ const DietHeader = ({
             mb: 2
           }}
         >
-          每日食谱
+          食谱规划
         </Typography>
         <TextField
           fullWidth
-          label="食谱名称"
-          value={dietName}
-          onChange={(e) => setDietName(e.target.value)}
+          label="规划名称"
+          value={planName}
+          onChange={(e) => setPlanName(e.target.value)}
           variant="outlined"
           sx={{ 
             mb: 2,
@@ -91,11 +87,11 @@ const DietHeader = ({
               transition: 'all 0.2s',
               '&:hover': {
                 transform: 'translateY(-2px)',
-                boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                boxShadow: '0 4px 8px rgba(2,136,209,0.1)'
               }
             }}
           >
-            加载食谱
+            加载规划
           </Button>
           <Button
             variant="outlined"
@@ -108,18 +104,18 @@ const DietHeader = ({
               transition: 'all 0.2s',
               '&:hover': {
                 transform: 'translateY(-2px)',
-                boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+                boxShadow: '0 4px 8px rgba(25,118,210,0.1)'
               }
             }}
           >
-            保存食谱
+            保存规划
           </Button>
-          {onClearDiet && (
+          {onClearPlan && (
             <Button
               variant="outlined"
               color="error"
               startIcon={<DeleteIcon />}
-              onClick={onClearDiet}
+              onClick={onClearPlan}
               sx={{ 
                 minWidth: '120px',
                 borderRadius: 1.5,
@@ -130,45 +126,9 @@ const DietHeader = ({
                 }
               }}
             >
-              清除食谱
+              清除规划
             </Button>
           )}
-        </Box>
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <Button
-            variant="outlined"
-            color="success"
-            startIcon={<AddIcon />}
-            onClick={onAdd}
-            sx={{ 
-              minWidth: '120px',
-              borderRadius: 1.5,
-              transition: 'all 0.2s',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: '0 4px 8px rgba(46,125,50,0.1)'
-              }
-            }}
-          >
-            添加食物
-          </Button>
-          <Button
-            variant="outlined"
-            color="warning"
-            startIcon={<ShoppingCartIcon />}
-            onClick={onGenerateShoppingList}
-            sx={{ 
-              minWidth: '120px',
-              borderRadius: 1.5,
-              transition: 'all 0.2s',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: '0 4px 8px rgba(237,108,2,0.1)'
-              }
-            }}
-          >
-            购物清单
-          </Button>
         </Box>
         <Box sx={{ display: 'flex', gap: 1 }}>
           <Button
@@ -190,20 +150,20 @@ const DietHeader = ({
           </Button>
           <Button
             variant="outlined"
-            color="info"
-            startIcon={<TuneIcon />}
-            onClick={onAutoOptimize}
+            color="warning"
+            startIcon={<ShoppingCartIcon />}
+            onClick={onGenerateShoppingList}
             sx={{ 
               minWidth: '120px',
               borderRadius: 1.5,
               transition: 'all 0.2s',
               '&:hover': {
                 transform: 'translateY(-2px)',
-                boxShadow: '0 4px 8px rgba(2,136,209,0.1)'
+                boxShadow: '0 4px 8px rgba(237,108,2,0.1)'
               }
             }}
           >
-            自动优化
+            购物清单
           </Button>
         </Box>
       </Box>
@@ -211,4 +171,4 @@ const DietHeader = ({
   );
 };
 
-export default DietHeader;
+export default PlanHeader;

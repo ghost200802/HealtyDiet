@@ -21,7 +21,7 @@ import FoodAddDialog from '@/components/dialogs/FoodAddDialog';
 import PlanLoadDialog from '@/components/dialogs/PlanLoadDialog'; // 导入PlanLoadDialog
 
 // 导入自定义组件
-import PlanHeader from '@/components/diet/PlanHeader';
+import PlanHeader from '@/pages/plan/PlanHeader';
 import DietCardGroup from '@/components/diet/DietCardGroup';
 
 // 导入工具函数和服务
