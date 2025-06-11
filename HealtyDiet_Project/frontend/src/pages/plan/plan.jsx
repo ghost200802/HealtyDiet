@@ -29,6 +29,9 @@ import { calculateTotalNutrition } from '@/services/NutritionService';
 import { getUserDiets } from '@/pages/diet/DietService';
 import { savePlan, getUserPlans } from '@/pages/plan/PlanService'; // 导入PlanService
 
+// 导入存储服务
+import { PLAN_PAGE_STATE_KEY, saveToLocalStorage, getFromLocalStorage, removeFromLocalStorage } from '@/services/StorageService';
+
 /**
  * 食谱规划页面组件
  */
@@ -60,18 +63,57 @@ const Plan = ({ user }) => {
   
   // 初始化数据
   useEffect(() => {
+    console.log('Plan组件初始化useEffect触发，user状态:', user);
+    
     const fetchData = async () => {
       try {
         setLoading(true);
         setError('');
+        console.log('开始获取Plan数据，当前user:', user);
         
         // 获取用户已保存的食谱列表
         if (user && user.id) {
+          console.log('用户已登录，ID:', user.id, '开始获取用户食谱');
           const userDiets = await getUserDiets(user);
           console.log('获取到用户食谱:', userDiets);
           setSavedPlans(userDiets);
         } else {
+          console.log('用户未登录或ID不存在，设置空食谱列表');
           setSavedPlans([]);
+        }
+        
+        // 尝试从localStorage恢复之前的Plan状态
+        // 使用用户ID获取存储数据，防止不同用户数据混淆
+        const userId = user?.id;
+        const parsedState = getFromLocalStorage(PLAN_PAGE_STATE_KEY, null, userId);
+        console.log('从localStorage获取的Plan状态:', parsedState);
+        
+        if (parsedState) {
+          try {
+            console.log('从localStorage恢复Plan状态:', parsedState);
+            
+            // 恢复Plan名称
+            if (parsedState.planName) {
+              console.log('恢复Plan名称:', parsedState.planName);
+              setPlanName(parsedState.planName);
+            }
+            
+            // 恢复食谱列表
+            if (parsedState.diets && Array.isArray(parsedState.diets) && parsedState.diets.length > 0) {
+              console.log('恢复食谱列表，数量:', parsedState.diets.length);
+              setDiets(parsedState.diets);
+            } else {
+              console.log('没有可恢复的食谱列表或列表为空');
+            }
+          } catch (parseError) {
+            console.error('解析保存的Plan状态失败:', parseError);
+            // 清除可能损坏的数据
+            // 使用用户ID删除存储数据，防止删除其他用户的数据
+            const userId = user?.id;
+            removeFromLocalStorage(PLAN_PAGE_STATE_KEY, userId);
+          }
+        } else {
+          console.log('localStorage中没有保存的Plan状态');
         }
         
         setLoading(false);
@@ -82,8 +124,40 @@ const Plan = ({ user }) => {
       }
     };
     
-    fetchData();
+    // 确保只有当user对象可用时才执行fetchData
+    if (user) {
+      console.log('用户对象可用，开始获取数据');
+      fetchData();
+    } else {
+      console.log('用户对象不可用，等待user状态更新');
+      setLoading(false);
+    }
+    
+    // 组件卸载时的清理函数
+    return () => {
+      console.log('Plan组件useEffect清理函数执行');
+    };
   }, [user]);
+  
+  // 保存当前Plan状态到localStorage
+  useEffect(() => {
+    // 只有当diets或planName变化且不为空时才保存
+    if ((diets.length > 0 || planName !== `${new Date().toLocaleDateString()}食谱规划`)) {
+      const planState = {
+        planName,
+        diets
+      };
+      
+      try {
+        // 使用用户ID保存存储数据，防止不同用户数据混淆
+        const userId = user?.id;
+        saveToLocalStorage(PLAN_PAGE_STATE_KEY, planState, userId);
+        console.log('Plan状态已保存到localStorage');
+      } catch (error) {
+        console.error('保存Plan状态到localStorage失败:', error);
+      }
+    }
+  }, [diets, planName, user]);
   
   // 计算一周食谱的总营养成分
   useEffect(() => {
@@ -261,6 +335,19 @@ const Plan = ({ user }) => {
     setDiets(updatedDiets);
   };
   
+  // 清除当前Plan状态
+  const handleClearPlanState = () => {
+    // 清除localStorage中的Plan状态
+    // 使用用户ID删除存储数据，防止删除其他用户的数据
+    const userId = user?.id;
+    removeFromLocalStorage(PLAN_PAGE_STATE_KEY, userId);
+    // 重置状态
+    setPlanName(`${new Date().toLocaleDateString()}食谱规划`);
+    setDiets([]);
+    setSuccess('已清除当前规划');
+    setTimeout(() => setSuccess(''), 3000);
+  };
+  
   if (loading) {
     return (
       <Container sx={{ py: 4, textAlign: 'center' }}>
@@ -282,6 +369,7 @@ const Plan = ({ user }) => {
         onLoad={() => setPlanLoadDialogOpen(true)} // 修改为打开PlanLoadDialog
         onAutoGenerate={handleAutoGenerate}
         onGenerateShoppingList={handleGenerateShoppingList}
+        onClearPlan={handleClearPlanState} // 添加清除Plan状态的回调
       />
       
       {/* 消息提示 */}

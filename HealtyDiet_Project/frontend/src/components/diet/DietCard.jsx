@@ -25,6 +25,7 @@ import {
   ExpandMore as ExpandMoreIcon,
   ExpandLess as ExpandLessIcon,
 } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 /**
  * 食谱卡片组件，显示单个食谱的信息
@@ -205,6 +206,8 @@ const DietCard = ({ diet, weekday, onRemove, onSave, onAddFood, onViewDetail }) 
           <Button 
             startIcon={<InfoIcon />} 
             onClick={() => onViewDetail && onViewDetail(diet)}
+            component={Link}
+            to={`/diet?id=${diet.id}`}
           >
             详情
           </Button>

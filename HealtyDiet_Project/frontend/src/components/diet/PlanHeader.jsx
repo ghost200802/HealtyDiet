@@ -10,6 +10,7 @@ import {
   CloudDownload as CloudDownloadIcon,
   AutoFixHigh as AutoFixHighIcon,
   ShoppingCart as ShoppingCartIcon,
+  Delete as DeleteIcon,
 } from '@mui/icons-material';
 
 /**
@@ -21,7 +22,8 @@ const PlanHeader = ({
   onSave, 
   onLoad, 
   onAutoGenerate,
-  onGenerateShoppingList
+  onGenerateShoppingList,
+  onClearPlan
 }) => {
   return (
     <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -65,6 +67,17 @@ const PlanHeader = ({
         >
           购物清单
         </Button>
+        {onClearPlan && (
+          <Button
+            variant="outlined"
+            color="error"
+            startIcon={<DeleteIcon />}
+            onClick={onClearPlan}
+            sx={{ mr: 2 }}
+          >
+            清除规划
+          </Button>
+        )}
         <Button
           variant="contained"
           startIcon={<SaveIcon />}

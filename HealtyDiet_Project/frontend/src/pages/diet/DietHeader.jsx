@@ -12,6 +12,7 @@ import {
   AutoFixHigh as AutoFixHighIcon,
   Tune as TuneIcon,
   ShoppingCart as ShoppingCartIcon,
+  Delete as DeleteIcon,
 } from '@mui/icons-material';
 
 /**
@@ -25,7 +26,8 @@ const DietHeader = ({
   onAdd,
   onAutoGenerate,
   onAutoOptimize,
-  onGenerateShoppingList
+  onGenerateShoppingList,
+  onClearDiet
 }) => {
   return (
     <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -86,6 +88,17 @@ const DietHeader = ({
         >
           购物清单
         </Button>
+        {onClearDiet && (
+          <Button
+            variant="outlined"
+            color="error"
+            startIcon={<DeleteIcon />}
+            onClick={onClearDiet}
+            sx={{ mr: 2 }}
+          >
+            清除食谱
+          </Button>
+        )}
         <Button
           variant="contained"
           startIcon={<SaveIcon />}

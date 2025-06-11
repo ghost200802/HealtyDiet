@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Container,
   CircularProgress,
@@ -29,8 +29,12 @@ import { calculateDietScoreWithUserData } from '@/services/DietScoreService';
 // 导入FoodService
 import { getAllFoods as getFoodsFromService, getFoodById } from '@/services/FoodService';
 
+// 导入存储服务
+import { DIET_PAGE_STATE_KEY, saveToLocalStorage, getFromLocalStorage } from '@/services/StorageService';
+
 const Diet = ({ user }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [foods, setFoods] = useState([]);
   const [diets, setDiets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -64,6 +68,54 @@ const Diet = ({ user }) => {
     fiber: 0
   });
   
+  // 从localStorage恢复状态
+  useEffect(() => {
+    try {
+      console.log('尝试从localStorage恢复Diet状态');
+      // 使用用户ID获取存储数据，防止不同用户数据混淆
+      const userId = user?.id;
+      const savedState = getFromLocalStorage(DIET_PAGE_STATE_KEY, null, userId);
+      
+      if (savedState) {
+        const { dietName: savedName, dietItems: savedItems } = savedState;
+        console.log('从localStorage恢复的数据:', { savedName, savedItemsLength: savedItems.length });
+        console.log('恢复的dietItems详情:', JSON.stringify(savedItems));
+        
+        if (savedName) setDietName(savedName);
+        if (savedItems && Array.isArray(savedItems) && savedItems.length > 0) {
+          console.log('设置dietItems状态为恢复的数据');
+          setDietItems(savedItems);
+        } else {
+          console.log('恢复的dietItems为空或无效，使用默认空数组');
+        }
+      } else {
+        console.log('localStorage中没有保存的Diet状态');
+      }
+    } catch (error) {
+      console.error('从localStorage恢复Diet状态失败:', error);
+    }
+  }, [user]);
+
+  // 当dietItems或dietName变化时，保存状态到localStorage
+  useEffect(() => {
+    try {
+      console.log('保存Diet状态到localStorage');
+      console.log('当前dietItems长度:', dietItems.length);
+      
+      const stateToSave = {
+        dietName,
+        dietItems
+      };
+      
+      // 使用用户ID保存存储数据，防止不同用户数据混淆
+      const userId = user?.id;
+      saveToLocalStorage(DIET_PAGE_STATE_KEY, stateToSave, userId);
+      console.log('Diet状态已保存到localStorage');
+    } catch (error) {
+      console.error('保存Diet状态失败:', error);
+    }
+  }, [dietItems, dietName, user]);
+  
   // 获取所有食物和用户的食谱
   useEffect(() => {
     const fetchData = async () => {
@@ -77,6 +129,7 @@ const Diet = ({ user }) => {
         try {
           // 尝试从FoodService获取数据
           foodsData = await getFoodsFromService();
+          console.log('成功从FoodService获取食物数据:', foodsData.length);
         } catch (foodServiceError) {
           console.error('从FoodService获取数据失败，尝试从DietService获取:', foodServiceError);
           // 如果从FoodService获取失败，则从DietService获取
@@ -84,6 +137,7 @@ const Diet = ({ user }) => {
         }
         
         setFoods(foodsData);
+        console.log('设置foods状态:', foodsData.length);
         
         // 提取食物分类
         const uniqueCategories = ['全部', ...new Set(foodsData.map(food => food.category))];
@@ -94,12 +148,29 @@ const Diet = ({ user }) => {
         if (user && user.id) {
           const userDiets = await getUserDiets(user);
           setDiets(userDiets);
+          
+          // 检查URL参数中是否有dietId
+          const params = new URLSearchParams(location.search);
+          const dietId = params.get('id');
+          
+          if (dietId) {
+            // 查找对应的diet
+            const targetDiet = userDiets.find(diet => diet.id === dietId);
+            if (targetDiet) {
+              // 加载找到的diet
+              handleLoadDiet(targetDiet);
+              setSuccess(`已加载食谱: ${targetDiet.name}`);
+            } else {
+              setError(`未找到ID为${dietId}的食谱`);
+            }
+          }
         }
       } catch (err) {
         console.error('获取数据失败:', err);
         setError(err.message || '获取数据失败，请重试');
       } finally {
         setLoading(false);
+        console.log('数据加载完成，设置loading为false');
       }
     };
     
@@ -109,8 +180,9 @@ const Diet = ({ user }) => {
   // 计算食谱的总营养成分
   useEffect(() => {
     console.log('Diet.jsx - 计算食谱总营养成分');
-    console.log('dietItems:', dietItems);
-    // foods不再需要传递给calculateTotalNutrition
+    console.log('dietItems长度:', dietItems.length);
+    console.log('dietItems内容:', JSON.stringify(dietItems));
+    console.log('foods长度:', foods.length);
     
     // 使用异步版本的calculateTotalNutrition
     const calculateNutrition = async () => {
@@ -433,6 +505,43 @@ const Diet = ({ user }) => {
     setShoppingListDialogOpen(true);
   };
 
+  // 清除Diet状态
+  const handleClearDietState = () => {
+    try {
+      console.log('开始清除Diet状态');
+      localStorage.removeItem(DIET_PAGE_STATE_KEY);
+      setDietName(`${new Date().toLocaleDateString()}食谱`);
+      setDietItems([]);
+      console.log('Diet状态已清除，重置dietItems为空数组');
+      
+      // 重新加载食物数据
+      const reloadFoods = async () => {
+        try {
+          const foodsData = await getFoodsFromService();
+          console.log('重新加载食物数据成功:', foodsData.length);
+          setFoods(foodsData);
+          
+          // 提取食物分类
+          const uniqueCategories = ['全部', ...new Set(foodsData.map(food => food.category))];
+          setCategories(uniqueCategories);
+          setFilteredFoods(foodsData);
+        } catch (error) {
+          console.error('重新加载食物数据失败:', error);
+        }
+      };
+      
+      reloadFoods();
+      
+      setSuccess('已清除食谱状态');
+      
+      // 3秒后清除成功消息
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (error) {
+      console.error('清除Diet状态失败:', error);
+      setError('清除Diet状态失败: ' + error.message);
+    }
+  };
+
   if (loading) {
     return (
       <Container sx={{ py: 4, textAlign: 'center' }}>
@@ -456,6 +565,7 @@ const Diet = ({ user }) => {
         onAutoGenerate={handleAutoGenerate}
         onAutoOptimize={handleAutoOptimize}
         onGenerateShoppingList={handleGenerateShoppingList}
+        onClearDiet={handleClearDietState}
       />
       
       {/* 消息提示 */}
