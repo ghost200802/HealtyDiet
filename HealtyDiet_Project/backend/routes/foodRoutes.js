@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
-const { foodsData } = require('../services/index');
+const { foodsData } = require('@services/index');
 const path = require('path');
 const fs = require('fs-extra');
 

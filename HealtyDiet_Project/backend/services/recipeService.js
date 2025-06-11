@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
-const pathService = require('./pathService');
+const pathService = require('@services/pathService');
 
 // 食谱数据操作
 const recipesData = {

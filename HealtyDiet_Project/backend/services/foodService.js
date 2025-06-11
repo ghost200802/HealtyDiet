@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
-const pathService = require('./pathService');
-const foodTypeService = require('./foodTypeService');
+const pathService = require('@services/pathService');
+const foodTypeService = require('@services/foodTypeService');
 
 // 内存缓存
 let foodCache = {

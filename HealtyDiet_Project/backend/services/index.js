@@ -1,8 +1,8 @@
-const pathService = require('./pathService');
-const foodTypeService = require('./foodTypeService');
-const foodService = require('./foodService');
-const recipeService = require('./recipeService');
-const initService = require('./initService');
+const pathService = require('@services/pathService');
+const foodTypeService = require('@services/foodTypeService');
+const foodService = require('@services/foodService');
+const recipeService = require('@services/recipeService');
+const initService = require('@services/initService');
 
 module.exports = {
   // 路径服务

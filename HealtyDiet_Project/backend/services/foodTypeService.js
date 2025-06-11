@@ -1,5 +1,5 @@
 const fs = require('fs-extra');
-const pathService = require('./pathService');
+const pathService = require('@services/pathService');
 
 // 读取食物类型
 const readFoodTypes = () => {

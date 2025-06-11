@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
-const { recipesData, foodsData } = require('../services/index');
+const { recipesData, foodsData } = require('@services/index');
 
 
 // 获取所有食谱

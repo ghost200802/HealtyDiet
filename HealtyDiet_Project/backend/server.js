@@ -1,8 +1,11 @@
+// 注册模块别名
+require('module-alias/register');
+
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { ensureDataFilesExist } = require('./services/index');
-const { foodsData } = require('./services/index');
+const { ensureDataFilesExist } = require('@services/index');
+const { foodsData } = require('@services/index');
 
 // 初始化Express应用
 const app = express();
@@ -28,9 +31,9 @@ try {
 }
 
 // 路由导入
-const userRoutes = require('./routes/userRoutes');
-const foodRoutes = require('./routes/foodRoutes');
-const recipeRoutes = require('./routes/recipeRoutes');
+const userRoutes = require('@routes/userRoutes');
+const foodRoutes = require('@routes/foodRoutes');
+const recipeRoutes = require('@routes/recipeRoutes');
 
 // 路由注册
 app.use('/api/users', userRoutes);
