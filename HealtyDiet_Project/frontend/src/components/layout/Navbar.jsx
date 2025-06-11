@@ -103,6 +103,9 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
                   <MenuItem onClick={() => handleMenuClick('/recipe')}>
                     <Typography textAlign="center">食谱分析</Typography>
                   </MenuItem>
+                  <MenuItem onClick={() => handleMenuClick('/plan')}>
+                    <Typography textAlign="center">食谱规划</Typography>
+                  </MenuItem>
                   <MenuItem onClick={handleLogout}>
                     <Typography textAlign="center">退出登录</Typography>
                   </MenuItem>
@@ -170,6 +173,12 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
                 </Button>
                 <Button
                   onClick={() => handleMenuClick('/recipe')}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  食谱分析
+                </Button>
+                <Button
+                  onClick={() => handleMenuClick('/plan')}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
                   食谱规划

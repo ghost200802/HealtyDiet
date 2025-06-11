@@ -18,6 +18,7 @@ import UserData from '@/pages/user/UserData';
 import FoodSearch from '@/pages/food/FoodSearch';
 import FoodAdd from '@/pages/food/FoodAdd';
 import Recipe from '@/pages/recipe/Recipe';
+import Plan from '@/pages/plan/plan';
 import PrivateRoute from '@/components/auth/PrivateRoute';
 
 // 创建主题
@@ -199,6 +200,12 @@ function App() {
             <Route path="/recipe" element={
               <PrivateRoute isAuthenticated={isAuthenticated}>
                 <Recipe user={user} nutritionData={nutritionData} />
+              </PrivateRoute>
+            } />
+            
+            <Route path="/plan" element={
+              <PrivateRoute isAuthenticated={isAuthenticated}>
+                <Plan user={user} />
               </PrivateRoute>
             } />
             

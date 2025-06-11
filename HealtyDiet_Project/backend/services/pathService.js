@@ -5,6 +5,7 @@ const dataDir = path.join(__dirname, '..', '..', 'data');
 const foodsDir = path.join(dataDir, 'foods');
 const recipesDir = path.join(dataDir, 'recipes');
 const usersDir = path.join(dataDir, 'users');
+const plansDir = path.join(dataDir, 'plan'); // 添加plans目录路径
 
 // 食物类型文件路径
 const foodTypesFile = path.join(__dirname, '..', '..', '..', 'Docs', 'FoodsTypes');
@@ -34,6 +35,7 @@ module.exports = {
   foodsDir,
   recipesDir,
   usersDir,
+  plansDir, // 导出plans目录路径
   foodTypesFile,
   recipesFile,
   usersFile,

@@ -2,6 +2,7 @@ const pathService = require('@services/pathService');
 const foodTypeService = require('@services/foodTypeService');
 const foodService = require('@services/foodService');
 const recipeService = require('@services/recipeService');
+const planService = require('@services/planService'); // 添加planService
 const initService = require('@services/initService');
 
 module.exports = {
@@ -19,5 +20,8 @@ module.exports = {
   foodsData: foodService,
   
   // 食谱数据服务
-  recipesData: recipeService
+  recipesData: recipeService,
+  
+  // 食谱规划服务
+  plansData: planService
 };

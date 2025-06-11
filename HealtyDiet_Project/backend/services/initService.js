@@ -9,6 +9,7 @@ const ensureDataFilesExist = () => {
   fs.ensureDirSync(pathService.foodsDir);
   fs.ensureDirSync(pathService.recipesDir);
   fs.ensureDirSync(pathService.usersDir);
+  fs.ensureDirSync(pathService.plansDir); // 确保plans目录存在
 
   // 读取食物类型
   const foodTypes = foodTypeService.readFoodTypes();
@@ -22,13 +23,13 @@ const ensureDataFilesExist = () => {
       fs.writeJsonSync(typeFilePath, { [type]: {} });
     }
   });
-
-  // 确保食谱数据文件存在
+  
+  // 确保食谱文件存在
   if (!fs.existsSync(pathService.recipesFile)) {
     fs.writeJsonSync(pathService.recipesFile, { recipes: [] });
   }
-
-  // 确保用户数据文件存在
+  
+  // 确保用户文件存在
   if (!fs.existsSync(pathService.usersFile)) {
     fs.writeJsonSync(pathService.usersFile, { users: [] });
   }

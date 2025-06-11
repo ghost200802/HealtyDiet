@@ -34,11 +34,13 @@ try {
 const userRoutes = require('@routes/userRoutes');
 const foodRoutes = require('@routes/foodRoutes');
 const recipeRoutes = require('@routes/recipeRoutes');
+const planRoutes = require('@routes/planRoutes'); // 添加planRoutes
 
 // 路由注册
 app.use('/api/users', userRoutes);
 app.use('/api/foods', foodRoutes);
 app.use('/api/recipes', recipeRoutes);
+app.use('/api/plans', planRoutes); // 注册planRoutes
 
 // 基础路由
 app.get('/', (req, res) => {
