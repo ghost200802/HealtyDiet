@@ -3,8 +3,8 @@
  * 提供食谱评分相关的功能
  */
 
-import { calculateTotalNutrition } from './NutritionService';
-import { getFoodByIdSync } from './FoodService';
+import { calculateTotalNutrition } from '@/services/NutritionService';
+import { getFoodByIdSync } from '@/services/FoodService';
 
 /**
  * 计算食谱中各类型和子类型的食物重量

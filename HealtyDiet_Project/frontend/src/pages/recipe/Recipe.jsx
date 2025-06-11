@@ -9,25 +9,25 @@ import {
 } from '@mui/material';
 
 // 导入拆分后的组件
-import RecipeHeader from './RecipeHeader';
-import NutritionOverview from './NutritionOverview';
-import RecipeItemsTable from './RecipeItemsTable';
-import NutritionDetails from './NutritionDetails';
+import RecipeHeader from '@/pages/recipe/RecipeHeader';
+import NutritionOverview from '@/pages/recipe/NutritionOverview';
+import RecipeItemsTable from '@/pages/recipe/RecipeItemsTable';
+import NutritionDetails from '@/pages/recipe/NutritionDetails';
 
 // 导入对话框组件
-import RecipeDialog from '../../components/dialogs/RecipeDialog';
-import ShoppingListDialog from '../../components/dialogs/ShoppingListDialog';
-import FoodDetailDialog from '../../components/dialogs/FoodDetailDialog';
-import FoodAddDialog from '../../components/dialogs/FoodAddDialog';
+import RecipeDialog from '@/components/dialogs/RecipeDialog';
+import ShoppingListDialog from '@/components/dialogs/ShoppingListDialog';
+import FoodDetailDialog from '@/components/dialogs/FoodDetailDialog';
+import FoodAddDialog from '@/components/dialogs/FoodAddDialog';
 
 // 导入工具函数和服务
-import { calculateTotalNutrition, calculateRecipeItem } from '../../services/NutritionService';
-import { saveRecipe, deleteRecipe, getUserRecipes, updateFoodInRecipe } from './RecipeService';
-import { generateRecipeByDailyNeeds, optimizeRecipeByUserData, saveGeneratedRecipe } from './RecipeAutoGenerator';
+import { calculateTotalNutrition, calculateRecipeItem, calculateFoodNutrition } from '@/services/NutritionService';
+import { saveRecipe, deleteRecipe, getUserRecipes, updateFoodInRecipe } from '@/pages/recipe/RecipeService';
+import { generateRecipeByDailyNeeds, optimizeRecipeByUserData, saveGeneratedRecipe } from '@/pages/recipe/RecipeAutoGenerator';
 import dailyNeeds from '@data/needs/DailyNeeds.json';
-import { calculateRecipeScoreWithUserData } from '../../services/RecipeScoreService';
+import { calculateRecipeScoreWithUserData } from '@/services/RecipeScoreService';
 // 导入FoodService
-import { getAllFoods as getFoodsFromService } from '../../services/FoodService';
+import { getAllFoods as getFoodsFromService, getFoodById } from '@/services/FoodService';
 
 const Recipe = ({ user }) => {
   const navigate = useNavigate();
@@ -301,9 +301,7 @@ const Recipe = ({ user }) => {
       // 使用Promise.all并行处理所有食物项
       const processItems = async () => {
         try {
-          // 从FoodService获取食物数据和计算营养信息
-          const { getFoodById } = await import('../../services/FoodService');
-          const { calculateFoodNutrition } = await import('../../services/NutritionService');
+          // 使用头部导入的服务
           
           // 并行处理所有项目
           const itemPromises = optimizedRecipe.map(async (item) => {
@@ -379,9 +377,7 @@ const Recipe = ({ user }) => {
       // 转换为食谱项目格式
       const processItems = async () => {
         try {
-          // 从FoodService获取食物数据和计算营养信息
-          const { getFoodById } = await import('../../services/FoodService');
-          const { calculateFoodNutrition } = await import('../../services/NutritionService');
+          // 使用头部导入的服务
           
           // 并行处理所有项目
           const itemPromises = optimizedRecipe.map(async (item) => {

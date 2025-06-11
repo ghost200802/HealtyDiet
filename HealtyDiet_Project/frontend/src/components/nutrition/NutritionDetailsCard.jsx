@@ -4,7 +4,7 @@ import {
   CardHeader,
   CardContent,
 } from '@mui/material';
-import HorizontalBarChart from '../charts/HorizontalBarChart';
+import HorizontalBarChart from '@/components/charts/HorizontalBarChart';
 
 /**
  * 营养素详情卡片组件，显示单个营养素的分布图表

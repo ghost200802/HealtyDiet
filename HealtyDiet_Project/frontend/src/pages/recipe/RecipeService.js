@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { getMainIngredients } from './RecipeUtils';
+import { getMainIngredients } from '@/pages/recipe/RecipeUtils';
+import { calculateRecipeItem } from '@/services/NutritionService';
 
 /**
  * 保存食谱（创建新食谱或更新现有食谱）
@@ -140,8 +141,6 @@ export const getAllFoods = async () => {
  * 处理食物详情更新
  */
 export const updateFoodInRecipe = (updatedFood, foods, recipeItems) => {
-  // 导入NutritionService
-  const { calculateRecipeItem } = require('../../services/NutritionService');
   
   // 更新本地食物列表中的食物数据
   const updatedFoods = foods.map(food => {

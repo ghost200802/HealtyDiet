@@ -4,7 +4,7 @@
  * 以及营养素评分和建议功能
  */
 
-import { getFoodById, getFoodsByIds, getFoodByIdSync, getFoodsByIdsSync } from './FoodService';
+import { getFoodById, getFoodsByIds, getFoodByIdSync, getFoodsByIdsSync } from '@/services/FoodService';
 
 /**
  * 计算单个食物的营养素含量

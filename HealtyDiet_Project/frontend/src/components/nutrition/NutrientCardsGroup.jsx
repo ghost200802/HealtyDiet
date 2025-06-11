@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid } from '@mui/material';
-import NutrientCard from './NutrientCard';
+import NutrientCard from '@/components/nutrition/NutrientCard';
 
 /**
  * 营养素卡片组组件

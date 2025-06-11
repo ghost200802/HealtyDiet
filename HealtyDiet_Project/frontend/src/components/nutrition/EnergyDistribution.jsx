@@ -4,8 +4,8 @@ import {
   CardContent,
   Typography,
 } from '@mui/material';
-import ClassicPieChart from '../charts/ClassicPieChart';
-import { calculateEnergyDistribution } from '../../services/NutritionService';
+import ClassicPieChart from '@/components/charts/ClassicPieChart';
+import { calculateEnergyDistribution } from '@/services/NutritionService';
 
 /**
  * 营养素能量占比组件

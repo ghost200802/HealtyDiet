@@ -5,20 +5,20 @@ import CssBaseline from '@mui/material/CssBaseline';
 import axios from 'axios';
 
 // 导入健康指标计算服务
-import { calculateHealthMetrics } from './services/HealthMetricsService';
+import { calculateHealthMetrics } from '@/services/HealthMetricsService';
 
 // 组件导入
-import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
-import Home from './pages/Home';
-import Login from './pages/auth/Login';
-import Register from './pages/auth/Register';
-import Profile from './pages/user/Profile';
-import UserData from './pages/user/UserData';
-import FoodSearch from './pages/food/FoodSearch';
-import FoodAdd from './pages/food/FoodAdd';
-import Recipe from './pages/recipe/Recipe';
-import PrivateRoute from './components/auth/PrivateRoute';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
+import Home from '@/pages/Home';
+import Login from '@/pages/auth/Login';
+import Register from '@/pages/auth/Register';
+import Profile from '@/pages/user/Profile';
+import UserData from '@/pages/user/UserData';
+import FoodSearch from '@/pages/food/FoodSearch';
+import FoodAdd from '@/pages/food/FoodAdd';
+import Recipe from '@/pages/recipe/Recipe';
+import PrivateRoute from '@/components/auth/PrivateRoute';
 
 // 创建主题
 const theme = createTheme({

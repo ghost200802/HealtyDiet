@@ -5,9 +5,10 @@
  */
 
 import axios from 'axios';
-import { calculateFoodNutrition, calculateTotalNutrition } from '../../services/NutritionService';
-import { calculateRecipeScoreWithUserData } from '../../services/RecipeScoreService';
-import { saveRecipe } from './RecipeService';
+import { calculateFoodNutrition, calculateTotalNutrition } from '@/services/NutritionService';
+import { calculateRecipeScoreWithUserData } from '@/services/RecipeScoreService';
+import { saveRecipe } from '@/pages/recipe/RecipeService';
+import { calculateHealthMetrics } from '@/services/HealthMetricsService';
 
 /**
  * 将食物按类别分组
@@ -208,8 +209,7 @@ export const optimizeRecipeByUserData = async (recipe, userData, dailyNeeds) => 
   
   // 如果用户数据不包含dci等营养素需求，则使用HealthMetricsService计算
   if (!userData.dci || !userData.protein || !userData.fat || !userData.carbs) {
-    // 导入HealthMetricsService
-    const { calculateHealthMetrics } = await import('../../services/HealthMetricsService');
+    // 使用头部导入的服务
     
     // 计算健康指标
     const healthMetrics = calculateHealthMetrics(userData);

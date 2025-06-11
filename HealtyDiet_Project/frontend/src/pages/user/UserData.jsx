@@ -25,7 +25,7 @@ import zhCN from 'date-fns/locale/zh-CN';
 import { 
   activityLevels, 
   calculateHealthMetrics 
-} from '../../services/HealthMetricsService';
+} from '@/services/HealthMetricsService';
 
 // 用户数据表单验证模式
 const UserDataSchema = Yup.object().shape({

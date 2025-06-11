@@ -6,7 +6,7 @@ import {
   Box,
   CircularProgress,
 } from '@mui/material';
-import { getCaloriesStatus, calculateCaloriesPercentage } from '../../services/NutritionService';
+import { getCaloriesStatus, calculateCaloriesPercentage } from '@/services/NutritionService';
 
 /**
  * 总热量展示组件
