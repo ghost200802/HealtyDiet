@@ -225,7 +225,7 @@ const Diet = ({ user }) => {
   
   // 加载食谱
   const handleLoadDiet = (diet) => {
-    setdietName(diet.name);
+    setDietName(diet.name);
     
     try {
       // 处理所有食谱项目（同步调用）
