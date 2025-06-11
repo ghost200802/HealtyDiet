@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -24,11 +24,33 @@ const ShoppingListDialog = ({
   onClose, 
   items, // 食谱项目，格式为[{foodId, amount, foodName}]
 }) => {
+  // 合并相同食材的数量
+  const mergedItems = useMemo(() => {
+    if (!items || items.length === 0) return [];
+    
+    const foodMap = new Map();
+    
+    // 遍历所有食材，合并相同名称的食材数量
+    items.forEach(item => {
+      const existingItem = foodMap.get(item.foodName);
+      if (existingItem) {
+        existingItem.amount += item.amount;
+      } else {
+        foodMap.set(item.foodName, { ...item });
+      }
+    });
+    
+    // 转换回数组并排序
+    return Array.from(foodMap.values()).sort((a, b) => 
+      a.foodName.localeCompare(b.foodName)
+    );
+  }, [items]);
+
   // 复制购物清单到剪贴板
   const handleCopyToClipboard = () => {
-    if (!items || items.length === 0) return;
+    if (!mergedItems || mergedItems.length === 0) return;
     
-    const listText = items.map(item => `${item.foodName}: ${item.amount}克`).join('\n');
+    const listText = mergedItems.map(item => `${item.foodName}: ${item.amount}克`).join('\n');
     navigator.clipboard.writeText(listText)
       .then(() => {
         alert('购物清单已复制到剪贴板');
@@ -42,8 +64,15 @@ const ShoppingListDialog = ({
     <Dialog
       open={open}
       onClose={onClose}
-      maxWidth="md"
+      maxWidth="sm"
       fullWidth
+      PaperProps={{
+        sx: {
+          width: { xs: '95%', sm: '80%', md: '60%' },
+          maxWidth: '500px',
+          mx: 'auto'
+        }
+      }}
     >
       <DialogTitle>
         <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -54,21 +83,34 @@ const ShoppingListDialog = ({
         </Box>
       </DialogTitle>
       <DialogContent>
-        {!items || items.length === 0 ? (
+        {!mergedItems || mergedItems.length === 0 ? (
           <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', py: 3 }}>
             没有食材
           </Typography>
         ) : (
-          <List>
-            {items.map((item, index) => (
+          <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+            {mergedItems.map((item, index) => (
               <React.Fragment key={`${item.foodId}-${index}`}>
                 <ListItem>
                   <ListItemText
-                    primary={item.foodName}
-                    secondary={`${item.amount}克`}
+                    primary={
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="subtitle1" component="span">
+                          {item.foodName}
+                        </Typography>
+                        <Typography 
+                          variant="subtitle1" 
+                          component="span" 
+                          color="primary.main"
+                          sx={{ fontWeight: 'medium', ml: 2 }}
+                        >
+                          {item.amount}克
+                        </Typography>
+                      </Box>
+                    }
                   />
                 </ListItem>
-                {index < items.length - 1 && <Divider />}
+                {index < mergedItems.length - 1 && <Divider />}
               </React.Fragment>
             ))}
           </List>

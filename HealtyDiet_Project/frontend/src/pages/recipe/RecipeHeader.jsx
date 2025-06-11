@@ -84,7 +84,7 @@ const RecipeHeader = ({
           onClick={onGenerateShoppingList}
           sx={{ mr: 2 }}
         >
-          生成清单
+          购物清单
         </Button>
         <Button
           variant="contained"
