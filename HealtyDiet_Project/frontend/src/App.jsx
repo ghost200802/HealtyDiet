@@ -173,7 +173,7 @@ function App() {
         <Navbar isAuthenticated={isAuthenticated} user={user} onLogout={handleLogout} />
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home isAuthenticated={isAuthenticated} />} />
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route path="/register" element={<Register />} />
             

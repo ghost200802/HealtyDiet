@@ -14,7 +14,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
 
-const Home = () => {
+const Home = ({ isAuthenticated }) => {
   return (
     <Container maxWidth="lg">
       {/* 主标题区域 */}
@@ -30,7 +30,7 @@ const Home = () => {
       {/* 功能卡片区域 */}
       <Grid container spacing={4} sx={{ mt: 2 }}>
         {/* 食物查询卡片 */}
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid item xs={12} sm={6} md={3}>
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardContent sx={{ flexGrow: 1 }}>
               <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
@@ -51,15 +51,15 @@ const Home = () => {
           </Card>
         </Grid>
 
-        {/* 个人数据卡片 */}
-        <Grid item xs={12} sm={6} md={4}>
+        {/* 健康数据卡片 */}
+        <Grid item xs={12} sm={6} md={3}>
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardContent sx={{ flexGrow: 1 }}>
               <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
                 <PersonIcon fontSize="large" color="primary" />
               </Box>
               <Typography gutterBottom variant="h5" component="h2" align="center">
-                个人数据
+                健康数据
               </Typography>
               <Typography>
                 记录和管理您的个人信息和身体数据，包括身高、体重、体脂率等，系统将自动计算您的基础代谢率(BMR)。
@@ -73,8 +73,30 @@ const Home = () => {
           </Card>
         </Grid>
 
+        {/* 每日食谱卡片 */}
+        <Grid item xs={12} sm={6} md={3}>
+          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <CardContent sx={{ flexGrow: 1 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+                <RestaurantIcon fontSize="large" color="primary" />
+              </Box>
+              <Typography gutterBottom variant="h5" component="h2" align="center">
+                每日食谱
+              </Typography>
+              <Typography>
+                记录您的每日饮食，查看营养摄入情况，系统会自动分析您的饮食结构并提供改进建议。
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small" component={Link} to="/recipe" fullWidth>
+                查看食谱
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+
         {/* 食谱规划卡片 */}
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid item xs={12} sm={6} md={3}>
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardContent sx={{ flexGrow: 1 }}>
               <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
@@ -88,7 +110,7 @@ const Home = () => {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small" component={Link} to="/recipe" fullWidth>
+              <Button size="small" component={Link} to="/plan" fullWidth>
                 开始规划
               </Button>
             </CardActions>
@@ -157,21 +179,23 @@ const Home = () => {
         </Grid>
       </Box>
 
-      {/* 开始使用区域 */}
-      <Box sx={{ my: 6, textAlign: 'center' }}>
-        <Typography variant="h4" component="h2" gutterBottom>
-          开始使用
-        </Typography>
-        <Typography variant="body1" paragraph>
-          立即注册账号，开始您的健康饮食管理之旅！
-        </Typography>
-        <Button variant="contained" size="large" component={Link} to="/register">
-          免费注册
-        </Button>
-        <Typography variant="body2" sx={{ mt: 2 }}>
-          已有账号？<Link component={Link} to="/login">立即登录</Link>
-        </Typography>
-      </Box>
+      {/* 开始使用区域 - 仅在未登录时显示 */}
+      {!isAuthenticated && (
+        <Box sx={{ my: 6, textAlign: 'center' }}>
+          <Typography variant="h4" component="h2" gutterBottom>
+            开始使用
+          </Typography>
+          <Typography variant="body1" paragraph>
+            立即注册账号，开始您的健康饮食管理之旅！
+          </Typography>
+          <Button variant="contained" size="large" component={Link} to="/register">
+            免费注册
+          </Button>
+          <Typography variant="body2" sx={{ mt: 2 }}>
+            已有账号？<Link component={Link} to="/login">立即登录</Link>
+          </Typography>
+        </Box>
+      )}
     </Container>
   );
 };
