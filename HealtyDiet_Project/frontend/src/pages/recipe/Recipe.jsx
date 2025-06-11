@@ -13,11 +13,12 @@ import RecipeHeader from './RecipeHeader';
 import NutritionOverview from './NutritionOverview';
 import RecipeItemsTable from './RecipeItemsTable';
 import NutritionDetails from './NutritionDetails';
-import RecipeDialog from './RecipeDialog';
 
 // 导入对话框组件
-import FoodDetailDialog from '../../components/food/FoodDetailDialog';
-import FoodAddDialog from '../../components/food/FoodAddDialog';
+import RecipeDialog from '../../components/dialogs/RecipeDialog';
+import ShoppingListDialog from '../../components/dialogs/ShoppingListDialog';
+import FoodDetailDialog from '../../components/dialogs/FoodDetailDialog';
+import FoodAddDialog from '../../components/dialogs/FoodAddDialog';
 
 // 导入工具函数和服务
 import { calculateTotalNutrition, calculateRecipeItem } from '../../services/NutritionService';
@@ -49,6 +50,7 @@ const Recipe = ({ user }) => {
   const [foodAddDialogOpen, setFoodAddDialogOpen] = useState(false);
   const [foodDetailDialogOpen, setFoodDetailDialogOpen] = useState(false);
   const [foodToView, setFoodToView] = useState(null);
+  const [shoppingListDialogOpen, setShoppingListDialogOpen] = useState(false);
   
   // 按文件保存食谱选项 - 默认为true，始终按文件保存
   const [saveAsFile, setSaveAsFile] = useState(true);
@@ -424,6 +426,17 @@ const Recipe = ({ user }) => {
     }
   };
 
+  // 生成购物清单
+  const handleGenerateShoppingList = () => {
+    if (recipeItems.length === 0) {
+      setError('食谱为空，无法生成购物清单');
+      return;
+    }
+    
+    // 打开购物清单对话框
+    setShoppingListDialogOpen(true);
+  };
+
   if (loading) {
     return (
       <Container sx={{ py: 4, textAlign: 'center' }}>
@@ -446,6 +459,7 @@ const Recipe = ({ user }) => {
         onAdd={() => setFoodAddDialogOpen(true)}
         onAutoGenerate={handleAutoGenerate}
         onAutoOptimize={handleAutoOptimize}
+        onGenerateShoppingList={handleGenerateShoppingList}
       />
       
       {/* 消息提示 */}
@@ -508,6 +522,13 @@ const Recipe = ({ user }) => {
         onClose={() => setFoodDetailDialogOpen(false)}
         food={foodToView}
         onFoodUpdate={handleFoodUpdate}
+      />
+      
+      {/* 购物清单对话框 */}
+      <ShoppingListDialog
+        open={shoppingListDialogOpen}
+        onClose={() => setShoppingListDialogOpen(false)}
+        items={recipeItems}
       />
     </Container>
   );

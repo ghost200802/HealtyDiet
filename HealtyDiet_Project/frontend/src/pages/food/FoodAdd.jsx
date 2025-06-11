@@ -17,7 +17,7 @@ import RestaurantIcon from '@mui/icons-material/Restaurant';
 import Avatar from '@mui/material/Avatar';
 
 // 导入食物详情对话框组件
-import FoodDetailDialog from '../../components/food/FoodDetailDialog';
+import FoodDetailDialog from '../../components/dialogs/FoodDetailDialog';
 
 // 食物表单验证模式
 const FoodSchema = Yup.object().shape({

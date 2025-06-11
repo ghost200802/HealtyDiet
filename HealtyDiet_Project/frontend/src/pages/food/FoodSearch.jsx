@@ -21,7 +21,7 @@ import TableRow from '@mui/material/TableRow';
 import AddIcon from '@mui/icons-material/Add';
 
 // 导入食物详情对话框组件
-import FoodDetailDialog from '../../components/food/FoodDetailDialog';
+import FoodDetailDialog from '../../components/dialogs/FoodDetailDialog';
 
 const FoodSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');

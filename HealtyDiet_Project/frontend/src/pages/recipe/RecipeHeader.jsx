@@ -11,6 +11,7 @@ import {
   CloudDownload as CloudDownloadIcon,
   AutoFixHigh as AutoFixHighIcon,
   Tune as TuneIcon,
+  ShoppingCart as ShoppingCartIcon,
 } from '@mui/icons-material';
 
 /**
@@ -23,7 +24,8 @@ const RecipeHeader = ({
   onLoad, 
   onAdd,
   onAutoGenerate,
-  onAutoOptimize
+  onAutoOptimize,
+  onGenerateShoppingList
 }) => {
   return (
     <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -74,6 +76,15 @@ const RecipeHeader = ({
           sx={{ mr: 2 }}
         >
           自动优化
+        </Button>
+        <Button
+          variant="outlined"
+          color="success"
+          startIcon={<ShoppingCartIcon />}
+          onClick={onGenerateShoppingList}
+          sx={{ mr: 2 }}
+        >
+          生成清单
         </Button>
         <Button
           variant="contained"
