@@ -17,7 +17,7 @@ import Profile from '@/pages/user/Profile';
 import UserData from '@/pages/user/UserData';
 import FoodSearch from '@/pages/food/FoodSearch';
 import FoodAdd from '@/pages/food/FoodAdd';
-import Recipe from '@/pages/recipe/Recipe';
+import Diet from '@/pages/diet/Diet';
 import Plan from '@/pages/plan/plan';
 import PrivateRoute from '@/components/auth/PrivateRoute';
 
@@ -197,9 +197,9 @@ function App() {
               </PrivateRoute>
             } />
             
-            <Route path="/recipe" element={
+            <Route path="/diet" element={
               <PrivateRoute isAuthenticated={isAuthenticated}>
-                <Recipe user={user} nutritionData={nutritionData} />
+                <Diet user={user} nutritionData={nutritionData} />
               </PrivateRoute>
             } />
             

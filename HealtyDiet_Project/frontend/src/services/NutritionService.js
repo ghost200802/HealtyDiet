@@ -53,7 +53,7 @@ export const calculateFoodNutrition = (foodId, amount, nutrients = ['calories', 
  * @param {number} amount - 食物重量(克)
  * @returns {Object} - 食谱项目对象，包含食物ID、名称、重量和营养素含量
  */
-export const calculateRecipeItem = (foodId, amount) => {
+export const calculateDietItem = (foodId, amount) => {
   if (!foodId) {
     throw new Error('食物ID不能为空');
   }
@@ -81,14 +81,14 @@ export const calculateRecipeItem = (foodId, amount) => {
 
 /**
  * 计算食谱的总营养成分
- * @param {Array} recipeItems - 食谱中的食物项目，简化格式为[{foodId, amount}]
+ * @param {Array} dietItems - 食谱中的食物项目，简化格式为[{foodId, amount}]
  * @returns {Object} - 总营养成分
  */
-export const calculateTotalNutrition = (recipeItems) => {
-  console.log('calculateTotalNutrition 调用:', { recipeItemsLength: recipeItems?.length });
+export const calculateTotalNutrition = (dietItems) => {
+  console.log('calculateTotalNutrition 调用:', { dietItemsLength: dietItems?.length });
   
   // 检查参数
-  if (!recipeItems || recipeItems.length === 0) {
+  if (!dietItems || dietItems.length === 0) {
     console.log('没有食谱项目，返回零值');
     return {
       calories: 0,
@@ -107,8 +107,8 @@ export const calculateTotalNutrition = (recipeItems) => {
     fiber: 0
   };
 
-  console.log('计算总营养成分的recipeItems:', recipeItems);
-  for(const item of recipeItems) {
+  console.log('计算总营养成分的dietItems:', dietItems);
+  for(const item of dietItems) {
     try {
       const nutrition = calculateFoodNutrition(item.foodId, item.amount);
       totals.calories += nutrition.calories;
@@ -172,13 +172,13 @@ export const calculateEnergyDistribution = (totalNutrition) => {
 
 /**
  * 准备营养素数据用于图表显示
- * @param {Array} recipeItems - 食谱中的食物项目，格式为[{foodId, amount}]
+ * @param {Array} dietItems - 食谱中的食物项目，格式为[{foodId, amount}]
  * @param {Object} totalNutrition - 食谱的总营养成分
  * @param {string} type - 营养素类型 (calories, protein, carbs, fat, fiber)
  * @returns {Array} 排序后的营养素数据
  */
-export const prepareNutritionData = (recipeItems, totalNutrition, type) => {
-  if (recipeItems.length === 0) return [];
+export const prepareNutritionData = (dietItems, totalNutrition, type) => {
+  if (dietItems.length === 0) return [];
   
   // 防止除以0的情况
   if (!totalNutrition[type] || totalNutrition[type] === 0) {
@@ -186,7 +186,7 @@ export const prepareNutritionData = (recipeItems, totalNutrition, type) => {
   }
   
   // 收集所有foodId
-  const foodIds = recipeItems.map(item => item.foodId);
+  const foodIds = dietItems.map(item => item.foodId);
   
   // 获取食物数据
   const foods = getFoodsByIdsSync(foodIds);
@@ -200,7 +200,7 @@ export const prepareNutritionData = (recipeItems, totalNutrition, type) => {
   // 根据类型获取相应的营养素数据并按照占比从大到小排序
   const result = [];
   
-  for (const item of recipeItems) {
+  for (const item of dietItems) {
     const food = foodMap[item.foodId];
     if (!food) continue; // 如果找不到食物数据，跳过
     

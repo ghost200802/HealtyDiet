@@ -19,8 +19,8 @@ import {
 /**
  * 食谱中的食物列表表格组件
  */
-const RecipeItemsTable = ({ 
-  recipeItems, 
+const DietItemsTable = ({ 
+  dietItems, 
   foods, 
   onAmountChange, 
   onRemoveFood, 
@@ -31,7 +31,7 @@ const RecipeItemsTable = ({
       <Typography variant="h5" gutterBottom>
         食物列表
       </Typography>
-      {recipeItems.length === 0 ? (
+      {dietItems.length === 0 ? (
         <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', py: 3 }}>
           食谱中还没有食物，点击上方的载入按钮载入已保存的食谱，或者请点击上方的添加按钮添加食物。
         </Typography>
@@ -50,7 +50,7 @@ const RecipeItemsTable = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {recipeItems.map((item, index) => (
+              {dietItems.map((item, index) => (
                 <TableRow key={`${item.foodId}-${index}`}>
                   <TableCell>{item.foodName}</TableCell>
                   <TableCell align="right">
@@ -104,4 +104,4 @@ const RecipeItemsTable = ({
   );
 };
 
-export default RecipeItemsTable;
+export default DietItemsTable;

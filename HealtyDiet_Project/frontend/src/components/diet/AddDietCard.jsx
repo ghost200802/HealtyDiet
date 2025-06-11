@@ -12,7 +12,7 @@ import {
 /**
  * 添加食谱卡片组件
  */
-const AddRecipeCard = ({ onClick }) => {
+const AddDietCard = ({ onClick }) => {
   return (
     <Card 
       sx={{ 
@@ -38,4 +38,4 @@ const AddRecipeCard = ({ onClick }) => {
   );
 };
 
-export default AddRecipeCard;
+export default AddDietCard;

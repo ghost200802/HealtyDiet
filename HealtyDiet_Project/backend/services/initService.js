@@ -7,7 +7,7 @@ const ensureDataFilesExist = () => {
   // 确保目录存在
   fs.ensureDirSync(pathService.dataDir);
   fs.ensureDirSync(pathService.foodsDir);
-  fs.ensureDirSync(pathService.recipesDir);
+  fs.ensureDirSync(pathService.dietsDir);
   fs.ensureDirSync(pathService.usersDir);
   fs.ensureDirSync(pathService.plansDir); // 确保plans目录存在
 
@@ -25,8 +25,8 @@ const ensureDataFilesExist = () => {
   });
   
   // 确保食谱文件存在
-  if (!fs.existsSync(pathService.recipesFile)) {
-    fs.writeJsonSync(pathService.recipesFile, { recipes: [] });
+  if (!fs.existsSync(pathService.dietsFile)) {
+    fs.writeJsonSync(pathService.dietsFile, { diets: [] });
   }
   
   // 确保用户文件存在

@@ -63,15 +63,15 @@ const calculateFoodTypeWeights = (items, standardNeeds) => {
 
 /**
  * 使用用户数据计算食谱得分
- * @param {Array} recipe - 要计算得分的食谱，简化的[{foodId, amount}]数组格式
+ * @param {Array} diet - 要计算得分的食谱，简化的[{foodId, amount}]数组格式
  * @param {Object} user - 用户数据
  * @param {Object} standardNeeds - 标准需求数据
  * @returns {Object} - 包含总得分和各项得分详情的对象
  */
-export const calculateRecipeScoreWithUserData = (recipe, user, standardNeeds) => {
+export const calculateDietScoreWithUserData = (diet, user, standardNeeds) => {
   console.log('开始计算食谱得分WithUserData...');
-  console.log('recipe:',recipe);
-  return calculateRecipeScore(recipe, {
+  console.log('diet:',diet);
+  return calculateDietScore(diet, {
     dci: user.dci,
     protein: user.protein,
     carbs: user.carbs,
@@ -82,25 +82,25 @@ export const calculateRecipeScoreWithUserData = (recipe, user, standardNeeds) =>
 
 /**
  * 计算食谱的得分
- * @param {Array} recipe - 要计算得分的食谱，简化的[{foodId, amount}]数组格式
+ * @param {Array} diet - 要计算得分的食谱，简化的[{foodId, amount}]数组格式
  * @param {Object} targetValues - 目标营养值
  * @param {Object} standardNeeds - 标准需求数据
  * @returns {Object} - 包含总得分和各项得分详情的对象
  */
-const calculateRecipeScore = (recipe, targetValues, standardNeeds) => {
+const calculateDietScore = (diet, targetValues, standardNeeds) => {
   console.log('开始计算食谱得分...');
-  console.log('recipe:',recipe);
+  console.log('diet:',diet);
   console.log('目标值:', targetValues);
   
   // 使用简化格式的食谱数据（[{foodId, amount}]数组格式）
   console.log('食谱为简化数组格式，直接使用');
-  const items = recipe;
+  const items = diet;
   console.log('食谱项目数量:', items.length);
   
   
   // 计算总营养成分
   console.log('调用calculateTotalNutrition计算总营养成分...');
-  const nutrition = calculateTotalNutrition(recipe);
+  const nutrition = calculateTotalNutrition(diet);
   console.log('计算得到的总营养成分:', nutrition);
   
   // 获取目标值

@@ -8,22 +8,22 @@ import {
 // 导入子组件
 import CaloriesDisplay from '@/components/nutrition/CaloriesDisplay';
 import EnergyDistribution from '@/components/nutrition/EnergyDistribution';
-import RecipeScoreDisplay from '@/components/nutrition/RecipeScoreDisplay';
+import DietScoreDisplay from '@/components/nutrition/DietScoreDisplay';
 import NutrientCardsGroup from '@/components/nutrition/NutrientCardsGroup';
 
 // 导入钩子
-import useRecipeScore from '@/hooks/nutrition/useRecipeScore';
+import useDietScore from '@/hooks/nutrition/useDietScore';
 
 /**
  * 食谱营养总览组件
  * @param {Object} props - 组件属性
  * @param {Object} props.totalNutrition - 总营养数据
  * @param {Object} props.user - 用户数据
- * @param {Array} props.recipeItems - 食谱项目数组
+ * @param {Array} props.dietItems - 食谱项目数组
  */
-const NutritionOverview = ({ totalNutrition, user, recipeItems }) => {
+const NutritionOverview = ({ totalNutrition, user, dietItems }) => {
   // 使用钩子计算食谱评分
-  const { recipeScore, scoreSuggestions } = useRecipeScore(recipeItems, user);
+  const { dietScore, scoreSuggestions } = useDietScore(dietItems, user);
 
   return (
     <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
@@ -45,7 +45,7 @@ const NutritionOverview = ({ totalNutrition, user, recipeItems }) => {
         
         {/* 食谱评分 */}
         <Grid item xs={12} md={4}>
-          <RecipeScoreDisplay recipeScore={recipeScore} scoreSuggestions={scoreSuggestions} />
+          <DietScoreDisplay dietScore={dietScore} scoreSuggestions={scoreSuggestions} />
         </Grid>
       </Grid>
       

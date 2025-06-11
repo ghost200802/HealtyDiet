@@ -154,11 +154,11 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
                     <Typography textAlign="center">健康数据</Typography>
                   </MenuItem>
                   <MenuItem 
-                    onClick={() => handleMenuClick('/recipe')}
-                    selected={isActive('/recipe')}
+                    onClick={() => handleMenuClick('/diet')}
+                    selected={isActive('/diet')}
                     sx={{
-                      borderLeft: isActive('/recipe') ? '4px solid #4caf50' : 'none',
-                      pl: isActive('/recipe') ? 1.5 : 2,
+                      borderLeft: isActive('/diet') ? '4px solid #4caf50' : 'none',
+                      pl: isActive('/diet') ? 1.5 : 2,
                       transition: 'all 0.2s',
                       '&:hover': {
                         backgroundColor: '#f5f5f5',
@@ -334,7 +334,7 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
                   健康数据
                 </Button>
                 <Button
-                  onClick={() => handleMenuClick('/recipe')}
+                  onClick={() => handleMenuClick('/diet')}
                   sx={{
                     my: 2,
                     mx: 0.5,
@@ -343,15 +343,15 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
                     minWidth: '100px',
                     textAlign: 'center',
                     position: 'relative',
-                    fontWeight: isActive('/recipe') ? 700 : 500,
+                    fontWeight: isActive('/diet') ? 700 : 500,
                     '&:after': {
                       content: '""',
                       position: 'absolute',
                       bottom: 0,
                       left: '50%',
-                      transform: isActive('/recipe') ? 'translateX(-50%)' : 'translateX(-50%) scaleX(0)',
+                      transform: isActive('/diet') ? 'translateX(-50%)' : 'translateX(-50%) scaleX(0)',
                       height: '3px',
-                      width: isActive('/recipe') ? '50%' : '0%',
+                      width: isActive('/diet') ? '50%' : '0%',
                       backgroundColor: '#fff',
                       transition: 'all 0.3s ease',
                       borderRadius: '3px',

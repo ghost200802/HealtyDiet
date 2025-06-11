@@ -9,27 +9,27 @@ import {
 /**
  * 食谱评分展示组件
  * @param {Object} props - 组件属性
- * @param {number} props.recipeScore - 食谱评分
+ * @param {number} props.dietScore - 食谱评分
  * @param {Object} props.scoreSuggestions - 评分建议
  */
-const RecipeScoreDisplay = ({ recipeScore, scoreSuggestions }) => {
+const DietScoreDisplay = ({ dietScore, scoreSuggestions }) => {
   return (
     <Card sx={{ height: '100%' }}>
       <CardContent sx={{ textAlign: 'center' }}>
         <Typography variant="h6" color="primary" gutterBottom>
           食谱评分
         </Typography>
-        {recipeScore !== null ? (
+        {dietScore !== null ? (
           <Box>
-            <Typography variant="h3" color={recipeScore > 70 ? 'success.main' : recipeScore > 50 ? 'warning.main' : 'error.main'}>
-              {Math.round(recipeScore)}
+            <Typography variant="h3" color={dietScore > 70 ? 'success.main' : dietScore > 50 ? 'warning.main' : 'error.main'}>
+              {Math.round(dietScore)}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              {recipeScore > 70 ? '优秀' : recipeScore > 50 ? '良好' : '需要改进'}
+              {dietScore > 70 ? '优秀' : dietScore > 50 ? '良好' : '需要改进'}
             </Typography>
             <Typography variant="body2" sx={{ mt: 1 }}>
-              {recipeScore > 70 ? '这份食谱非常符合您的营养需求！' : 
-               recipeScore > 50 ? '这份食谱基本符合您的营养需求，可以适当调整。' : 
+              {dietScore > 70 ? '这份食谱非常符合您的营养需求！' : 
+               dietScore > 50 ? '这份食谱基本符合您的营养需求，可以适当调整。' : 
                '这份食谱与您的营养需求有较大差距，建议调整食物种类和数量。'}
             </Typography>
             
@@ -112,4 +112,4 @@ const SuggestionItem = ({ suggestion }) => {
   );
 };
 
-export default RecipeScoreDisplay;
+export default DietScoreDisplay;

@@ -3,12 +3,12 @@ import axios from 'axios';
 /**
  * 保存食谱规划
  */
-export const savePlan = async ({ name, user, recipes }) => {
+export const savePlan = async ({ name, user, diets }) => {
   if (!user || !user.id) {
     throw new Error('请先登录');
   }
   
-  if (recipes.length === 0) {
+  if (diets.length === 0) {
     throw new Error('规划中没有食谱，请先添加食谱');
   }
   
@@ -18,7 +18,7 @@ export const savePlan = async ({ name, user, recipes }) => {
   const planData = {
     name: name,
     userId: user.id,
-    recipes: recipes.map(recipe => recipe.id) // 只保存食谱ID
+    diets: diets.map(diet => diet.id) // 只保存食谱ID
   };
   
   // 发送请求保存规划

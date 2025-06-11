@@ -1,7 +1,7 @@
 const pathService = require('@services/pathService');
 const foodTypeService = require('@services/foodTypeService');
 const foodService = require('@services/foodService');
-const recipeService = require('@services/recipeService');
+const dietService = require('@services/dietService');
 const planService = require('@services/planService'); // 添加planService
 const initService = require('@services/initService');
 
@@ -20,7 +20,7 @@ module.exports = {
   foodsData: foodService,
   
   // 食谱数据服务
-  recipesData: recipeService,
+  dietsData: dietService,
   
   // 食谱规划服务
   plansData: planService

@@ -33,13 +33,13 @@ try {
 // 路由导入
 const userRoutes = require('@routes/userRoutes');
 const foodRoutes = require('@routes/foodRoutes');
-const recipeRoutes = require('@routes/recipeRoutes');
+const dietRoutes = require('@routes/dietRoutes');
 const planRoutes = require('@routes/planRoutes'); // 添加planRoutes
 
 // 路由注册
 app.use('/api/users', userRoutes);
 app.use('/api/foods', foodRoutes);
-app.use('/api/recipes', recipeRoutes);
+app.use('/api/diets', dietRoutes);
 app.use('/api/plans', planRoutes); // 注册planRoutes
 
 // 基础路由

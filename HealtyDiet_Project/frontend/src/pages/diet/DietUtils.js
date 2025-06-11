@@ -4,23 +4,23 @@
 
 /**
  * 获取食谱的主要食材
- * @param {Array} recipeItems - 食谱中的食物项目
+ * @param {Array} dietItems - 食谱中的食物项目
  * @returns {Array} 主要食材列表
  */
-export const getMainIngredients = (recipeItems) => {
-  if (recipeItems.length === 0) return [];
+export const getMainIngredients = (dietItems) => {
+  if (dietItems.length === 0) return [];
   
   // 获取能量最多的食材
-  const caloriesTop = [...recipeItems].sort((a, b) => b.calories - a.calories)[0];
+  const caloriesTop = [...dietItems].sort((a, b) => b.calories - a.calories)[0];
   
   // 获取蛋白质最多的食材
-  const proteinTop = [...recipeItems].sort((a, b) => b.protein - a.protein)[0];
+  const proteinTop = [...dietItems].sort((a, b) => b.protein - a.protein)[0];
   
   // 获取碳水最多的食材
-  const carbsTop = [...recipeItems].sort((a, b) => b.carbs - a.carbs)[0];
+  const carbsTop = [...dietItems].sort((a, b) => b.carbs - a.carbs)[0];
   
   // 获取脂肪最多的食材
-  const fatTop = [...recipeItems].sort((a, b) => b.fat - a.fat)[0];
+  const fatTop = [...dietItems].sort((a, b) => b.fat - a.fat)[0];
   
   // 合并并去重
   const mainIngredients = [];

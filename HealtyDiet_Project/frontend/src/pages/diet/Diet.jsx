@@ -9,44 +9,44 @@ import {
 } from '@mui/material';
 
 // 导入拆分后的组件
-import RecipeHeader from '@/pages/recipe/RecipeHeader';
-import NutritionOverview from '@/pages/recipe/NutritionOverview';
-import RecipeItemsTable from '@/pages/recipe/RecipeItemsTable';
-import NutritionDetails from '@/pages/recipe/NutritionDetails';
+import DietHeader from '@/pages/diet/DietHeader';
+import NutritionOverview from '@/pages/diet/NutritionOverview';
+import DietItemsTable from '@/pages/diet/DietItemsTable';
+import NutritionDetails from '@/pages/diet/NutritionDetails';
 
 // 导入对话框组件
-import RecipeDialog from '@/components/dialogs/RecipeDialog';
+import DietDialog from '@/components/dialogs/DietDialog';
 import ShoppingListDialog from '@/components/dialogs/ShoppingListDialog';
 import FoodDetailDialog from '@/components/dialogs/FoodDetailDialog';
 import FoodAddDialog from '@/components/dialogs/FoodAddDialog';
 
 // 导入工具函数和服务
-import { calculateTotalNutrition, calculateRecipeItem, calculateFoodNutrition } from '@/services/NutritionService';
-import { saveRecipe, deleteRecipe, getUserRecipes, updateFoodInRecipe } from '@/pages/recipe/RecipeService';
-import { generateRecipeByDailyNeeds, optimizeRecipeByUserData, saveGeneratedRecipe } from '@/pages/recipe/RecipeAutoGenerator';
+import { calculateTotalNutrition, calculateDietItem, calculateFoodNutrition } from '@/services/NutritionService';
+import { saveDiet, deleteDiet, getUserDiets, updateFoodInDiet } from '@/pages/diet/DietService';
+import { generateDietByDailyNeeds, optimizeDietByUserData, saveGeneratedDiet } from '@/pages/diet/DietAutoGenerator';
 import dailyNeeds from '@data/needs/DailyNeeds.json';
-import { calculateRecipeScoreWithUserData } from '@/services/RecipeScoreService';
+import { calculateDietScoreWithUserData } from '@/services/DietScoreService';
 // 导入FoodService
 import { getAllFoods as getFoodsFromService, getFoodById } from '@/services/FoodService';
 
-const Recipe = ({ user }) => {
+const Diet = ({ user }) => {
   const navigate = useNavigate();
   const [foods, setFoods] = useState([]);
-  const [recipes, setRecipes] = useState([]);
+  const [diets, setDiets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   
   // 食谱状态
-  const [recipeName, setRecipeName] = useState(`${new Date().toLocaleDateString()}食谱`);
-  const [recipeItems, setRecipeItems] = useState([]);
+  const [dietName, setDietName] = useState(`${new Date().toLocaleDateString()}食谱`);
+  const [dietItems, setDietItems] = useState([]);
   
   // 食物添加状态
   const [categories, setCategories] = useState(['全部']);
   const [filteredFoods, setFilteredFoods] = useState([]);
   
   // 对话框状态
-  const [recipeDialogOpen, setRecipeDialogOpen] = useState(false);
+  const [dietDialogOpen, setDietDialogOpen] = useState(false);
   const [foodAddDialogOpen, setFoodAddDialogOpen] = useState(false);
   const [foodDetailDialogOpen, setFoodDetailDialogOpen] = useState(false);
   const [foodToView, setFoodToView] = useState(null);
@@ -78,8 +78,8 @@ const Recipe = ({ user }) => {
           // 尝试从FoodService获取数据
           foodsData = await getFoodsFromService();
         } catch (foodServiceError) {
-          console.error('从FoodService获取数据失败，尝试从RecipeService获取:', foodServiceError);
-          // 如果从FoodService获取失败，则从RecipeService获取
+          console.error('从FoodService获取数据失败，尝试从DietService获取:', foodServiceError);
+          // 如果从FoodService获取失败，则从DietService获取
           foodsData = await getAllFoods();
         }
         
@@ -92,8 +92,8 @@ const Recipe = ({ user }) => {
         
         // 如果用户已登录，获取用户的食谱
         if (user && user.id) {
-          const userRecipes = await getUserRecipes(user);
-          setRecipes(userRecipes);
+          const userDiets = await getUserDiets(user);
+          setDiets(userDiets);
         }
       } catch (err) {
         console.error('获取数据失败:', err);
@@ -108,14 +108,14 @@ const Recipe = ({ user }) => {
   
   // 计算食谱的总营养成分
   useEffect(() => {
-    console.log('Recipe.jsx - 计算食谱总营养成分');
-    console.log('recipeItems:', recipeItems);
+    console.log('Diet.jsx - 计算食谱总营养成分');
+    console.log('dietItems:', dietItems);
     // foods不再需要传递给calculateTotalNutrition
     
     // 使用异步版本的calculateTotalNutrition
     const calculateNutrition = async () => {
       try {
-        const totals = calculateTotalNutrition(recipeItems);
+        const totals = calculateTotalNutrition(dietItems);
         console.log('计算得到的总营养成分:', totals);
         setTotalNutrition(totals);
       } catch (error) {
@@ -132,7 +132,7 @@ const Recipe = ({ user }) => {
     };
     
     calculateNutrition();
-  }, [recipeItems, foods]);
+  }, [dietItems, foods]);
   
   // 添加食物到食谱
   const handleAddFood = (selectedFood, amount) => {
@@ -142,21 +142,21 @@ const Recipe = ({ user }) => {
     }
     
     try {
-      // 使用已导入的calculateRecipeItem函数计算食谱项目的营养素含量（同步调用）
-      const newItem = calculateRecipeItem(selectedFood.id, amount);
+      // 使用已导入的calculateDietItem函数计算食谱项目的营养素含量（同步调用）
+      const newItem = calculateDietItem(selectedFood.id, amount);
       
       // 检查是否已存在该食物，如果存在则更新数量
-      const existingItemIndex = recipeItems.findIndex(item => item.foodId === selectedFood.id);
+      const existingItemIndex = dietItems.findIndex(item => item.foodId === selectedFood.id);
       
       if (existingItemIndex !== -1) {
-        const updatedItems = [...recipeItems];
+        const updatedItems = [...dietItems];
         const oldAmount = updatedItems[existingItemIndex].amount;
         const newAmount = oldAmount + amount;
         
         // 使用NutritionService计算更新后的营养素含量（同步调用）
-        const updatedItem = calculateRecipeItem(selectedFood.id, newAmount);
+        const updatedItem = calculateDietItem(selectedFood.id, newAmount);
         updatedItems[existingItemIndex] = updatedItem;
-        setRecipeItems(updatedItems);
+        setDietItems(updatedItems);
         
         setFoodAddDialogOpen(false);
         setSuccess('食物已添加到食谱');
@@ -164,7 +164,7 @@ const Recipe = ({ user }) => {
         // 3秒后清除成功消息
         setTimeout(() => setSuccess(''), 3000);
       } else {
-        setRecipeItems([...recipeItems, newItem]);
+        setDietItems([...dietItems, newItem]);
         
         setFoodAddDialogOpen(false);
         setSuccess('食物已添加到食谱');
@@ -179,21 +179,21 @@ const Recipe = ({ user }) => {
   
   // 从食谱中移除食物
   const handleRemoveFood = (index) => {
-    const updatedItems = [...recipeItems];
+    const updatedItems = [...dietItems];
     updatedItems.splice(index, 1);
-    setRecipeItems(updatedItems);
+    setDietItems(updatedItems);
   };
   
   // 更新食物数量
   const handleAmountChange = (index, newAmount) => {
     try {
-      const updatedItems = [...recipeItems];
+      const updatedItems = [...dietItems];
       const foodId = updatedItems[index].foodId;
       
       // 使用NutritionService计算更新后的营养素含量（同步调用）
-      const updatedItem = calculateRecipeItem(foodId, newAmount);
+      const updatedItem = calculateDietItem(foodId, newAmount);
       updatedItems[index] = updatedItem;
-      setRecipeItems(updatedItems);
+      setDietItems(updatedItems);
     } catch (error) {
       console.error('更新食物数量时出错:', error);
       setError(`更新食物数量时出错: ${error.message}`);
@@ -201,18 +201,18 @@ const Recipe = ({ user }) => {
   };
   
   // 保存食谱
-  const handleSaveRecipe = async () => {
+  const handleSaveDiet = async () => {
     try {
-      const updatedRecipes = await saveRecipe({
-        name: recipeName,
+      const updatedDiets = await saveDiet({
+        name: dietName,
         user,
-        recipeItems,
+        dietItems,
         totalNutrition,
-        recipes,
+        diets: diets,
         saveAsFile
       });
       
-      setRecipes(updatedRecipes);
+      setDiets(updatedDiets);
       setSuccess('食谱保存成功');
       
       // 3秒后清除成功消息
@@ -224,20 +224,20 @@ const Recipe = ({ user }) => {
   };
   
   // 加载食谱
-  const handleLoadRecipe = (recipe) => {
-    setRecipeName(recipe.name);
+  const handleLoadDiet = (diet) => {
+    setdietName(diet.name);
     
     try {
       // 处理所有食谱项目（同步调用）
-      const items = recipe.items.map(item => {
-        return calculateRecipeItem(item.foodId, item.amount);
+      const items = diet.items.map(item => {
+        return calculateDietItem(item.foodId, item.amount);
       });
       
       // 过滤掉null值
       const validItems = items.filter(Boolean);
       
-      setRecipeItems(validItems);
-      setRecipeDialogOpen(false);
+      setDietItems(validItems);
+      setDietDialogOpen(false);
       setSuccess('食谱加载成功');
       
       // 3秒后清除成功消息
@@ -249,12 +249,12 @@ const Recipe = ({ user }) => {
   };
   
   // 删除食谱
-  const handleDeleteRecipe = async (recipeId) => {
+  const handleDeleteDiet = async (dietId) => {
     try {
-      await deleteRecipe(recipeId, user);
+      await deleteDiet(dietId, user);
       
       // 更新本地食谱列表
-      setRecipes(recipes.filter(recipe => recipe.id !== recipeId));
+      setDiets(diets.filter(diet => diet.id !== dietId));
       setSuccess('食谱删除成功');
       
       // 3秒后清除成功消息
@@ -265,33 +265,33 @@ const Recipe = ({ user }) => {
     }
   };
   
-  // 这些函数已移至RecipeUtils.js中
+  // 这些函数已移至DietUtils.js中
   
   // 处理食物详情更新
   const handleFoodUpdate = (updatedFood) => {
-    const { updatedFoods, updatedRecipeItems } = updateFoodInRecipe(updatedFood, foods, recipeItems);
+    const { updatedFoods, updatedDietItems } = updateFoodInDiet(updatedFood, foods, dietItems);
     setFoods(updatedFoods);
-    setRecipeItems(updatedRecipeItems);
+    setDietItems(updatedDietItems);
   };
   
   // 自动生成食谱
   const handleAutoGenerate = async () => {
     try {
       // 清空当前食物列表
-      setRecipeItems([]);
+      setDietItems([]);
       
       // 根据每日标准需求生成食谱
-      const categoryRecipe = await generateRecipeByDailyNeeds(foods, dailyNeeds);
+      const categoryDiet = await generateDietByDailyNeeds(foods, dailyNeeds);
       
       // 根据用户数据优化食谱中食物的重量
-      const optimizedRecipe = await optimizeRecipeByUserData(categoryRecipe, user, dailyNeeds);
+      const optimizedDiet = await optimizeDietByUserData(categoryDiet, user, dailyNeeds);
       
       // 添加日志输出，列出优化后食谱中的食物和数量
-      console.log('优化后的食谱食物列表:', optimizedRecipe);
+      console.log('优化后的食谱食物列表:', optimizedDiet);
       
       // 添加日志输出，检查优化后的食谱得分
       // 将分类食谱转换为扁平列表，以便计算得分
-      const scoreResult = calculateRecipeScoreWithUserData(optimizedRecipe, user, dailyNeeds.standardNeeds);
+      const scoreResult = calculateDietScoreWithUserData(optimizedDiet, user, dailyNeeds.standardNeeds);
       console.log('优化后的食谱得分:', scoreResult.score);
       console.log('优化后的食谱得分详情:', scoreResult.detail);
       
@@ -304,7 +304,7 @@ const Recipe = ({ user }) => {
           // 使用头部导入的服务
           
           // 并行处理所有项目
-          const itemPromises = optimizedRecipe.map(async (item) => {
+          const itemPromises = optimizedDiet.map(async (item) => {
             // 获取食物详细信息
             const food = await getFoodById(item.foodId);
             // 计算营养信息
@@ -326,7 +326,7 @@ const Recipe = ({ user }) => {
           
           // 等待所有项目处理完成
           const processedItems = await Promise.all(itemPromises);
-          setRecipeItems(processedItems);
+          setDietItems(processedItems);
         } catch (error) {
           console.error('处理食谱项目时出错:', error);
           setError('处理食谱项目时出错: ' + error.message);
@@ -337,7 +337,7 @@ const Recipe = ({ user }) => {
       processItems();
       
       // 添加到食谱中
-      setRecipeItems(newItems);
+      setDietItems(newItems);
       
       setSuccess('已根据每日营养需求标准生成食谱');
       
@@ -352,25 +352,25 @@ const Recipe = ({ user }) => {
   // 自动优化食谱
   const handleAutoOptimize = async () => {
     try {
-      if (recipeItems.length === 0) {
+      if (dietItems.length === 0) {
         setError('食谱为空，无法进行优化');
         return;
       }
 
-      // 将recipeItems转换为optimizeRecipeByUserData函数所需的格式
-      const simplifiedRecipe = recipeItems.map(item => ({
+      // 将dietItems转换为optimizeDietByUserData函数所需的格式
+      const simplifiedDiet = dietItems.map(item => ({
         foodId: item.foodId,
         amount: item.amount
       }));
 
       // 调用优化函数
-      const optimizedRecipe = await optimizeRecipeByUserData(simplifiedRecipe, user, dailyNeeds);
+      const optimizedDiet = await optimizeDietByUserData(simplifiedDiet, user, dailyNeeds);
 
       // 添加日志输出，列出优化后食谱中的食物和数量
-      console.log('优化后的食谱食物列表:', optimizedRecipe);
+      console.log('优化后的食谱食物列表:', optimizedDiet);
       
       // 添加日志输出，检查优化后的食谱得分
-      const scoreResult = await calculateRecipeScoreWithUserData(optimizedRecipe, user, dailyNeeds.standardNeeds);
+      const scoreResult = await calculateDietScoreWithUserData(optimizedDiet, user, dailyNeeds.standardNeeds);
       console.log('优化后的食谱得分:', scoreResult.score);
       console.log('优化后的食谱得分详情:', scoreResult.detail);
       
@@ -380,7 +380,7 @@ const Recipe = ({ user }) => {
           // 使用头部导入的服务
           
           // 并行处理所有项目
-          const itemPromises = optimizedRecipe.map(async (item) => {
+          const itemPromises = optimizedDiet.map(async (item) => {
             // 获取食物详细信息
             const food = await getFoodById(item.foodId);
             // 计算营养信息
@@ -402,7 +402,7 @@ const Recipe = ({ user }) => {
           
           // 等待所有项目处理完成
           const processedItems = await Promise.all(itemPromises);
-          setRecipeItems(processedItems);
+          setDietItems(processedItems);
         } catch (error) {
           console.error('处理食谱项目时出错:', error);
           setError('处理食谱项目时出错: ' + error.message);
@@ -424,7 +424,7 @@ const Recipe = ({ user }) => {
 
   // 生成购物清单
   const handleGenerateShoppingList = () => {
-    if (recipeItems.length === 0) {
+    if (dietItems.length === 0) {
       setError('食谱为空，无法生成购物清单');
       return;
     }
@@ -447,11 +447,11 @@ const Recipe = ({ user }) => {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       {/* 标题区 */}
-      <RecipeHeader 
-        recipeName={recipeName}
-        setRecipeName={setRecipeName}
-        onSave={handleSaveRecipe}
-        onLoad={() => setRecipeDialogOpen(true)}
+      <DietHeader 
+        dietName={dietName}
+        setDietName={setDietName}
+        onSave={handleSaveDiet}
+        onLoad={() => setDietDialogOpen(true)}
         onAdd={() => setFoodAddDialogOpen(true)}
         onAutoGenerate={handleAutoGenerate}
         onAutoOptimize={handleAutoOptimize}
@@ -471,11 +471,11 @@ const Recipe = ({ user }) => {
       )}
       
       {/* 食谱总览区 */}
-      <NutritionOverview totalNutrition={totalNutrition} user={user} recipeItems={recipeItems} />
+      <NutritionOverview totalNutrition={totalNutrition} user={user} dietItems={dietItems} />
       
       {/* 食物列表区 */}
-      <RecipeItemsTable 
-        recipeItems={recipeItems}
+      <DietItemsTable 
+        dietItems={dietItems}
         foods={foods}
         onAmountChange={handleAmountChange}
         onRemoveFood={handleRemoveFood}
@@ -486,15 +486,15 @@ const Recipe = ({ user }) => {
       />
       
       {/* 营养详情区 */}
-      <NutritionDetails recipeItems={recipeItems} totalNutrition={totalNutrition} />
+      <NutritionDetails dietItems={dietItems} totalNutrition={totalNutrition} />
       
       {/* 食谱选择对话框 */}
-      <RecipeDialog 
-        open={recipeDialogOpen}
-        onClose={() => setRecipeDialogOpen(false)}
-        recipes={recipes}
-        onLoadRecipe={handleLoadRecipe}
-        onDeleteRecipe={handleDeleteRecipe}
+      <DietDialog 
+        open={dietDialogOpen}
+        onClose={() => setDietDialogOpen(false)}
+        diets={diets}
+        onLoadDiet={handleLoadDiet}
+        onDeleteDiet={handleDeleteDiet}
         saveAsFile={saveAsFile}
         onSaveAsFileChange={setSaveAsFile}
       />
@@ -524,10 +524,10 @@ const Recipe = ({ user }) => {
       <ShoppingListDialog
         open={shoppingListDialogOpen}
         onClose={() => setShoppingListDialogOpen(false)}
-        items={recipeItems}
+        items={dietItems}
       />
     </Container>
   );
 };
 
-export default Recipe;
+export default Diet;

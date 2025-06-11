@@ -17,9 +17,9 @@ import {
 /**
  * 食谱页面的标题和操作按钮组件
  */
-const RecipeHeader = ({ 
-  recipeName, 
-  setRecipeName, 
+const DietHeader = ({ 
+  dietName, 
+  setDietName, 
   onSave, 
   onLoad, 
   onAdd,
@@ -36,8 +36,8 @@ const RecipeHeader = ({
         <TextField
           fullWidth
           label="食谱名称"
-          value={recipeName}
-          onChange={(e) => setRecipeName(e.target.value)}
+          value={dietName}
+          onChange={(e) => setDietName(e.target.value)}
           variant="outlined"
           sx={{ mb: 2 }}
         />
@@ -98,4 +98,4 @@ const RecipeHeader = ({
   );
 };
 
-export default RecipeHeader;
+export default DietHeader;

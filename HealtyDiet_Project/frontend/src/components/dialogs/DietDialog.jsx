@@ -17,12 +17,12 @@ import { Delete as DeleteIcon } from '@mui/icons-material';
 /**
  * 食谱选择对话框组件
  */
-const RecipeDialog = ({ 
+const DietDialog = ({ 
   open, 
   onClose, 
-  recipes, 
-  onLoadRecipe, 
-  onDeleteRecipe,
+  diets, 
+  onLoadDiet, 
+  onDeleteDiet,
   saveAsFile = true, // 默认为true，始终按文件保存
   onSaveAsFileChange
 }) => {
@@ -39,29 +39,29 @@ const RecipeDialog = ({
       <DialogContent>
         {/* 移除保存方式选择开关 */}
 
-        {recipes.length === 0 ? (
+        {diets.length === 0 ? (
           <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', py: 3 }}>
             没有保存的食谱
           </Typography>
         ) : (
           <List>
-            {recipes.map(recipe => (
+            {diets.map(diet => (
               <ListItem 
-                key={recipe.id} 
+                key={diet.id} 
                 sx={{ cursor: 'pointer' }}
-                onClick={() => onLoadRecipe(recipe)}
+                onClick={() => onLoadDiet(diet)}
                 divider
               >
                 <ListItemText
-                  primary={recipe.name}
+                  primary={diet.name}
                   secondary={
                     <>
                       <Typography variant="body2" component="span">
-                        热量: {recipe.nutrition?.calories || 0} 千卡 | 蛋白质: {recipe.nutrition?.protein || 0}g | 碳水: {recipe.nutrition?.carbs || 0}g | 脂肪: {recipe.nutrition?.fat || 0}g
+                        热量: {diet.nutrition?.calories || 0} 千卡 | 蛋白质: {diet.nutrition?.protein || 0}g | 碳水: {diet.nutrition?.carbs || 0}g | 脂肪: {diet.nutrition?.fat || 0}g
                       </Typography>
-                      {recipe.mainIngredients && recipe.mainIngredients.length > 0 && (
+                      {diet.mainIngredients && diet.mainIngredients.length > 0 && (
                         <Typography variant="body2" component="span" sx={{ display: 'block', mt: 1 }}>
-                          主要食材: {recipe.mainIngredients.map(ing => ing.foodName).join('、')}
+                          主要食材: {diet.mainIngredients.map(ing => ing.foodName).join('、')}
                         </Typography>
                       )}
                     </>
@@ -72,7 +72,7 @@ const RecipeDialog = ({
                   color="error"
                   onClick={(e) => {
                     e.stopPropagation();
-                    onDeleteRecipe(recipe.id);
+                    onDeleteDiet(diet.id);
                   }}
                 >
                   <DeleteIcon />
@@ -91,4 +91,4 @@ const RecipeDialog = ({
   );
 };
 
-export default RecipeDialog;
+export default DietDialog;

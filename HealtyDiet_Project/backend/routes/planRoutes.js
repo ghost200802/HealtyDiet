@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
-const { plansData, recipesData } = require('@services/index');
+const { plansData, dietsData } = require('@services/index');
 
 // 获取所有食谱规划
 router.get('/', (req, res) => {
@@ -43,9 +43,9 @@ router.get('/:id', (req, res) => {
 // 创建新的食谱规划
 router.post('/', (req, res) => {
   try {
-    const { name, userId, recipes } = req.body;
+    const { name, userId, diets } = req.body;
     
-    if (!name || !userId || !recipes || !Array.isArray(recipes)) {
+    if (!name || !userId || !diets || !Array.isArray(diets)) {
       return res.status(400).json({ message: '必须提供规划名称、用户ID和食谱列表' });
     }
     
@@ -54,7 +54,7 @@ router.post('/', (req, res) => {
       id: uuidv4(),
       name,
       userId,
-      recipes, // 包含不同天的recipeId数组
+      diets, // 包含不同天的dietId数组
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };

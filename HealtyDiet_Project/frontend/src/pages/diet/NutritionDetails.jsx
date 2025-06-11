@@ -15,10 +15,10 @@ import NutritionDetailsCard from '@/components/nutrition/NutritionDetailsCard';
 /**
  * 食谱营养详情组件，显示各营养素的分布图表
  * @param {Object} props - 组件属性
- * @param {Array} props.recipeItems - 食谱中的食物项目
+ * @param {Array} props.dietItems - 食谱中的食物项目
  * @param {Object} props.totalNutrition - 食谱的总营养成分
  */
-const NutritionDetails = ({ recipeItems, totalNutrition }) => {
+const NutritionDetails = ({ dietItems, totalNutrition }) => {
   // 使用自定义Hook加载营养素数据
   const {
     caloriesData,
@@ -27,7 +27,7 @@ const NutritionDetails = ({ recipeItems, totalNutrition }) => {
     fatData,
     fiberData,
     loading
-  } = useNutritionDetails(recipeItems, totalNutrition);
+  } = useNutritionDetails(dietItems, totalNutrition);
 
   // 加载中显示加载指示器
   if (loading) {

@@ -70,4 +70,4 @@ local.json
 
 # 项目特定忽略
 HealtyDiet_Project/data/plan/
-HealtyDiet_Project/data/recipes/
+HealtyDiet_Project/data/diets/

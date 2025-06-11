@@ -88,7 +88,7 @@ const Home = ({ isAuthenticated }) => {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small" component={Link} to="/recipe" fullWidth>
+              <Button size="small" component={Link} to="/diet" fullWidth>
                 查看食谱
               </Button>
             </CardActions>

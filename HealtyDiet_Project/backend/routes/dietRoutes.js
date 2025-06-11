@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
-const { recipesData, foodsData } = require('@services/index');
+const { dietsData, foodsData } = require('@services/index');
 
 
 // 获取所有食谱
 router.get('/', (req, res) => {
   try {
-    const recipes = recipesData.getAll();
-    res.json(recipes);
+    const diets = dietsData.getAll();
+    res.json(diets);
   } catch (error) {
     res.status(500).json({ message: '获取食谱数据失败', error: error.message });
   }
@@ -18,8 +18,8 @@ router.get('/', (req, res) => {
 router.get('/user/:userId', (req, res) => {
   try {
     const { userId } = req.params;
-    const userRecipes = recipesData.getByUserId(userId);
-    res.json(userRecipes);
+    const userDiets = dietsData.getByUserId(userId);
+    res.json(userDiets);
   } catch (error) {
     res.status(500).json({ message: '获取用户食谱失败', error: error.message });
   }
@@ -29,13 +29,13 @@ router.get('/user/:userId', (req, res) => {
 router.get('/:id', (req, res) => {
   try {
     const { id } = req.params;
-    const recipe = recipesData.getById(id);
+    const diet = dietsData.getById(id);
     
-    if (!recipe) {
+    if (!diet) {
       return res.status(404).json({ message: '食谱不存在' });
     }
     
-    res.json(recipe);
+    res.json(diet);
   } catch (error) {
     res.status(500).json({ message: '获取食谱数据失败', error: error.message });
   }
@@ -65,14 +65,14 @@ router.post('/', (req, res) => {
     }
     
     // 使用传入的营养成分或计算营养成分
-    const recipeNutrition = nutrition || calculateNutrition(items);
+    const dietNutrition = nutrition || calculateNutrition(items);
     
-    const newRecipe = {
+    const newDiet = {
       id: uuidv4(),
       name,
       userId,
       items,
-      nutrition: recipeNutrition,
+      nutrition: dietNutrition,
       mainIngredients: mainIngredients || [],
       description: description || '',
       createdAt: new Date().toISOString(),
@@ -80,10 +80,10 @@ router.post('/', (req, res) => {
       saveAsFile: saveAsFile === false ? false : true // 默认按文件保存
     };
     
-    console.log('准备添加食谱:', JSON.stringify(newRecipe, null, 2));
-    recipesData.add(newRecipe);
+    console.log('准备添加食谱:', JSON.stringify(newDiet, null, 2));
+    dietsData.add(newDiet);
     
-    res.status(201).json(newRecipe);
+    res.status(201).json(newDiet);
   } catch (error) {
     console.error('创建食谱失败:', error);
     res.status(500).json({ message: '创建食谱失败', error: error.message });
@@ -96,14 +96,14 @@ router.put('/:id', (req, res) => {
     console.log('收到更新食谱请求:', JSON.stringify(req.body, null, 2));
     const { id } = req.params;
     const updates = req.body;
-    const recipe = recipesData.getById(id);
+    const diet = dietsData.getById(id);
     
-    if (!recipe) {
+    if (!diet) {
       return res.status(404).json({ message: '食谱不存在' });
     }
     
     // 如果更新包含食物项目，重新计算营养成分
-    let recipeNutrition = recipe.nutrition;
+    let dietNutrition = diet.nutrition;
     if (updates.items && Array.isArray(updates.items)) {
       // 验证食物项目
       for (const item of updates.items) {
@@ -119,25 +119,25 @@ router.put('/:id', (req, res) => {
       }
       
       // 如果提供了nutrition则使用，否则计算
-      recipeNutrition = updates.nutrition || calculateNutrition(updates.items);
+      dietNutrition = updates.nutrition || calculateNutrition(updates.items);
     } else if (updates.nutrition) {
       // 如果只提供了nutrition但没有items，直接使用提供的nutrition
-      recipeNutrition = updates.nutrition;
+      dietNutrition = updates.nutrition;
     }
     
     // 更新食谱信息
-    const updatedRecipe = {
-      ...recipe,
+    const updatedDiet = {
+      ...diet,
       ...updates,
-      nutrition: recipeNutrition,
+      nutrition: dietNutrition,
       // 确保ID不变
       id,
       updatedAt: new Date().toISOString(),
       saveAsFile: updates.saveAsFile === false ? false : true // 尊重传入的saveAsFile值，默认为true
     };
     
-    console.log('准备更新食谱:', JSON.stringify(updatedRecipe, null, 2));
-    const result = recipesData.update(id, updatedRecipe);
+    console.log('准备更新食谱:', JSON.stringify(updatedDiet, null, 2));
+    const result = dietsData.update(id, updatedDiet);
     
     res.json(result);
   } catch (error) {
@@ -150,13 +150,13 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   try {
     const { id } = req.params;
-    const deletedRecipe = recipesData.delete(id);
+    const deletedDiet = dietsData.delete(id);
     
-    if (!deletedRecipe) {
+    if (!deletedDiet) {
       return res.status(404).json({ message: '食谱不存在' });
     }
     
-    res.json({ message: '食谱已删除', deletedRecipe });
+    res.json({ message: '食谱已删除', deletedDiet });
   } catch (error) {
     res.status(500).json({ message: '删除食谱失败', error: error.message });
   }

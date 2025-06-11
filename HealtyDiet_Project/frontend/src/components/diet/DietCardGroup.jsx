@@ -6,8 +6,8 @@ import {
 } from '@mui/material';
 
 // 导入拆分后的组件
-import RecipeCard from './RecipeCard';
-import AddRecipeCard from './AddRecipeCard';
+import DietCard from './DietCard';
+import AddDietCard from './AddDietCard';
 
 // 星期几的中文名称
 const WEEKDAYS = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
@@ -17,7 +17,7 @@ const WEEKDAYS = ['周一', '周二', '周三', '周四', '周五', '周六', '�
 /**
  * 食谱卡片组组件，显示一周的食谱规划
  */
-const RecipeCardGroup = ({ recipes = [], onAddRecipe, onRemoveRecipe }) => {
+const DietCardGroup = ({ diets = [], onAddDiet, onRemoveDiet }) => {
   return (
     <Paper elevation={3} sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>
@@ -26,20 +26,20 @@ const RecipeCardGroup = ({ recipes = [], onAddRecipe, onRemoveRecipe }) => {
       
       <Grid container spacing={3}>
         {/* 已添加的食谱卡片 */}
-        {recipes.map((recipe, index) => (
-          <Grid item xs={12} sm={6} md={4} key={`recipe-${index}`}>
-            <RecipeCard 
-              recipe={recipe} 
+        {diets.map((diet, index) => (
+          <Grid item xs={12} sm={6} md={4} key={`diet-${index}`}>
+            <DietCard 
+              diet={diet} 
               weekday={WEEKDAYS[index % 7]}
-              onRemove={() => onRemoveRecipe(index)}
+              onRemove={() => onRemoveDiet(index)}
             />
           </Grid>
         ))}
         
         {/* 添加食谱卡片（如果食谱数量少于7个） */}
-        {recipes.length < 7 && (
+        {diets.length < 7 && (
           <Grid item xs={12} sm={6} md={4}>
-            <AddRecipeCard onClick={onAddRecipe} />
+            <AddDietCard onClick={onAddDiet} />
           </Grid>
         )}
       </Grid>
@@ -47,4 +47,4 @@ const RecipeCardGroup = ({ recipes = [], onAddRecipe, onRemoveRecipe }) => {
   );
 };
 
-export default RecipeCardGroup;
+export default DietCardGroup;

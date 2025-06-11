@@ -1,36 +1,36 @@
 import { useState, useEffect } from 'react';
-import { calculateRecipeScoreWithUserData } from '@/services/RecipeScoreService';
+import { calculateDietScoreWithUserData } from '@/services/DietScoreService';
 import { calculateNutrientScore, getSuggestionByScore } from '@/services/NutritionService';
 import dailyNeeds from '@data/needs/DailyNeeds.json';
 
 /**
  * 食谱评分计算钩子
- * @param {Array} recipeItems - 食谱项目数组
+ * @param {Array} dietItems - 食谱项目数组
  * @param {Object} user - 用户数据
  * @returns {Object} - 包含评分、详情和建议的对象
  */
-const useRecipeScore = (recipeItems, user) => {
+const useDietScore = (dietItems, user) => {
   // 使用useState存储食谱评分和详细信息
-  const [recipeScore, setRecipeScore] = useState(0);
+  const [dietScore, setDietScore] = useState(0);
   const [scoreDetails, setScoreDetails] = useState(null);
   const [scoreSuggestions, setScoreSuggestions] = useState(null);
 
   // 使用useEffect处理评分计算
   useEffect(() => {
     const getScore = () => {
-      if (!recipeItems || recipeItems.length === 0 || !user) {
-        console.log('无法计算评分：recipeItems或user不存在', { recipeItems, user });
-        setRecipeScore(0);
+      if (!dietItems || dietItems.length === 0 || !user) {
+        console.log('无法计算评分：dietItems或user不存在', { dietItems, user });
+        setDietScore(0);
         return;
       }
       
-      console.log('计算评分的输入参数：', { recipeItems, user, standardNeeds: dailyNeeds.standardNeeds });
+      console.log('计算评分的输入参数：', { dietItems, user, standardNeeds: dailyNeeds.standardNeeds });
       
       try {
-        // 调用RecipeScoreService中的评分函数
-        const result = calculateRecipeScoreWithUserData(recipeItems, user, dailyNeeds.standardNeeds);
+        // 调用DietScoreService中的评分函数
+        const result = calculateDietScoreWithUserData(dietItems, user, dailyNeeds.standardNeeds);
         console.log('计算得到的评分：', result);
-        setRecipeScore(result.score);
+        setDietScore(result.score);
         
         // 使用nutrition数据计算详情和建议
         const targetCalories = user.dci || 2000;
@@ -61,16 +61,16 @@ const useRecipeScore = (recipeItems, user) => {
         setScoreSuggestions(suggestions);
       } catch (error) {
         console.error('计算评分时出错：', error);
-        setRecipeScore(0);
+        setDietScore(0);
         setScoreDetails(null);
         setScoreSuggestions(null);
       }
     };
     
     getScore();
-  }, [recipeItems, user]);
+  }, [dietItems, user]);
 
-  return { recipeScore, scoreDetails, scoreSuggestions };
+  return { dietScore, scoreDetails, scoreSuggestions };
 };
 
-export default useRecipeScore;
+export default useDietScore;

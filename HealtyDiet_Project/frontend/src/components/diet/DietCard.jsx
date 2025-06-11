@@ -29,26 +29,26 @@ import {
 /**
  * 食谱卡片组件，显示单个食谱的信息
  */
-const RecipeCard = ({ recipe, weekday, onRemove, onSave, onAddFood, onViewDetail }) => {
+const DietCard = ({ diet, weekday, onRemove, onSave, onAddFood, onViewDetail }) => {
   // 使用食谱对象中的nutrition属性获取营养成分
-  const totalNutrition = recipe?.nutrition || { calories: 0, protein: 0, carbs: 0, fat: 0 };
+  const totalNutrition = diet?.nutrition || { calories: 0, protein: 0, carbs: 0, fat: 0 };
 
   // 获取食材列表
   const [items, setItems] = useState([]);
   
-  // 在组件挂载和recipe变化时更新食材列表并获取食材名称
+  // 在组件挂载和diet变化时更新食材列表并获取食材名称
   useEffect(() => {
     const fetchFoodNames = async () => {
-      if (recipe?.items && recipe.items.length > 0) {
+      if (diet?.items && diet.items.length > 0) {
         try {
           // 获取所有食材的ID
-          const foodIds = recipe.items.map(item => item.foodId);
+          const foodIds = diet.items.map(item => item.foodId);
           
           // 使用FoodService获取食材信息
           const foodsData = await getFoodsByIds(foodIds);
           
           // 将食材名称添加到items中
-          const itemsWithNames = recipe.items.map(item => {
+          const itemsWithNames = diet.items.map(item => {
             const food = foodsData.find(f => f.id === item.foodId);
             return {
               ...item,
@@ -60,7 +60,7 @@ const RecipeCard = ({ recipe, weekday, onRemove, onSave, onAddFood, onViewDetail
         } catch (error) {
           console.error('获取食材名称失败:', error);
           // 如果获取失败，仍然使用原始items
-          setItems(recipe.items);
+          setItems(diet.items);
         }
       } else {
         setItems([]);
@@ -68,7 +68,7 @@ const RecipeCard = ({ recipe, weekday, onRemove, onSave, onAddFood, onViewDetail
     };
     
     fetchFoodNames();
-  }, [recipe]);
+  }, [diet]);
   
   // 展开/收起食材列表的状态
   const [expanded, setExpanded] = useState(false);
@@ -85,8 +85,8 @@ const RecipeCard = ({ recipe, weekday, onRemove, onSave, onAddFood, onViewDetail
     setItems(updatedItems);
     
     // 如果有onUpdateItem回调，则调用它
-    if (recipe.onUpdateItem) {
-      recipe.onUpdateItem(index, newAmount);
+    if (diet.onUpdateItem) {
+      diet.onUpdateItem(index, newAmount);
     }
   };
   
@@ -97,15 +97,15 @@ const RecipeCard = ({ recipe, weekday, onRemove, onSave, onAddFood, onViewDetail
     setItems(updatedItems);
     
     // 如果有onRemoveItem回调，则调用它
-    if (recipe.onRemoveItem) {
-      recipe.onRemoveItem(index);
+    if (diet.onRemoveItem) {
+      diet.onRemoveItem(index);
     }
   };
   
   // 处理保存食谱
   const handleSave = () => {
     if (onSave) {
-      onSave(recipe.id, items);
+      onSave(diet.id, items);
     }
   };
 
@@ -132,7 +132,7 @@ const RecipeCard = ({ recipe, weekday, onRemove, onSave, onAddFood, onViewDetail
         
         {/* 食谱名称 */}
         <Typography variant="h6" component="h2" gutterBottom>
-          {recipe?.name || '未命名食谱'}
+          {diet?.name || '未命名食谱'}
         </Typography>
         
         {/* 营养信息 */}
@@ -204,13 +204,13 @@ const RecipeCard = ({ recipe, weekday, onRemove, onSave, onAddFood, onViewDetail
         <ButtonGroup variant="outlined" size="small" sx={{ mt: 2, width: '100%', justifyContent: 'space-between' }}>
           <Button 
             startIcon={<InfoIcon />} 
-            onClick={() => onViewDetail && onViewDetail(recipe)}
+            onClick={() => onViewDetail && onViewDetail(diet)}
           >
             详情
           </Button>
           <Button 
             startIcon={<AddIcon />} 
-            onClick={() => onAddFood && onAddFood(recipe)}
+            onClick={() => onAddFood && onAddFood(diet)}
           >
             添加
           </Button>
@@ -227,4 +227,4 @@ const RecipeCard = ({ recipe, weekday, onRemove, onSave, onAddFood, onViewDetail
   );
 };
 
-export default RecipeCard;
+export default DietCard;

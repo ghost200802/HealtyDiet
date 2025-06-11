@@ -28,7 +28,7 @@ HealtyDiet_Project/
 └── data/             # 本地数据存储
     ├── users/        # 用户数据
     ├── foods/        # 食物数据
-    └── recipes/      # 食谱数据
+    └── diets/      # 食谱数据
 ```
 
 ## 启动项目

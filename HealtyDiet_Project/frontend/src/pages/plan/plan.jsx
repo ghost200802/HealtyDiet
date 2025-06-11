@@ -15,18 +15,18 @@ import CaloriesDisplay from '@/components/nutrition/CaloriesDisplay';
 import EnergyDistribution from '@/components/nutrition/EnergyDistribution';
 
 // 导入对话框组件
-import RecipeDialog from '@/components/dialogs/RecipeDialog';
+import DietDialog from '@/components/dialogs/DietDialog';
 import ShoppingListDialog from '@/components/dialogs/ShoppingListDialog';
 import FoodAddDialog from '@/components/dialogs/FoodAddDialog';
 import PlanLoadDialog from '@/components/dialogs/PlanLoadDialog'; // 导入PlanLoadDialog
 
 // 导入自定义组件
-import PlanHeader from '@/components/recipe/PlanHeader';
-import RecipeCardGroup from '@/components/recipe/RecipeCardGroup';
+import PlanHeader from '@/components/diet/PlanHeader';
+import DietCardGroup from '@/components/diet/DietCardGroup';
 
 // 导入工具函数和服务
 import { calculateTotalNutrition } from '@/services/NutritionService';
-import { getUserRecipes } from '@/pages/recipe/RecipeService';
+import { getUserDiets } from '@/pages/diet/DietService';
 import { savePlan, getUserPlans } from '@/pages/plan/PlanService'; // 导入PlanService
 
 /**
@@ -40,11 +40,11 @@ const Plan = ({ user }) => {
   
   // 食谱规划状态
   const [planName, setPlanName] = useState(`${new Date().toLocaleDateString()}食谱规划`);
-  const [recipes, setRecipes] = useState([]);
+  const [diets, setDiets] = useState([]);
   const [savedPlans, setSavedPlans] = useState([]);
   
   // 对话框状态
-  const [recipeDialogOpen, setRecipeDialogOpen] = useState(false);
+  const [dietDialogOpen, setDietDialogOpen] = useState(false);
   const [foodAddDialogOpen, setFoodAddDialogOpen] = useState(false);
   const [shoppingListDialogOpen, setShoppingListDialogOpen] = useState(false);
   const [planLoadDialogOpen, setPlanLoadDialogOpen] = useState(false); // 添加PlanLoadDialog状态
@@ -67,9 +67,9 @@ const Plan = ({ user }) => {
         
         // 获取用户已保存的食谱列表
         if (user && user.id) {
-          const userRecipes = await getUserRecipes(user);
-          console.log('获取到用户食谱:', userRecipes);
-          setSavedPlans(userRecipes);
+          const userDiets = await getUserDiets(user);
+          console.log('获取到用户食谱:', userDiets);
+          setSavedPlans(userDiets);
         } else {
           setSavedPlans([]);
         }
@@ -90,10 +90,10 @@ const Plan = ({ user }) => {
     const calculateWeeklyNutrition = () => {
       try {
         // 将所有食谱中的食物项目合并
-        const allRecipeItems = recipes.flatMap(recipe => recipe.items || []);
+        const allDietItems = diets.flatMap(diet => diet.items || []);
         
         // 计算总营养成分
-        const totals = calculateTotalNutrition(allRecipeItems);
+        const totals = calculateTotalNutrition(allDietItems);
         
         // 计算每日平均值（除以7天）
         const dailyAverage = {
@@ -119,13 +119,13 @@ const Plan = ({ user }) => {
     };
     
     calculateWeeklyNutrition();
-  }, [recipes]);
+  }, [diets]);
   
   // 保存食谱规划
   const handleSavePlan = async () => {
     try {
       // 检查是否有食谱
-      if (recipes.length === 0) {
+      if (diets.length === 0) {
         setError('规划中没有食谱，请先添加食谱');
         return;
       }
@@ -134,7 +134,7 @@ const Plan = ({ user }) => {
       await savePlan({
         name: planName,
         user,
-        recipes
+        diets
       });
       
       setSuccess('食谱规划保存成功');
@@ -156,29 +156,29 @@ const Plan = ({ user }) => {
       setPlanName(plan.name);
       
       // 加载规划中的食谱
-      // 注意：plan.recipes只包含食谱ID数组，需要获取完整的食谱数据
-      if (plan.recipes && plan.recipes.length > 0) {
+      // 注意：plan.diets只包含食谱ID数组，需要获取完整的食谱数据
+      if (plan.diets && plan.diets.length > 0) {
         setLoading(true);
         
         // 获取完整的食谱数据
         const token = localStorage.getItem('token');
-        const recipePromises = plan.recipes.map(recipeId => 
-          axios.get(`/api/recipes/${recipeId}`, {
+        const dietPromises = plan.diets.map(dietId => 
+          axios.get(`/api/diets/${dietId}`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
           })
         );
         
-        const recipeResponses = await Promise.all(recipePromises);
-        const fullRecipes = recipeResponses.map(response => response.data);
+        const dietResponses = await Promise.all(dietPromises);
+        const fullDiets = dietResponses.map(response => response.data);
         
-        console.log('获取到完整食谱数据:', fullRecipes);
-        setRecipes(fullRecipes);
+        console.log('获取到完整食谱数据:', fullDiets);
+        setDiets(fullDiets);
         setLoading(false);
       } else {
         // 如果没有食谱，设置为空数组
-        setRecipes([]);
+        setDiets([]);
       }
       
       // 关闭对话框
@@ -196,19 +196,19 @@ const Plan = ({ user }) => {
   };
   
   // 加载食谱
-  const handleLoadRecipe = (recipe) => {
+  const handleLoadDiet = (diet) => {
     try {
-      console.log('加载食谱:', recipe);
+      console.log('加载食谱:', diet);
       // 将选中的食谱添加到当前食谱列表中
-      const newRecipe = {
-        ...recipe,
+      const newDiet = {
+        ...diet,
         // 确保items属性存在
-        items: recipe.items || []
+        items: diet.items || []
       };
       
       // 添加到当前食谱列表
-      setRecipes([...recipes, newRecipe]);
-      setRecipeDialogOpen(false);
+      setDiets([...diets, newDiet]);
+      setDietDialogOpen(false);
       setSuccess('食谱已添加到规划');
       
       // 3秒后清除成功消息
@@ -236,7 +236,7 @@ const Plan = ({ user }) => {
   
   // 生成购物清单
   const handleGenerateShoppingList = () => {
-    if (recipes.length === 0) {
+    if (diets.length === 0) {
       setError('食谱规划为空，无法生成购物清单');
       return;
     }
@@ -246,8 +246,8 @@ const Plan = ({ user }) => {
   };
   
   // 添加食谱到规划
-  const handleAddRecipe = (recipe) => {
-    setRecipes([...recipes, recipe]);
+  const handleAddDiet = (diet) => {
+    setDiets([...diets, diet]);
     setSuccess('食谱已添加到规划');
     
     // 3秒后清除成功消息
@@ -255,10 +255,10 @@ const Plan = ({ user }) => {
   };
   
   // 从规划中移除食谱
-  const handleRemoveRecipe = (index) => {
-    const updatedRecipes = [...recipes];
-    updatedRecipes.splice(index, 1);
-    setRecipes(updatedRecipes);
+  const handleRemoveDiet = (index) => {
+    const updatedDiets = [...diets];
+    updatedDiets.splice(index, 1);
+    setDiets(updatedDiets);
   };
   
   if (loading) {
@@ -317,19 +317,19 @@ const Plan = ({ user }) => {
       </Paper>
       
       {/* 食谱卡片展示区 */}
-      <RecipeCardGroup 
-        recipes={recipes}
-        onAddRecipe={() => setRecipeDialogOpen(true)}
-        onRemoveRecipe={handleRemoveRecipe}
+      <DietCardGroup 
+        diets={diets}
+        onAddDiet={() => setDietDialogOpen(true)}
+        onRemoveDiet={handleRemoveDiet}
       />
       
       {/* 食谱选择对话框 */}
-      <RecipeDialog 
-        open={recipeDialogOpen}
-        onClose={() => setRecipeDialogOpen(false)}
-        recipes={savedPlans}
-        onLoadRecipe={handleLoadRecipe}
-        onDeleteRecipe={() => {}}
+      <DietDialog 
+        open={dietDialogOpen}
+        onClose={() => setDietDialogOpen(false)}
+        diets={savedPlans}
+        onLoadDiet={handleLoadDiet}
+        onDeleteDiet={() => {}}
       />
       
       {/* 食谱规划加载对话框 */}
@@ -354,7 +354,7 @@ const Plan = ({ user }) => {
       <ShoppingListDialog
         open={shoppingListDialogOpen}
         onClose={() => setShoppingListDialogOpen(false)}
-        items={recipes.flatMap(recipe => recipe.items || [])}
+        items={diets.flatMap(diet => diet.items || [])}
       />
     </Container>
   );
