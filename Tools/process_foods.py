@@ -53,8 +53,8 @@ def main():
                     # 获取文件名
                     file_name = food_types_data[food_type].get('fileName', f"{food_type}.json")
                     
-                    # 过滤出当前Type的所有食物
-                    type_foods_df = df[df['type'] == food_type].copy()
+                    # 过滤出当前Type的所有食物，并且只保留有id的行
+                    type_foods_df = df[(df['type'] == food_type) & (df['id'].notna())].copy()
                     
                     # 处理NaN值，将其替换为None（在JSON中会转换为null）
                     # 对于servingSize列，如果为NaN，设置默认值为100
@@ -69,6 +69,12 @@ def main():
                     
                     # 重构数据结构以匹配foods.json格式
                     for food in type_foods:
+                        # 处理alias别名字段，将逗号分隔的别名转换为列表
+                        if 'alias' in food and food['alias'] is not None:
+                            food['alias'] = [alias.strip() for alias in str(food['alias']).split(',') if alias.strip()]
+                        else:
+                            food['alias'] = []
+                            
                         food['vitamins'] = {
                             "A": food.pop('vitaminA', 0),
                             "C": food.pop('vitaminC', 0),
@@ -88,10 +94,8 @@ def main():
                     # 将食物列表转换为以id为key的字典
                     foods_by_id = {}
                     for food in type_foods:
-                        if 'id' in food:
-                            foods_by_id[str(food['id'])] = food
-                        else:
-                            print(f"警告: 食物 '{food.get('name', '未知')}' 缺少id字段，将被跳过")
+                        # 由于我们已经在前面过滤了没有id的行，这里应该所有食物都有id
+                        foods_by_id[str(food['id'])] = food
                     
                     # 保存到JSON文件
                     with open(output_file, 'w', encoding='utf-8') as f:

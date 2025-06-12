@@ -1,0 +1,2686 @@
+{
+    "missing_ingredients": {
+        "10001": {
+            "name": "白油肉片",
+            "missing_ingredients": [
+                "木耳",
+                "生姜"
+            ]
+        },
+        "10003": {
+            "name": "百合炒鸡",
+            "missing_ingredients": [
+                "西芹"
+            ]
+        },
+        "10004": {
+            "name": "鞭笋炒肉",
+            "missing_ingredients": [
+                "鞭笋",
+                "木耳"
+            ]
+        },
+        "10005": {
+            "name": "彩椒炒鸡丁",
+            "missing_ingredients": [
+                "柿子椒"
+            ]
+        },
+        "10006": {
+            "name": "彩椒牛里脊",
+            "missing_ingredients": [
+                "柿子椒",
+                "黑胡椒"
+            ]
+        },
+        "10007": {
+            "name": "彩椒牛里脊",
+            "missing_ingredients": [
+                "柿子椒"
+            ]
+        },
+        "10008": {
+            "name": "茶树菇老鸭",
+            "missing_ingredients": [
+                "茶树菇",
+                "生姜",
+                "白果"
+            ]
+        },
+        "10010": {
+            "name": "豉香蒸鲈鱼",
+            "missing_ingredients": [
+                "淡水鲈鱼",
+                "葱姜丝"
+            ]
+        },
+        "10011": {
+            "name": "赤子水煮荷包蛋",
+            "missing_ingredients": [
+                "枸杞子"
+            ]
+        },
+        "10012": {
+            "name": "春笋肉片",
+            "missing_ingredients": [
+                "春笋",
+                "瘦肉"
+            ]
+        },
+        "10013": {
+            "name": "葱香鲫鱼",
+            "missing_ingredients": [
+                "花椒"
+            ]
+        },
+        "10014": {
+            "name": "葱油蛏子",
+            "missing_ingredients": [
+                "蛏子",
+                "生姜"
+            ]
+        },
+        "10016": {
+            "name": "醋椒鲈鱼",
+            "missing_ingredients": [
+                "花椒",
+                "细粉丝",
+                "葱姜"
+            ]
+        },
+        "10017": {
+            "name": "蛋肠",
+            "missing_ingredients": [
+                "肠粉"
+            ]
+        },
+        "10019": {
+            "name": "豆豉蒸鲈鱼",
+            "missing_ingredients": [
+                "生姜",
+                "淡豆豉"
+            ]
+        },
+        "10020": {
+            "name": "豆腐焖草鱼",
+            "missing_ingredients": [
+                "辣椒",
+                "葱姜"
+            ]
+        },
+        "10024": {
+            "name": "甘蓝煮鱼",
+            "missing_ingredients": [
+                "球茎甘蓝"
+            ]
+        },
+        "10025": {
+            "name": "荷兰豆炒肉末",
+            "missing_ingredients": [
+                "荷兰豆"
+            ]
+        },
+        "10026": {
+            "name": "荷塘月色",
+            "missing_ingredients": [
+                "鲜虾仁",
+                "木耳",
+                "荷兰豆",
+                "白果"
+            ]
+        },
+        "10027": {
+            "name": "黑木耳蒸鸡",
+            "missing_ingredients": [
+                "木耳"
+            ]
+        },
+        "10028": {
+            "name": "红烧带鱼",
+            "missing_ingredients": [
+                "带鱼",
+                "葱姜"
+            ]
+        },
+        "10029": {
+            "name": "红烧鳝鱼",
+            "missing_ingredients": [
+                "鳝鱼",
+                "八角茴香"
+            ]
+        },
+        "10030": {
+            "name": "胡萝卜炒肉",
+            "missing_ingredients": [
+                "柿子椒"
+            ]
+        },
+        "10031": {
+            "name": "葫芦肉片",
+            "missing_ingredients": [
+                "葫芦"
+            ]
+        },
+        "10033": {
+            "name": "黄瓜木耳炒肉片",
+            "missing_ingredients": [
+                "木耳"
+            ]
+        },
+        "10034": {
+            "name": "黄精虫草花炖鸡",
+            "missing_ingredients": [
+                "黄精",
+                "虫草花"
+            ]
+        },
+        "10036": {
+            "name": "鸡肝拌菠菜",
+            "missing_ingredients": [
+                "鸡肝"
+            ]
+        },
+        "10037": {
+            "name": "鸡毛菜汆丸子",
+            "missing_ingredients": [
+                "鸡毛菜",
+                "蟹味菇",
+                "枸杞子"
+            ]
+        },
+        "10038": {
+            "name": "荠菜蘑菇肉片",
+            "missing_ingredients": [
+                "口蘑"
+            ]
+        },
+        "10041": {
+            "name": "椒香蒸鱼",
+            "missing_ingredients": [
+                "桂鱼",
+                "花椒"
+            ]
+        },
+        "10042": {
+            "name": "韭菜炒八爪鱼",
+            "missing_ingredients": [
+                "八爪鱼",
+                "红辣椒"
+            ]
+        },
+        "10044": {
+            "name": "苦瓜酿虾滑",
+            "missing_ingredients": [
+                "虾滑"
+            ]
+        },
+        "10045": {
+            "name": "辣子鸡",
+            "missing_ingredients": [
+                "鸡",
+                "干辣椒",
+                "花椒"
+            ]
+        },
+        "10047": {
+            "name": "罗汉果霸王花煲猪肺",
+            "missing_ingredients": [
+                "罗汉果",
+                "猪肺",
+                "霸王花",
+                "橘皮",
+                "生姜"
+            ]
+        },
+        "10048": {
+            "name": "萝卜炖羊肉",
+            "missing_ingredients": [
+                "羊后腿肉",
+                "生姜",
+                "小茴香"
+            ]
+        },
+        "10050": {
+            "name": "木耳炒肉",
+            "missing_ingredients": [
+                "木耳"
+            ]
+        },
+        "10052": {
+            "name": "柠香鸡腿肉",
+            "missing_ingredients": [
+                "鸡腿肉",
+                "小米辣"
+            ]
+        },
+        "10055": {
+            "name": "牛肉煮冬笋",
+            "missing_ingredients": [
+                "冬笋"
+            ]
+        },
+        "10056": {
+            "name": "藕王排骨炖苞米",
+            "missing_ingredients": [
+                "藕片",
+                "大枣"
+            ]
+        },
+        "10057": {
+            "name": "泡椒芹菜牛肉丝",
+            "missing_ingredients": [
+                "泡椒",
+                "水芹菜",
+                "牛瘦肉"
+            ]
+        },
+        "10058": {
+            "name": "泡椒兔",
+            "missing_ingredients": [
+                "泡椒",
+                "花椒"
+            ]
+        },
+        "10059": {
+            "name": "茄汁鱼片",
+            "missing_ingredients": [
+                "生姜"
+            ]
+        },
+        "10061": {
+            "name": "青花椒蒸鱼",
+            "missing_ingredients": [
+                "青花椒"
+            ]
+        },
+        "10062": {
+            "name": "青椒炒牛肉",
+            "missing_ingredients": [
+                "柿子椒"
+            ]
+        },
+        "10063": {
+            "name": "清蒸鲳鱼",
+            "missing_ingredients": [
+                "生姜"
+            ]
+        },
+        "10064": {
+            "name": "清蒸大闸蟹",
+            "missing_ingredients": [
+                "大闸蟹",
+                "生姜"
+            ]
+        },
+        "10065": {
+            "name": "清蒸桂花鱼",
+            "missing_ingredients": [
+                "桂花鱼"
+            ]
+        },
+        "10066": {
+            "name": "清蒸鲩鱼",
+            "missing_ingredients": [
+                "鲩鱼"
+            ]
+        },
+        "10068": {
+            "name": "清蒸梭子蟹",
+            "missing_ingredients": [
+                "梭子蟹",
+                "生姜"
+            ]
+        },
+        "10069": {
+            "name": "清蒸小黄鱼",
+            "missing_ingredients": [
+                "小黄鱼",
+                "生姜"
+            ]
+        },
+        "10070": {
+            "name": "肉炒蒜苔",
+            "missing_ingredients": [
+                "蒜苔"
+            ]
+        },
+        "10071": {
+            "name": "肉末炒黄豆芽",
+            "missing_ingredients": [
+                "香葱"
+            ]
+        },
+        "10072": {
+            "name": "肉末炒茄丝",
+            "missing_ingredients": [
+                "猪肉",
+                "香葱"
+            ]
+        },
+        "10074": {
+            "name": "肉末豆腐蒸槐花",
+            "missing_ingredients": [
+                "猪肉",
+                "槐花"
+            ]
+        },
+        "10076": {
+            "name": "肉丝炒仔姜",
+            "missing_ingredients": [
+                "猪肉",
+                "仔姜",
+                "青蒜"
+            ]
+        },
+        "10077": {
+            "name": "山楂苹果雪梨煲猪腱",
+            "missing_ingredients": [
+                "猪腱子肉",
+                "雪梨"
+            ]
+        },
+        "10078": {
+            "name": "什锦拌鸡丝",
+            "missing_ingredients": [
+                "葫芦",
+                "木耳",
+                "花椒"
+            ]
+        },
+        "10082": {
+            "name": "蒜苗炒冬笋",
+            "missing_ingredients": [
+                "蒜苗",
+                "冬笋"
+            ]
+        },
+        "10083": {
+            "name": "蒜苔炒肉",
+            "missing_ingredients": [
+                "蒜苔"
+            ]
+        },
+        "10084": {
+            "name": "蒜苔牛肉",
+            "missing_ingredients": [
+                "蒜苔",
+                "牛瘦肉"
+            ]
+        },
+        "10085": {
+            "name": "铁锅炖鱼",
+            "missing_ingredients": [
+                "黄芪",
+                "八角茴香"
+            ]
+        },
+        "10086": {
+            "name": "土豆豆角炖茄子",
+            "missing_ingredients": [
+                "豆角"
+            ]
+        },
+        "10087": {
+            "name": "莴苣炒鸡",
+            "missing_ingredients": [
+                "莴苣"
+            ]
+        },
+        "10088": {
+            "name": "莴笋炒兔丁",
+            "missing_ingredients": [
+                "生姜"
+            ]
+        },
+        "10090": {
+            "name": "西红柿炖牛肉",
+            "missing_ingredients": [
+                "生姜",
+                "花椒"
+            ]
+        },
+        "10093": {
+            "name": "西芹百合虾仁",
+            "missing_ingredients": [
+                "西芹",
+                "鲜虾仁"
+            ]
+        },
+        "10094": {
+            "name": "虾仁炒西兰花",
+            "missing_ingredients": [
+                "鲜虾仁"
+            ]
+        },
+        "10095": {
+            "name": "虾仁香菇炒鸡毛菜",
+            "missing_ingredients": [
+                "鲜虾仁",
+                "鸡毛菜"
+            ]
+        },
+        "10096": {
+            "name": "鲜虾焖冬笋",
+            "missing_ingredients": [
+                "冬笋",
+                "海虾"
+            ]
+        },
+        "10097": {
+            "name": "香拌牛肉",
+            "missing_ingredients": [
+                "小米辣",
+                "生姜",
+                "木耳"
+            ]
+        },
+        "10100": {
+            "name": "香菇滑鸡",
+            "missing_ingredients": [
+                "鸡腿肉"
+            ]
+        },
+        "10101": {
+            "name": "香菇蒸仔鸡",
+            "missing_ingredients": [
+                "鸡腿肉",
+                "莲子"
+            ]
+        },
+        "10102": {
+            "name": "小白菜汆丸子",
+            "missing_ingredients": [
+                "小白菜",
+                "鲜蘑菇",
+                "枸杞子"
+            ]
+        },
+        "10103": {
+            "name": "小鸡炖蘑菇",
+            "missing_ingredients": [
+                "红菇",
+                "生姜"
+            ]
+        },
+        "10104": {
+            "name": "杏鲍菇牛柳",
+            "missing_ingredients": [
+                "杏鲍菇"
+            ]
+        },
+        "10105": {
+            "name": "鸭血豆腐",
+            "missing_ingredients": [
+                "鸭血",
+                "豆腐"
+            ]
+        },
+        "10106": {
+            "name": "盐水虾",
+            "missing_ingredients": [
+                "虾",
+                "生姜"
+            ]
+        },
+        "10107": {
+            "name": "洋葱香芹牛肉丝",
+            "missing_ingredients": [
+                "香芹",
+                "黑胡椒"
+            ]
+        },
+        "10108": {
+            "name": "药膳烧鸡",
+            "missing_ingredients": [
+                "乌骨鸡",
+                "橘皮",
+                "鲜蘑菇",
+                "茯苓"
+            ]
+        },
+        "10109": {
+            "name": "鱼香肉丝",
+            "missing_ingredients": [
+                "木耳"
+            ]
+        },
+        "10112": {
+            "name": "仔姜炒牛肉",
+            "missing_ingredients": [
+                "仔姜"
+            ]
+        },
+        "10117": {
+            "name": "蒸鱼",
+            "missing_ingredients": [
+                "黄脚立"
+            ]
+        },
+        "10118": {
+            "name": "猪肉炖酸菜",
+            "missing_ingredients": [
+                "酸菜"
+            ]
+        },
+        "10119": {
+            "name": "竹荪炖鸡",
+            "missing_ingredients": [
+                "竹荪",
+                "鸡",
+                "枸杞子",
+                "生姜"
+            ]
+        },
+        "10121": {
+            "name": "紫苏花蛤",
+            "missing_ingredients": [
+                "紫苏",
+                "花蛤"
+            ]
+        },
+        "10122": {
+            "name": "紫苏鱼",
+            "missing_ingredients": [
+                "紫苏叶"
+            ]
+        },
+        "10123": {
+            "name": "紫苏蒸香螺",
+            "missing_ingredients": [
+                "香螺",
+                "紫苏",
+                "生姜"
+            ]
+        },
+        "20002": {
+            "name": "白菜炒鲜菇",
+            "missing_ingredients": [
+                "杏鲍菇"
+            ]
+        },
+        "20003": {
+            "name": "白菜烧豆腐",
+            "missing_ingredients": [
+                "鲜辣椒"
+            ]
+        },
+        "20006": {
+            "name": "百合炒西芹",
+            "missing_ingredients": [
+                "西芹",
+                "鲜百合"
+            ]
+        },
+        "20008": {
+            "name": "拌菜心",
+            "missing_ingredients": [
+                "大白菜"
+            ]
+        },
+        "20010": {
+            "name": "拌三丝1",
+            "missing_ingredients": [
+                "昆布",
+                "金针菇"
+            ]
+        },
+        "20011": {
+            "name": "拌三丝2",
+            "missing_ingredients": [
+                "木耳"
+            ]
+        },
+        "20012": {
+            "name": "草菇西兰花",
+            "missing_ingredients": [
+                "草菇"
+            ]
+        },
+        "20013": {
+            "name": "炒菜心",
+            "missing_ingredients": [
+                "菜心"
+            ]
+        },
+        "20014": {
+            "name": "炒儿菜",
+            "missing_ingredients": [
+                "儿菜"
+            ]
+        },
+        "20015": {
+            "name": "炒芥兰",
+            "missing_ingredients": [
+                "芥兰"
+            ]
+        },
+        "20018": {
+            "name": "炒青菜",
+            "missing_ingredients": [
+                "青菜"
+            ]
+        },
+        "20023": {
+            "name": "炒圆白菜",
+            "missing_ingredients": [
+                "圆白菜"
+            ]
+        },
+        "20024": {
+            "name": "醋溜白菜",
+            "missing_ingredients": [
+                "大白菜"
+            ]
+        },
+        "20025": {
+            "name": "醋烹豆芽",
+            "missing_ingredients": [
+                "红柿子椒"
+            ]
+        },
+        "20026": {
+            "name": "豆腐脑",
+            "missing_ingredients": [
+                "黄豆"
+            ]
+        },
+        "20028": {
+            "name": "粉蒸蒲公英",
+            "missing_ingredients": [
+                "蒲公英",
+                "小米辣"
+            ]
+        },
+        "20029": {
+            "name": "茯苓发糕",
+            "missing_ingredients": [
+                "茯苓粉"
+            ]
+        },
+        "20030": {
+            "name": "干煸豆角",
+            "missing_ingredients": [
+                "豆角"
+            ]
+        },
+        "20031": {
+            "name": "桂花山药软饼",
+            "missing_ingredients": [
+                "桂花"
+            ]
+        },
+        "20032": {
+            "name": "桂花蒸山药",
+            "missing_ingredients": [
+                "桂花"
+            ]
+        },
+        "20033": {
+            "name": "红枣发糕",
+            "missing_ingredients": [
+                "大枣"
+            ]
+        },
+        "20034": {
+            "name": "胡萝卜鲍菇炒青笋",
+            "missing_ingredients": [
+                "杏鲍菇",
+                "青笋"
+            ]
+        },
+        "20035": {
+            "name": "滑口千张",
+            "missing_ingredients": [
+                "千张",
+                "柿子椒"
+            ]
+        },
+        "20036": {
+            "name": "烩儿菜",
+            "missing_ingredients": [
+                "儿菜",
+                "蘑菇",
+                "冬笋"
+            ]
+        },
+        "20038": {
+            "name": "金针菇炒豆芽",
+            "missing_ingredients": [
+                "金针菇"
+            ]
+        },
+        "20039": {
+            "name": "韭菜炒豆腐干",
+            "missing_ingredients": [
+                "卤豆腐干"
+            ]
+        },
+        "20041": {
+            "name": "桔梗香葱拌春笋",
+            "missing_ingredients": [
+                "桔梗",
+                "香葱",
+                "春笋"
+            ]
+        },
+        "20046": {
+            "name": "凉拌苦菜",
+            "missing_ingredients": [
+                "苦菜"
+            ]
+        },
+        "20047": {
+            "name": "凉拌苦瓜",
+            "missing_ingredients": [
+                "泡姜",
+                "小米辣"
+            ]
+        },
+        "20048": {
+            "name": "凉拌昆布",
+            "missing_ingredients": [
+                "昆布"
+            ]
+        },
+        "20050": {
+            "name": "凉拌马兰头",
+            "missing_ingredients": [
+                "香干",
+                "马兰头"
+            ]
+        },
+        "20051": {
+            "name": "凉拌藕片",
+            "missing_ingredients": [
+                "藕片"
+            ]
+        },
+        "20052": {
+            "name": "凉拌荞麦面皮",
+            "missing_ingredients": [
+                "荞麦面皮",
+                "木耳",
+                "金针菇",
+                "桑叶"
+            ]
+        },
+        "20054": {
+            "name": "凉拌秋葵",
+            "missing_ingredients": [
+                "秋葵"
+            ]
+        },
+        "20055": {
+            "name": "凉拌素什锦",
+            "missing_ingredients": [
+                "木耳",
+                "金针菇",
+                "香干"
+            ]
+        },
+        "20056": {
+            "name": "凉拌鱼腥草",
+            "missing_ingredients": [
+                "鱼腥草"
+            ]
+        },
+        "20057": {
+            "name": "萝卜丝汆海虾",
+            "missing_ingredients": [
+                "鲜海虾"
+            ]
+        },
+        "20058": {
+            "name": "蘑菇炒白菜",
+            "missing_ingredients": [
+                "鲜蘑"
+            ]
+        },
+        "20059": {
+            "name": "木耳炒小白菜",
+            "missing_ingredients": [
+                "小白菜",
+                "木耳"
+            ]
+        },
+        "20060": {
+            "name": "木耳炒油菜",
+            "missing_ingredients": [
+                "木耳",
+                "油菜"
+            ]
+        },
+        "20061": {
+            "name": "木瓜拌菜",
+            "missing_ingredients": [
+                "春笋"
+            ]
+        },
+        "20062": {
+            "name": "南瓜窝头",
+            "missing_ingredients": [
+                "粗玉米面粉",
+                "栗面南瓜",
+                "黄豆粉"
+            ]
+        },
+        "20063": {
+            "name": "拍黄瓜",
+            "missing_ingredients": [
+                "嫩黄瓜"
+            ]
+        },
+        "20067": {
+            "name": "芹菜香干",
+            "missing_ingredients": [
+                "香干"
+            ]
+        },
+        "20068": {
+            "name": "青椒拌豆干",
+            "missing_ingredients": [
+                "柿子椒"
+            ]
+        },
+        "20070": {
+            "name": "青椒西葫芦",
+            "missing_ingredients": [
+                "柿子椒"
+            ]
+        },
+        "20071": {
+            "name": "清炒杭白菜",
+            "missing_ingredients": [
+                "杭白菜"
+            ]
+        },
+        "20073": {
+            "name": "清炒红薯藤叶",
+            "missing_ingredients": [
+                "红薯藤叶"
+            ]
+        },
+        "20074": {
+            "name": "清炒花菜",
+            "missing_ingredients": [
+                "菜花"
+            ]
+        },
+        "20075": {
+            "name": "清炒南瓜尖",
+            "missing_ingredients": [
+                "嫩南瓜尖"
+            ]
+        },
+        "20076": {
+            "name": "清炒南瓜藤",
+            "missing_ingredients": [
+                "南瓜藤"
+            ]
+        },
+        "20077": {
+            "name": "清炒平菇",
+            "missing_ingredients": [
+                "平菇"
+            ]
+        },
+        "20078": {
+            "name": "清炒水芹菜",
+            "missing_ingredients": [
+                "水芹菜"
+            ]
+        },
+        "20080": {
+            "name": "清炒娃娃菜",
+            "missing_ingredients": [
+                "木耳"
+            ]
+        },
+        "20081": {
+            "name": "清炒豌豆苗",
+            "missing_ingredients": [
+                "豌豆苗",
+                "红柿子椒"
+            ]
+        },
+        "20082": {
+            "name": "清炒虾仁",
+            "missing_ingredients": [
+                "鲜虾仁"
+            ]
+        },
+        "20083": {
+            "name": "清炒小白菜",
+            "missing_ingredients": [
+                "小白菜"
+            ]
+        },
+        "20085": {
+            "name": "清肺小炒",
+            "missing_ingredients": [
+                "木耳"
+            ]
+        },
+        "20086": {
+            "name": "拌红菜苔",
+            "missing_ingredients": [
+                "红菜苔"
+            ]
+        },
+        "20087": {
+            "name": "肉丝炒萝卜丝",
+            "missing_ingredients": [
+                "猪里脊肉丝"
+            ]
+        },
+        "20088": {
+            "name": "三鲜米粉",
+            "missing_ingredients": [
+                "小白菜",
+                "木耳",
+                "米粉"
+            ]
+        },
+        "20090": {
+            "name": "什锦蔬菜沙拉",
+            "missing_ingredients": [
+                "柿子椒",
+                "紫菜头"
+            ]
+        },
+        "20091": {
+            "name": "手撕包心菜",
+            "missing_ingredients": [
+                "圆白菜"
+            ]
+        },
+        "20092": {
+            "name": "手撕圆白菜",
+            "missing_ingredients": [
+                "圆白菜"
+            ]
+        },
+        "20093": {
+            "name": "水炝炒寒菜",
+            "missing_ingredients": [
+                "冬寒菜"
+            ]
+        },
+        "20095": {
+            "name": "水煮大白菜",
+            "missing_ingredients": [
+                "大白菜"
+            ]
+        },
+        "20096": {
+            "name": "水煮红薯叶",
+            "missing_ingredients": [
+                "红薯叶"
+            ]
+        },
+        "20097": {
+            "name": "水煮芥菜",
+            "missing_ingredients": [
+                "芥菜"
+            ]
+        },
+        "20098": {
+            "name": "水煮芥菜",
+            "missing_ingredients": [
+                "芥菜"
+            ]
+        },
+        "20099": {
+            "name": "水煮奶白菜",
+            "missing_ingredients": [
+                "奶白菜"
+            ]
+        },
+        "20102": {
+            "name": "水煮西洋菜",
+            "missing_ingredients": [
+                "西洋菜"
+            ]
+        },
+        "20103": {
+            "name": "水煮油菜",
+            "missing_ingredients": [
+                "油菜"
+            ]
+        },
+        "20113": {
+            "name": "蒜泥苋菜",
+            "missing_ingredients": [
+                "红苋菜"
+            ]
+        },
+        "20114": {
+            "name": "蒜蓉炒菜心",
+            "missing_ingredients": [
+                "菜心"
+            ]
+        },
+        "20115": {
+            "name": "蒜蓉炒盖菜",
+            "missing_ingredients": [
+                "盖菜"
+            ]
+        },
+        "20118": {
+            "name": "蒜蓉金针菇",
+            "missing_ingredients": [
+                "金针菇"
+            ]
+        },
+        "20119": {
+            "name": "蒜蓉拍黄瓜",
+            "missing_ingredients": [
+                "嫩黄瓜"
+            ]
+        },
+        "20120": {
+            "name": "蒜香草头",
+            "missing_ingredients": [
+                "草头",
+                "大蒜"
+            ]
+        },
+        "20121": {
+            "name": "田园小炒",
+            "missing_ingredients": [
+                "白果",
+                "荷兰豆",
+                "木耳"
+            ]
+        },
+        "20122": {
+            "name": "西兰花拌木耳",
+            "missing_ingredients": [
+                "木耳"
+            ]
+        },
+        "20123": {
+            "name": "西芹腐竹",
+            "missing_ingredients": [
+                "西芹"
+            ]
+        },
+        "20124": {
+            "name": "虾皮拌菠菜",
+            "missing_ingredients": [
+                "虾皮"
+            ]
+        },
+        "20125": {
+            "name": "虾皮拌圆白菜",
+            "missing_ingredients": [
+                "圆白菜",
+                "虾皮"
+            ]
+        },
+        "20126": {
+            "name": "虾皮炒菠菜",
+            "missing_ingredients": [
+                "虾皮"
+            ]
+        },
+        "20127": {
+            "name": "咸豆花",
+            "missing_ingredients": [
+                "黄豆",
+                "水"
+            ]
+        },
+        "20128": {
+            "name": "香干炒菠菜",
+            "missing_ingredients": [
+                "香干"
+            ]
+        },
+        "20129": {
+            "name": "香菇炒油菜",
+            "missing_ingredients": [
+                "油菜"
+            ]
+        },
+        "20130": {
+            "name": "香菇冬笋",
+            "missing_ingredients": [
+                "冬笋"
+            ]
+        },
+        "20131": {
+            "name": "香菇青菜",
+            "missing_ingredients": [
+                "青菜"
+            ]
+        },
+        "20132": {
+            "name": "小白菜炖豆腐",
+            "missing_ingredients": [
+                "小白菜"
+            ]
+        },
+        "20133": {
+            "name": "小炒素三鲜",
+            "missing_ingredients": [
+                "白玉菇",
+                "木耳"
+            ]
+        },
+        "20134": {
+            "name": "小葱拌豆腐",
+            "missing_ingredients": [
+                "豆腐"
+            ]
+        },
+        "20135": {
+            "name": "雪里蕻烧豆腐",
+            "missing_ingredients": [
+                "豆腐",
+                "雪里蕻",
+                "青蒜叶"
+            ]
+        },
+        "20136": {
+            "name": "鸭梨",
+            "missing_ingredients": [
+                "鸭梨"
+            ]
+        },
+        "20137": {
+            "name": "盐水菜心",
+            "missing_ingredients": [
+                "菜心"
+            ]
+        },
+        "20139": {
+            "name": "腰豆香芋紫米饭",
+            "missing_ingredients": [
+                "红腰豆",
+                "荔浦芋头"
+            ]
+        },
+        "20140": {
+            "name": "银芽海带拌豆腐丝",
+            "missing_ingredients": [
+                "豆腐丝",
+                "柿子椒"
+            ]
+        },
+        "20141": {
+            "name": "樱桃番茄",
+            "missing_ingredients": [
+                "樱桃番茄"
+            ]
+        },
+        "20142": {
+            "name": "圆椒藕带",
+            "missing_ingredients": [
+                "柿子椒",
+                "藕带"
+            ]
+        },
+        "20143": {
+            "name": "仔姜桔梗拌西葫芦",
+            "missing_ingredients": [
+                "泡仔姜",
+                "桔梗"
+            ]
+        },
+        "20144": {
+            "name": "拌冬笋",
+            "missing_ingredients": [
+                "冬笋"
+            ]
+        },
+        "20145": {
+            "name": "拌秋葵",
+            "missing_ingredients": [
+                "秋葵"
+            ]
+        },
+        "20147": {
+            "name": "蘸酱菜",
+            "missing_ingredients": [
+                "水萝卜"
+            ]
+        },
+        "20149": {
+            "name": "蒸秋葵",
+            "missing_ingredients": [
+                "秋葵"
+            ]
+        },
+        "20152": {
+            "name": "蒸土豆南瓜",
+            "missing_ingredients": [
+                "黄瓤土豆",
+                "栗面南瓜"
+            ]
+        },
+        "20153": {
+            "name": "芝麻菠菜",
+            "missing_ingredients": [
+                "白芝麻"
+            ]
+        },
+        "20154": {
+            "name": "紫苏拌豆腐",
+            "missing_ingredients": [
+                "紫苏叶",
+                "豆腐"
+            ]
+        },
+        "30002": {
+            "name": "板栗饭",
+            "missing_ingredients": [
+                "板栗"
+            ]
+        },
+        "30005": {
+            "name": "赤豆黄精紫米饭",
+            "missing_ingredients": [
+                "黄精"
+            ]
+        },
+        "30010": {
+            "name": "大拌凉皮",
+            "missing_ingredients": [
+                "面皮"
+            ]
+        },
+        "30011": {
+            "name": "豆浆蒸杂粮饭",
+            "missing_ingredients": [
+                "白豌豆"
+            ]
+        },
+        "30016": {
+            "name": "二米饭5",
+            "missing_ingredients": [
+                "黑米"
+            ]
+        },
+        "30019": {
+            "name": "黑白饭",
+            "missing_ingredients": [
+                "黑米"
+            ]
+        },
+        "30021": {
+            "name": "黑米饭",
+            "missing_ingredients": [
+                "黑米"
+            ]
+        },
+        "30022": {
+            "name": "黑米饭",
+            "missing_ingredients": [
+                "黑米"
+            ]
+        },
+        "30023": {
+            "name": "红白饭",
+            "missing_ingredients": [
+                "红米"
+            ]
+        },
+        "30026": {
+            "name": "红油米线",
+            "missing_ingredients": [
+                "米粉",
+                "辣椒油"
+            ]
+        },
+        "30028": {
+            "name": "黄白饭",
+            "missing_ingredients": [
+                "玉米碴"
+            ]
+        },
+        "30030": {
+            "name": "椒盐花卷",
+            "missing_ingredients": [
+                "花椒"
+            ]
+        },
+        "30033": {
+            "name": "藜麦沙拉",
+            "missing_ingredients": [
+                "鲜虾仁"
+            ]
+        },
+        "30035": {
+            "name": "麻酱黄瓜丝拌面",
+            "missing_ingredients": [
+                "黑芝麻酱",
+                "心里美萝卜"
+            ]
+        },
+        "30039": {
+            "name": "芡实燕麦糙米饭",
+            "missing_ingredients": [
+                "黑米",
+                "芡实"
+            ]
+        },
+        "30040": {
+            "name": "芡实玉米饭",
+            "missing_ingredients": [
+                "芡实"
+            ]
+        },
+        "30041": {
+            "name": "芡实紫米饭",
+            "missing_ingredients": [
+                "芡实"
+            ]
+        },
+        "30042": {
+            "name": "荞麦面",
+            "missing_ingredients": [
+                "圆白菜"
+            ]
+        },
+        "30046": {
+            "name": "三明治",
+            "missing_ingredients": [
+                "全麦面包",
+                "煮鸡蛋"
+            ]
+        },
+        "30049": {
+            "name": "山药紫米饭",
+            "missing_ingredients": [
+                "铁棍山药"
+            ]
+        },
+        "30051": {
+            "name": "素酸辣粉",
+            "missing_ingredients": [
+                "甘薯粉条",
+                "瓢儿白"
+            ]
+        },
+        "30055": {
+            "name": "西红柿鸡蛋面",
+            "missing_ingredients": [
+                "香葱"
+            ]
+        },
+        "30059": {
+            "name": "燕麦黑米饭",
+            "missing_ingredients": [
+                "黑米"
+            ]
+        },
+        "30061": {
+            "name": "燕麦芡实饭",
+            "missing_ingredients": [
+                "芡实"
+            ]
+        },
+        "30062": {
+            "name": "莜面鱼鱼",
+            "missing_ingredients": [
+                "莜麦面粉"
+            ]
+        },
+        "30066": {
+            "name": "杂粮饭1",
+            "missing_ingredients": [
+                "黑米"
+            ]
+        },
+        "30071": {
+            "name": "杂粮饭6",
+            "missing_ingredients": [
+                "青稞"
+            ]
+        },
+        "30074": {
+            "name": "杂粮煎饼2",
+            "missing_ingredients": [
+                "核桃仁"
+            ]
+        },
+        "30075": {
+            "name": "杂粮馒头1",
+            "missing_ingredients": [
+                "枸杞子"
+            ]
+        },
+        "30076": {
+            "name": "杂粮馒头2",
+            "missing_ingredients": [
+                "青稞炒面"
+            ]
+        },
+        "30077": {
+            "name": "杂粮米饭1",
+            "missing_ingredients": [
+                "黑米"
+            ]
+        },
+        "30079": {
+            "name": "蒸红薯",
+            "missing_ingredients": [
+                "甘薯"
+            ]
+        },
+        "30080": {
+            "name": "蒸老南瓜",
+            "missing_ingredients": [
+                "老南瓜"
+            ]
+        },
+        "30086": {
+            "name": "白饼夹肉",
+            "missing_ingredients": [
+                "牛瘦肉"
+            ]
+        },
+        "30087": {
+            "name": "白菜肉饺",
+            "missing_ingredients": [
+                "大白菜",
+                "香葱",
+                "虾米"
+            ]
+        },
+        "30088": {
+            "name": "贝果汉堡",
+            "missing_ingredients": [
+                "全麦贝果"
+            ]
+        },
+        "30090": {
+            "name": "打卤面",
+            "missing_ingredients": [
+                "黄花菜",
+                "木耳"
+            ]
+        },
+        "30091": {
+            "name": "东北一锅出",
+            "missing_ingredients": [
+                "豆角"
+            ]
+        },
+        "30092": {
+            "name": "冬菜虾仁小馄饨",
+            "missing_ingredients": [
+                "冬菜",
+                "虾仁",
+                "青菜",
+                "紫菜"
+            ]
+        },
+        "30093": {
+            "name": "锅贴",
+            "missing_ingredients": [
+                "小米面"
+            ]
+        },
+        "30094": {
+            "name": "茴香羊肉饺子",
+            "missing_ingredients": [
+                "茴香苗",
+                "香葱"
+            ]
+        },
+        "30095": {
+            "name": "鸡蛋肠粉",
+            "missing_ingredients": [
+                "肠粉"
+            ]
+        },
+        "30096": {
+            "name": "鸡蛋炒粿条",
+            "missing_ingredients": [
+                "米粉条",
+                "芥兰"
+            ]
+        },
+        "30098": {
+            "name": "鸡丝凉面",
+            "missing_ingredients": [
+                "芝麻酱"
+            ]
+        },
+        "30099": {
+            "name": "鸡丝荞麦凉面",
+            "missing_ingredients": [
+                "木耳",
+                "杏鲍菇",
+                "柿子椒"
+            ]
+        },
+        "30101": {
+            "name": "马齿苋菜团子",
+            "missing_ingredients": [
+                "粗玉米面粉",
+                "豆面粉",
+                "猪肉",
+                "香葱"
+            ]
+        },
+        "30103": {
+            "name": "肉包",
+            "missing_ingredients": [
+                "猪肉"
+            ]
+        },
+        "30104": {
+            "name": "肉片豆角焖面",
+            "missing_ingredients": [
+                "鲜切面",
+                "豆角"
+            ]
+        },
+        "30105": {
+            "name": "三明治",
+            "missing_ingredients": [
+                "全麦吐司",
+                "沙拉酱"
+            ]
+        },
+        "30107": {
+            "name": "沙葱猪肉水饺",
+            "missing_ingredients": [
+                "沙葱"
+            ]
+        },
+        "30111": {
+            "name": "蒸肠粉",
+            "missing_ingredients": [
+                "肠粉"
+            ]
+        },
+        "30112": {
+            "name": "猪肉茄丁面",
+            "missing_ingredients": [
+                "鲜切面",
+                "香葱"
+            ]
+        },
+        "30113": {
+            "name": "菠菜糊塌子",
+            "missing_ingredients": [
+                "小菠菜"
+            ]
+        },
+        "30115": {
+            "name": "菜包子",
+            "missing_ingredients": [
+                "大白菜"
+            ]
+        },
+        "30116": {
+            "name": "鸡蛋青菜包子",
+            "missing_ingredients": [
+                "油菜"
+            ]
+        },
+        "30117": {
+            "name": "空心菜蒸河粉",
+            "missing_ingredients": [
+                "细米粉"
+            ]
+        },
+        "30118": {
+            "name": "香葱鸡蛋软饼",
+            "missing_ingredients": [
+                "香葱"
+            ]
+        },
+        "30119": {
+            "name": "猪肉茴香包子",
+            "missing_ingredients": [
+                "茴香苗",
+                "香葱"
+            ]
+        },
+        "30120": {
+            "name": "虾皮萝卜丝菜团子",
+            "missing_ingredients": [
+                "粗玉米面粉",
+                "虾皮"
+            ]
+        },
+        "40001": {
+            "name": "白萝卜黄芪牛肉汤",
+            "missing_ingredients": [
+                "生姜",
+                "黄芪"
+            ]
+        },
+        "40003": {
+            "name": "枸杞豆腐鱼",
+            "missing_ingredients": [
+                "枸杞子",
+                "莴笋叶"
+            ]
+        },
+        "40005": {
+            "name": "黄骨鱼豆腐汤",
+            "missing_ingredients": [
+                "金针菇",
+                "豆腐"
+            ]
+        },
+        "40006": {
+            "name": "鲫鱼豆腐汤",
+            "missing_ingredients": [
+                "豆腐",
+                "生姜"
+            ]
+        },
+        "40007": {
+            "name": "萝卜半汤鱼",
+            "missing_ingredients": [
+                "紫苏叶",
+                "生姜"
+            ]
+        },
+        "40008": {
+            "name": "萝卜羊肉汤",
+            "missing_ingredients": [
+                "羊前腿肉",
+                "黑胡椒"
+            ]
+        },
+        "40010": {
+            "name": "酸汤汆牛柳",
+            "missing_ingredients": [
+                "野山椒",
+                "木耳"
+            ]
+        },
+        "40011": {
+            "name": "酸汤菊花汆鱼片",
+            "missing_ingredients": [
+                "野山椒",
+                "黄菊花",
+                "木耳"
+            ]
+        },
+        "40014": {
+            "name": "白扁豆莲子百合汤",
+            "missing_ingredients": [
+                "莲子"
+            ]
+        },
+        "40015": {
+            "name": "白茅根瘦肉汤",
+            "missing_ingredients": [
+                "白茅根"
+            ]
+        },
+        "40016": {
+            "name": "菠菜蘑菇汤",
+            "missing_ingredients": [
+                "蘑菇"
+            ]
+        },
+        "40017": {
+            "name": "补气猪心汤",
+            "missing_ingredients": [
+                "猪心",
+                "大枣",
+                "枸杞子",
+                "当归",
+                "姜"
+            ]
+        },
+        "40018": {
+            "name": "冬瓜豆腐肉丝汤",
+            "missing_ingredients": [
+                "豆腐"
+            ]
+        },
+        "40019": {
+            "name": "冬瓜海带汤",
+            "missing_ingredients": [
+                "豆腐"
+            ]
+        },
+        "40020": {
+            "name": "冬瓜昆布虾汤",
+            "missing_ingredients": [
+                "昆布",
+                "鲜虾仁"
+            ]
+        },
+        "40021": {
+            "name": "豆腐骨头汤",
+            "missing_ingredients": [
+                "豆腐",
+                "枸杞子"
+            ]
+        },
+        "40022": {
+            "name": "豆芽海带汤",
+            "missing_ingredients": [
+                "金针菇"
+            ]
+        },
+        "40023": {
+            "name": "枸杞叶豆腐汤",
+            "missing_ingredients": [
+                "枸杞叶",
+                "豆腐"
+            ]
+        },
+        "40024": {
+            "name": "蛤蜊冬瓜排骨汤",
+            "missing_ingredients": [
+                "蛤蜊",
+                "黄精",
+                "猪小排"
+            ]
+        },
+        "40025": {
+            "name": "蛤蜊豆腐汤",
+            "missing_ingredients": [
+                "蛤蜊",
+                "小白菜"
+            ]
+        },
+        "40026": {
+            "name": "海米冬瓜紫菜汤",
+            "missing_ingredients": [
+                "海米",
+                "紫菜"
+            ]
+        },
+        "40027": {
+            "name": "海米萝卜紫菜汤",
+            "missing_ingredients": [
+                "海米",
+                "紫菜"
+            ]
+        },
+        "40028": {
+            "name": "荷叶冬瓜汤",
+            "missing_ingredients": [
+                "荷叶"
+            ]
+        },
+        "40030": {
+            "name": "黄瓜紫菜汤",
+            "missing_ingredients": [
+                "紫菜"
+            ]
+        },
+        "40031": {
+            "name": "饺子汤",
+            "missing_ingredients": [
+                "水"
+            ]
+        },
+        "40032": {
+            "name": "决明子海带豆腐汤",
+            "missing_ingredients": [
+                "决明子"
+            ]
+        },
+        "40033": {
+            "name": "昆布豆腐汤",
+            "missing_ingredients": [
+                "昆布"
+            ]
+        },
+        "40034": {
+            "name": "昆布豆腐汤",
+            "missing_ingredients": [
+                "昆布"
+            ]
+        },
+        "40035": {
+            "name": "莱菔子桃仁杏仁骨头汤",
+            "missing_ingredients": [
+                "莱菔子",
+                "桃仁",
+                "甜杏仁"
+            ]
+        },
+        "40036": {
+            "name": "萝卜豆腐汤",
+            "missing_ingredients": [
+                "豆腐"
+            ]
+        },
+        "40038": {
+            "name": "绿豆汤",
+            "missing_ingredients": [
+                "大枣"
+            ]
+        },
+        "40039": {
+            "name": "麻仁当归瘦肉汤",
+            "missing_ingredients": [
+                "火麻仁",
+                "郁李仁",
+                "当归"
+            ]
+        },
+        "40040": {
+            "name": "平菇汤",
+            "missing_ingredients": [
+                "平菇"
+            ]
+        },
+        "40041": {
+            "name": "三鲜汤",
+            "missing_ingredients": [
+                "金针菇",
+                "贻贝"
+            ]
+        },
+        "40042": {
+            "name": "三鲜汤",
+            "missing_ingredients": [
+                "牡蛎肉"
+            ]
+        },
+        "40043": {
+            "name": "砂仁芡实鲫鱼汤",
+            "missing_ingredients": [
+                "砂仁",
+                "芡实",
+                "莲子"
+            ]
+        },
+        "40045": {
+            "name": "上汤茼蒿",
+            "missing_ingredients": [
+                "茼蒿菜"
+            ]
+        },
+        "40046": {
+            "name": "上汤娃娃菜",
+            "missing_ingredients": [
+                "枸杞子"
+            ]
+        },
+        "40047": {
+            "name": "瘦肉汤粉",
+            "missing_ingredients": [
+                "排粉",
+                "大白菜"
+            ]
+        },
+        "40048": {
+            "name": "蔬菜汤",
+            "missing_ingredients": [
+                "豌豆苗"
+            ]
+        },
+        "40050": {
+            "name": "桃胶银耳牛奶羹",
+            "missing_ingredients": [
+                "桃胶",
+                "银耳",
+                "莲子"
+            ]
+        },
+        "40051": {
+            "name": "西红柿蛋花汤",
+            "missing_ingredients": [
+                "紫菜"
+            ]
+        },
+        "40053": {
+            "name": "西红柿豆腐汤",
+            "missing_ingredients": [
+                "豆腐"
+            ]
+        },
+        "40055": {
+            "name": "西湖莼菜牛肉汤",
+            "missing_ingredients": [
+                "莼菜"
+            ]
+        },
+        "40056": {
+            "name": "西兰花虾皮萝卜汤",
+            "missing_ingredients": [
+                "虾皮"
+            ]
+        },
+        "40057": {
+            "name": "虾皮冬瓜海带汤",
+            "missing_ingredients": [
+                "虾皮"
+            ]
+        },
+        "40058": {
+            "name": "虾皮冬瓜紫菜汤",
+            "missing_ingredients": [
+                "虾皮",
+                "紫菜"
+            ]
+        },
+        "40059": {
+            "name": "虾皮萝卜丝汤",
+            "missing_ingredients": [
+                "虾皮"
+            ]
+        },
+        "40061": {
+            "name": "鱼头豆腐汤",
+            "missing_ingredients": [
+                "豆腐",
+                "鱼头"
+            ]
+        },
+        "40062": {
+            "name": "玉竹老鸭汤",
+            "missing_ingredients": [
+                "玉竹",
+                "老鸭",
+                "橘皮",
+                "生姜",
+                "大枣"
+            ]
+        },
+        "40063": {
+            "name": "枳椇子萝卜鲫鱼汤",
+            "missing_ingredients": [
+                "枳椇子"
+            ]
+        },
+        "40064": {
+            "name": "竹荪黄瓜汤",
+            "missing_ingredients": [
+                "竹荪"
+            ]
+        },
+        "40065": {
+            "name": "竹荪三鲜汤",
+            "missing_ingredients": [
+                "竹荪",
+                "杏鲍菇"
+            ]
+        },
+        "40066": {
+            "name": "紫菜汤",
+            "missing_ingredients": [
+                "紫菜"
+            ]
+        },
+        "40067": {
+            "name": "紫菜虾皮汤",
+            "missing_ingredients": [
+                "紫菜",
+                "虾皮"
+            ]
+        },
+        "40068": {
+            "name": "赤子千金汤",
+            "missing_ingredients": [
+                "千张",
+                "金针菇",
+                "枸杞子"
+            ]
+        },
+        "50001": {
+            "name": "八宝粥",
+            "missing_ingredients": [
+                "白芸豆",
+                "大枣"
+            ]
+        },
+        "50003": {
+            "name": "桂圆红枣小米粥",
+            "missing_ingredients": [
+                "大枣"
+            ]
+        },
+        "50004": {
+            "name": "黄芪茯苓粥",
+            "missing_ingredients": [
+                "黄芪",
+                "茯苓"
+            ]
+        },
+        "50005": {
+            "name": "决明子昆布绿豆粥",
+            "missing_ingredients": [
+                "决明子",
+                "昆布"
+            ]
+        },
+        "50006": {
+            "name": "莲子百合粥",
+            "missing_ingredients": [
+                "莲子",
+                "枸杞子"
+            ]
+        },
+        "50007": {
+            "name": "麻仁紫苏籽粥",
+            "missing_ingredients": [
+                "紫苏籽",
+                "火麻仁"
+            ]
+        },
+        "50010": {
+            "name": "雪梨银耳莲子羹",
+            "missing_ingredients": [
+                "雪梨",
+                "银耳",
+                "大枣",
+                "莲子"
+            ]
+        },
+        "50015": {
+            "name": "郁李仁粥",
+            "missing_ingredients": [
+                "郁李仁"
+            ]
+        },
+        "50018": {
+            "name": "杂粮粥3",
+            "missing_ingredients": [
+                "酸枣仁",
+                "黄豆"
+            ]
+        },
+        "50019": {
+            "name": "杂粮粥4",
+            "missing_ingredients": [
+                "莲子"
+            ]
+        }
+    },
+    "all_unique_ingredients": [
+        "上海青",
+        "丝瓜",
+        "乌骨鸡",
+        "仔姜",
+        "佛手瓜",
+        "儿菜",
+        "兔肉",
+        "全麦吐司",
+        "全麦贝果",
+        "全麦面包",
+        "全麦面粉",
+        "八爪鱼",
+        "八角茴香",
+        "冬寒菜",
+        "冬瓜",
+        "冬笋",
+        "冬菜",
+        "决明子",
+        "北豆腐",
+        "千张",
+        "南瓜",
+        "南瓜藤",
+        "南豆腐",
+        "卤豆腐干",
+        "口蘑",
+        "四季豆",
+        "圆白菜",
+        "土豆",
+        "大枣",
+        "大白菜",
+        "大米",
+        "大葱",
+        "大蒜",
+        "大闸蟹",
+        "奶白菜",
+        "姜",
+        "娃娃菜",
+        "嫩南瓜尖",
+        "嫩豆腐",
+        "嫩黄瓜",
+        "小白菜",
+        "小米",
+        "小米辣",
+        "小米面",
+        "小茴香",
+        "小菠菜",
+        "小葱",
+        "小黄鱼",
+        "尖椒",
+        "山楂",
+        "山药",
+        "山药泥",
+        "山药粉",
+        "带鱼",
+        "干辣椒",
+        "平菇",
+        "当归",
+        "心里美萝卜",
+        "排粉",
+        "昆布",
+        "春笋",
+        "木瓜",
+        "木耳",
+        "木耳菜",
+        "杏鲍菇",
+        "杭白菜",
+        "板栗",
+        "枳椇子",
+        "枸杞叶",
+        "枸杞子",
+        "柠檬",
+        "柿子椒",
+        "栗面南瓜",
+        "核桃仁",
+        "桂圆",
+        "桂花",
+        "桂花鱼",
+        "桂鱼",
+        "桃仁",
+        "桃胶",
+        "桑叶",
+        "桔梗",
+        "梭子蟹",
+        "槐花",
+        "樱桃番茄",
+        "橘皮",
+        "水",
+        "水芹菜",
+        "水萝卜",
+        "沙拉酱",
+        "沙葱",
+        "油菜",
+        "油麦菜",
+        "泡仔姜",
+        "泡姜",
+        "泡椒",
+        "洋葱",
+        "海带",
+        "海米",
+        "海虾",
+        "淡水鲈鱼",
+        "淡豆豉",
+        "火麻仁",
+        "煮鸡蛋",
+        "燕麦",
+        "燕麦片",
+        "燕麦米",
+        "牛奶",
+        "牛瘦肉",
+        "牛肉",
+        "牛腱子肉",
+        "牛里脊肉",
+        "牡蛎肉",
+        "猪小排",
+        "猪心",
+        "猪排骨",
+        "猪瘦肉",
+        "猪肉",
+        "猪肺",
+        "猪腱子肉",
+        "猪里脊肉",
+        "猪里脊肉丝",
+        "玉竹",
+        "玉米",
+        "玉米碴",
+        "玉米粒",
+        "玉米糁",
+        "玉米面粉",
+        "球茎甘蓝",
+        "瓢儿白",
+        "甘薯",
+        "甘薯粉条",
+        "甜杏仁",
+        "生姜",
+        "生菜",
+        "瘦肉",
+        "白扁豆",
+        "白果",
+        "白玉菇",
+        "白芝麻",
+        "白芸豆",
+        "白茅根",
+        "白菜",
+        "白萝卜",
+        "白豌豆",
+        "百合",
+        "盖菜",
+        "砂仁",
+        "秋葵",
+        "空心菜",
+        "竹荪",
+        "米粉",
+        "米粉条",
+        "粗玉米面粉",
+        "粳米",
+        "糙米",
+        "紫甘蓝",
+        "紫米",
+        "紫苏",
+        "紫苏叶",
+        "紫苏籽",
+        "紫菜",
+        "紫菜头",
+        "紫薯",
+        "红柿子椒",
+        "红米",
+        "红腰豆",
+        "红苋菜",
+        "红菇",
+        "红菜苔",
+        "红薯",
+        "红薯叶",
+        "红薯藤叶",
+        "红辣椒",
+        "细米粉",
+        "细粉丝",
+        "绿豆",
+        "绿豆芽",
+        "罗汉果",
+        "羊前腿肉",
+        "羊后腿肉",
+        "羊瘦肉",
+        "羊肉",
+        "老南瓜",
+        "老鸭",
+        "肠粉",
+        "胡萝卜",
+        "腐竹",
+        "芋头",
+        "芝麻酱",
+        "芡实",
+        "芥兰",
+        "芥菜",
+        "芦笋",
+        "花椒",
+        "花蛤",
+        "芸豆",
+        "芹菜",
+        "苋菜",
+        "苦瓜",
+        "苦苣",
+        "苦菜",
+        "苹果",
+        "茄子",
+        "茭白",
+        "茯苓",
+        "茯苓粉",
+        "茴香苗",
+        "茶树菇",
+        "茼蒿",
+        "茼蒿菜",
+        "草头",
+        "草菇",
+        "草鱼",
+        "荔浦芋头",
+        "荞麦面条",
+        "荞麦面皮",
+        "荞麦面粉",
+        "荠菜",
+        "荷兰豆",
+        "荷叶",
+        "莜麦面粉",
+        "莱菔子",
+        "莲子",
+        "莲藕",
+        "莴笋",
+        "莴笋叶",
+        "莴苣",
+        "莼菜",
+        "菜心",
+        "菜花",
+        "菠菜",
+        "葡萄干",
+        "葫芦",
+        "葱姜",
+        "葱姜丝",
+        "蒜苔",
+        "蒜苗",
+        "蒲公英",
+        "蒿子秆",
+        "薏苡仁",
+        "藕带",
+        "藕片",
+        "藜麦",
+        "蘑菇",
+        "虫草花",
+        "虾",
+        "虾仁",
+        "虾滑",
+        "虾皮",
+        "虾米",
+        "蛏子",
+        "蛤蜊",
+        "蟹味菇",
+        "西兰花",
+        "西洋菜",
+        "西红柿",
+        "西芹",
+        "西葫芦",
+        "豆浆",
+        "豆腐",
+        "豆腐丝",
+        "豆腐干",
+        "豆腐皮",
+        "豆角",
+        "豆豉",
+        "豆面粉",
+        "豌豆苗",
+        "贻贝",
+        "赤小豆",
+        "辣椒",
+        "辣椒油",
+        "郁李仁",
+        "酸枣仁",
+        "酸菜",
+        "野山椒",
+        "金针菇",
+        "铁棍山药",
+        "银耳",
+        "长豆角",
+        "雪梨",
+        "雪里蕻",
+        "霸王花",
+        "青稞",
+        "青稞炒面",
+        "青稞米",
+        "青笋",
+        "青花椒",
+        "青菜",
+        "青蒜",
+        "青蒜叶",
+        "面条",
+        "面皮",
+        "面粉",
+        "鞭笋",
+        "韭菜",
+        "香干",
+        "香椿",
+        "香芹",
+        "香菇",
+        "香菜",
+        "香葱",
+        "香螺",
+        "马兰头",
+        "马鲛鱼",
+        "马齿苋",
+        "高粱米",
+        "鱼头",
+        "鱼腥草",
+        "鲈鱼",
+        "鲜切面",
+        "鲜山药",
+        "鲜海虾",
+        "鲜百合",
+        "鲜蘑",
+        "鲜蘑菇",
+        "鲜虾仁",
+        "鲜辣椒",
+        "鲩鱼",
+        "鲫鱼",
+        "鲳鱼",
+        "鳝鱼",
+        "鸡",
+        "鸡毛菜",
+        "鸡肉",
+        "鸡肝",
+        "鸡胸肉",
+        "鸡腿肉",
+        "鸡蛋",
+        "鸭梨",
+        "鸭肉",
+        "鸭血",
+        "鹅肉",
+        "鹰嘴豆",
+        "黄瓜",
+        "黄瓤土豆",
+        "黄精",
+        "黄脚立",
+        "黄芪",
+        "黄花菜",
+        "黄菊花",
+        "黄豆",
+        "黄豆粉",
+        "黄豆芽",
+        "黄骨鱼",
+        "黑米",
+        "黑胡椒",
+        "黑芝麻酱",
+        "黑豆",
+        "黑鱼"
+    ],
+    "all_unique_missing_ingredients": [
+        "乌骨鸡",
+        "仔姜",
+        "儿菜",
+        "全麦吐司",
+        "全麦贝果",
+        "全麦面包",
+        "八爪鱼",
+        "八角茴香",
+        "冬寒菜",
+        "冬笋",
+        "冬菜",
+        "决明子",
+        "千张",
+        "南瓜藤",
+        "卤豆腐干",
+        "口蘑",
+        "圆白菜",
+        "大枣",
+        "大白菜",
+        "大蒜",
+        "大闸蟹",
+        "奶白菜",
+        "姜",
+        "嫩南瓜尖",
+        "嫩黄瓜",
+        "小白菜",
+        "小米辣",
+        "小米面",
+        "小茴香",
+        "小菠菜",
+        "小黄鱼",
+        "带鱼",
+        "干辣椒",
+        "平菇",
+        "当归",
+        "心里美萝卜",
+        "排粉",
+        "昆布",
+        "春笋",
+        "木耳",
+        "杏鲍菇",
+        "杭白菜",
+        "板栗",
+        "枳椇子",
+        "枸杞叶",
+        "枸杞子",
+        "柿子椒",
+        "栗面南瓜",
+        "核桃仁",
+        "桂花",
+        "桂花鱼",
+        "桂鱼",
+        "桃仁",
+        "桃胶",
+        "桑叶",
+        "桔梗",
+        "梭子蟹",
+        "槐花",
+        "樱桃番茄",
+        "橘皮",
+        "水",
+        "水芹菜",
+        "水萝卜",
+        "沙拉酱",
+        "沙葱",
+        "油菜",
+        "泡仔姜",
+        "泡姜",
+        "泡椒",
+        "海米",
+        "海虾",
+        "淡水鲈鱼",
+        "淡豆豉",
+        "火麻仁",
+        "煮鸡蛋",
+        "牛瘦肉",
+        "牡蛎肉",
+        "猪小排",
+        "猪心",
+        "猪肉",
+        "猪肺",
+        "猪腱子肉",
+        "猪里脊肉丝",
+        "玉竹",
+        "玉米碴",
+        "球茎甘蓝",
+        "瓢儿白",
+        "甘薯",
+        "甘薯粉条",
+        "甜杏仁",
+        "生姜",
+        "瘦肉",
+        "白果",
+        "白玉菇",
+        "白芝麻",
+        "白芸豆",
+        "白茅根",
+        "白豌豆",
+        "盖菜",
+        "砂仁",
+        "秋葵",
+        "竹荪",
+        "米粉",
+        "米粉条",
+        "粗玉米面粉",
+        "紫苏",
+        "紫苏叶",
+        "紫苏籽",
+        "紫菜",
+        "紫菜头",
+        "红柿子椒",
+        "红米",
+        "红腰豆",
+        "红苋菜",
+        "红菇",
+        "红菜苔",
+        "红薯叶",
+        "红薯藤叶",
+        "红辣椒",
+        "细米粉",
+        "细粉丝",
+        "罗汉果",
+        "羊前腿肉",
+        "羊后腿肉",
+        "老南瓜",
+        "老鸭",
+        "肠粉",
+        "芝麻酱",
+        "芡实",
+        "芥兰",
+        "芥菜",
+        "花椒",
+        "花蛤",
+        "苦菜",
+        "茯苓",
+        "茯苓粉",
+        "茴香苗",
+        "茶树菇",
+        "茼蒿菜",
+        "草头",
+        "草菇",
+        "荔浦芋头",
+        "荞麦面皮",
+        "荷兰豆",
+        "荷叶",
+        "莜麦面粉",
+        "莱菔子",
+        "莲子",
+        "莴笋叶",
+        "莴苣",
+        "莼菜",
+        "菜心",
+        "菜花",
+        "葫芦",
+        "葱姜",
+        "葱姜丝",
+        "蒜苔",
+        "蒜苗",
+        "蒲公英",
+        "藕带",
+        "藕片",
+        "蘑菇",
+        "虫草花",
+        "虾",
+        "虾仁",
+        "虾滑",
+        "虾皮",
+        "虾米",
+        "蛏子",
+        "蛤蜊",
+        "蟹味菇",
+        "西洋菜",
+        "西芹",
+        "豆腐",
+        "豆腐丝",
+        "豆角",
+        "豆面粉",
+        "豌豆苗",
+        "贻贝",
+        "辣椒",
+        "辣椒油",
+        "郁李仁",
+        "酸枣仁",
+        "酸菜",
+        "野山椒",
+        "金针菇",
+        "铁棍山药",
+        "银耳",
+        "雪梨",
+        "雪里蕻",
+        "霸王花",
+        "青稞",
+        "青稞炒面",
+        "青笋",
+        "青花椒",
+        "青菜",
+        "青蒜",
+        "青蒜叶",
+        "面皮",
+        "鞭笋",
+        "香干",
+        "香芹",
+        "香葱",
+        "香螺",
+        "马兰头",
+        "鱼头",
+        "鱼腥草",
+        "鲜切面",
+        "鲜海虾",
+        "鲜百合",
+        "鲜蘑",
+        "鲜蘑菇",
+        "鲜虾仁",
+        "鲜辣椒",
+        "鲩鱼",
+        "鳝鱼",
+        "鸡",
+        "鸡毛菜",
+        "鸡肝",
+        "鸡腿肉",
+        "鸭梨",
+        "鸭血",
+        "黄瓤土豆",
+        "黄精",
+        "黄脚立",
+        "黄芪",
+        "黄花菜",
+        "黄菊花",
+        "黄豆",
+        "黄豆粉",
+        "黑米",
+        "黑胡椒",
+        "黑芝麻酱"
+    ]
+}
