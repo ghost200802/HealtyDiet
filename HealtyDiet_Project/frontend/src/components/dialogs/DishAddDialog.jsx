@@ -358,7 +358,7 @@ const DishAddDialog = ({
             <Typography variant="h6" gutterBottom>
               菜肴分类
             </Typography>
-            <Box sx={{ height: '600px', overflow: 'auto' }}>
+            <Box sx={{ height: 'calc(100vh - 450px)', minHeight: '300px', overflow: 'auto' }}>
               <List>
                 {dishTypes.map((type) => (
                   <ListItem 
@@ -384,7 +384,7 @@ const DishAddDialog = ({
               菜肴列表
             </Typography>
             <Box 
-              sx={{ height: '600px', overflow: 'auto' }}
+              sx={{ height: 'calc(100vh - 450px)', minHeight: '300px', overflow: 'auto' }}
             >
               {loading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>

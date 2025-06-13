@@ -204,7 +204,7 @@ const FoodAddDialog = ({
             <Typography variant="h6" gutterBottom>
               食物分类
             </Typography>
-            <Box sx={{ height: '600px', overflow: 'auto' }}>
+            <Box sx={{ height: 'calc(100vh - 450px)', minHeight: '300px', overflow: 'auto' }}>
               <List>
                 <ListItem 
                   button 
@@ -268,7 +268,7 @@ const FoodAddDialog = ({
             <Typography variant="h6" gutterBottom>
               食物列表
             </Typography>
-            <Box sx={{ height: '600px', overflow: 'auto' }}>
+            <Box sx={{ height: 'calc(100vh - 450px)', minHeight: '300px', overflow: 'auto' }}>
               {filteredFoods.length === 0 ? (
                 <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', py: 3 }}>
                   没有找到匹配的食物
