@@ -143,8 +143,9 @@ def remove_dishes_with_missing_ingredients(dishes, missing_ingredients):
     return filtered_dishes
 
 def convert_ingredients_to_ids(dishes, all_foods, food_aliases):
-    """将菜品中的食材名称转换为食材ID"""
+    """将菜品中的食材名称转换为食材ID，忽略找不到的食材"""
     converted_dishes = {}
+    missing_count = 0
     
     for dish_id, dish_info in dishes.items():
         # 创建菜品的副本
@@ -152,7 +153,7 @@ def convert_ingredients_to_ids(dishes, all_foods, food_aliases):
         foods_list = dish_info.get('foods', [])
         foods_ids = []
         
-        # 转换每个食材名称为ID
+        # 转换每个食材名称为ID，忽略找不到的食材
         for ingredient in foods_list:
             # 直接匹配食物名称
             if ingredient in all_foods:
@@ -163,10 +164,16 @@ def convert_ingredients_to_ids(dishes, all_foods, food_aliases):
                 food_name = food_aliases[ingredient]
                 food_id = all_foods[food_name]['id']
                 foods_ids.append(food_id)
+            else:
+                # 找不到的食材，记录但不添加到foods_ids
+                missing_count += 1
         
         # 更新菜品的食材列表为ID列表
         converted_dish['foods'] = foods_ids
         converted_dishes[dish_id] = converted_dish
+    
+    if missing_count > 0:
+        print(f"注意：有 {missing_count} 个食材未找到，已从foods字段中忽略")
     
     return converted_dishes
 
@@ -196,17 +203,11 @@ def main():
     all_missing = collect_all_missing_ingredients(missing_ingredients)
     print(f"菜品中共有 {len(all_missing)} 种不同的缺失食材")
     
-    # 从菜品数据中移除含有缺失食材的菜品
-    filtered_dishes = remove_dishes_with_missing_ingredients(dishes, missing_ingredients)
-    print(f"过滤后剩余 {len(filtered_dishes)} 道菜品")
+    # 不再移除含有缺失食材的菜品，直接使用原始数据
+    print(f"保留所有 {len(dishes)} 道菜品，包括那些含有缺失食材的菜品")
     
-    # 将过滤后的菜品数据保存回原始文件
-    with open(dishs_raw_file, 'w', encoding='utf-8') as f:
-        json.dump(filtered_dishes, f, ensure_ascii=False, indent=4)
-    print(f"已将过滤后的菜品数据保存到 {dishs_raw_file}")
-    
-    # 将食材名称转换为ID
-    converted_dishes = convert_ingredients_to_ids(filtered_dishes, all_foods, food_aliases)
+    # 将食材名称转换为ID，忽略找不到的食材
+    converted_dishes = convert_ingredients_to_ids(dishes, all_foods, food_aliases)
     print(f"已将 {len(converted_dishes)} 道菜品的食材名称转换为ID")
     
     # 将转换后的菜品数据保存到dishs.json文件
@@ -229,7 +230,7 @@ def main():
     
     # 打印部分结果
     if missing_ingredients:
-        print(f"\n发现 {len(missing_ingredients)} 道菜品中有缺失的食材")
+        print(f"\n发现 {len(missing_ingredients)} 道菜品中有缺失的食材，但这些菜品仍被保留")
         print("\n部分缺失食材示例:")
         count = 0
         for dish_id, info in missing_ingredients.items():
@@ -238,6 +239,7 @@ def main():
             count += 1
             if count >= 5:  # 只显示前5个
                 break
+        print("\n注意：这些缺失的食材不会被添加到最终的foods字段中")
     else:
         print("所有菜品中的食材都存在于食物数据库中")
     
