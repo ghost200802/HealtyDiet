@@ -18,7 +18,7 @@ import {
   InputAdornment,
   CircularProgress
 } from '@mui/material';
-import { Visibility as VisibilityIcon } from '@mui/icons-material';
+import { Visibility as VisibilityIcon, Close as CloseIcon } from '@mui/icons-material';
 import { 
   getAllDishes, 
   getDishesByType, 
@@ -47,6 +47,7 @@ const DishAddDialog = ({
   const [dishTypes, setDishTypes] = useState(['全部']);
   const [loading, setLoading] = useState(false);
   const [foodsData, setFoodsData] = useState({});
+  const [foodAmounts, setFoodAmounts] = useState({});
   
   // 初始化菜谱数据和类型
   useEffect(() => {
@@ -148,15 +149,55 @@ const DishAddDialog = ({
 
   // 处理添加菜肴
   const handleAddDish = () => {
-    if (!selectedDish || !dishAmount || isNaN(dishAmount) || parseFloat(dishAmount) <= 0) {
+    if (!selectedDish) {
       return;
     }
     
-    onAddDish(selectedDish, parseFloat(dishAmount));
+    // 确保selectedDish.foods存在且是数组
+    if (!selectedDish.foods || !Array.isArray(selectedDish.foods)) {
+      console.error('菜肴的foods不是数组格式');
+      return;
+    }
+    
+    // 准备食物列表，使用简化格式 [{foodId, amount}]
+    const foodsList = selectedDish.foods.map(foodId => {
+      return {
+        foodId: foodId,
+        amount: foodAmounts[foodId] || 100 // 使用用户设置的数量，默认为100克
+      };
+    }).filter(item => item !== null);
+    
+    // 调用父组件的onAddDish函数，传递菜肴和食物列表
+    onAddDish(selectedDish, foodsList);
     
     // 重置状态
     setSelectedDish(null);
-    setDishAmount('');
+    setFoodAmounts({});
+  };
+
+  // 计算选中菜肴的总营养成分
+  const calculateTotalNutrition = () => {
+    const totalNutrition = {
+      calories: 0,
+      protein: 0,
+      carbs: 0,
+      fat: 0
+    };
+    
+    if (selectedDish && selectedDish.foods && Array.isArray(selectedDish.foods)) {
+      selectedDish.foods.forEach(foodId => {
+        const food = foodsData[foodId];
+        if (food) {
+          const amount = foodAmounts[foodId] || 100;
+          totalNutrition.calories += (food.calories || 0) * amount / 100;
+          totalNutrition.protein += (food.protein || 0) * amount / 100;
+          totalNutrition.carbs += (food.carbs || 0) * amount / 100;
+          totalNutrition.fat += (food.fat || 0) * amount / 100;
+        }
+      });
+    }
+    
+    return totalNutrition;
   };
 
   // 渲染菜肴卡片
@@ -195,6 +236,15 @@ const DishAddDialog = ({
         onClick={() => {
           setSelectedDish(dish);
           setDishAmount('1'); // 默认份数为1
+          
+          // 初始化每种食材的数量为100克
+          if (dish.foods && Array.isArray(dish.foods)) {
+            const initialAmounts = {};
+            dish.foods.forEach(foodId => {
+              initialAmounts[foodId] = 100; // 默认每种食材100克
+            });
+            setFoodAmounts(initialAmounts);
+          }
         }}
       >
         <CardContent>
@@ -260,7 +310,17 @@ const DishAddDialog = ({
             fullWidth
             label="搜索菜肴"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setSelectedDish(null); // 清除选中的菜肴
+              setFoodAmounts({});
+            }}
+            onClick={() => {
+              if (selectedDish) {
+                setSelectedDish(null); // 点击搜索框时清除选中的菜肴
+                setFoodAmounts({});
+              }
+            }}
             variant="outlined"
             sx={{ mb: 2 }}
           />
@@ -279,7 +339,11 @@ const DishAddDialog = ({
                     key={type}
                     button 
                     selected={selectedType === type}
-                    onClick={() => setSelectedType(type)}
+                    onClick={() => {
+                      setSelectedType(type);
+                      setSelectedDish(null); // 选择分类时清除选中的菜肴
+                      setFoodAmounts({});
+                    }}
                   >
                     <ListItemText primary={type} />
                   </ListItem>
@@ -293,7 +357,9 @@ const DishAddDialog = ({
             <Typography variant="h6" gutterBottom>
               菜肴列表
             </Typography>
-            <Box sx={{ height: '600px', overflow: 'auto' }}>
+            <Box 
+              sx={{ height: '600px', overflow: 'auto' }}
+            >
               {loading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                   <CircularProgress />
@@ -315,52 +381,166 @@ const DishAddDialog = ({
           </Grid>
         </Grid>
       </DialogContent>
-      <DialogActions sx={{ 
-        flexDirection: 'column', 
-        alignItems: 'stretch',
-        p: 2,
-        '& > :not(:first-of-type)': { mt: 2 }
-      }}>
-        {selectedDish ? (
-          <Box sx={{ bgcolor: 'background.paper', borderRadius: 1, p: 2, mb: 2 }}>
-            <Typography variant="h6" gutterBottom>
-              已选择: {selectedDish.name}
-            </Typography>
-            <TextField
-              label="份数"
-              type="number"
-              value={dishAmount}
-              onChange={(e) => setDishAmount(e.target.value)}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">份</InputAdornment>,
-              }}
-              fullWidth
-              variant="outlined"
-              sx={{ mb: 2 }}
-            />
-            {selectedDish.foods && selectedDish.foods.length > 0 && (
-              <Typography variant="body2" color="text.secondary">
-                包含食材: {
-                  selectedDish.foods.map(foodId => {
+      {selectedDish ? (
+        <DialogActions sx={{ 
+          flexDirection: 'column', 
+          alignItems: 'stretch',
+          p: 2,
+          backgroundColor: '#f5f5f5',  // 添加浅灰色背景
+          borderTop: '1px solid #e0e0e0',  // 添加顶部边框
+          '& > :not(:first-of-type)': { mt: 2 }
+        }}>
+          <Box sx={{ 
+            bgcolor: '#ffffff', 
+            borderRadius: 2, 
+            p: 3, 
+            mb: 2,
+            boxShadow: '0 3px 10px rgba(0, 0, 0, 0.1)',  // 添加阴影
+            border: '1px solid #e0e0e0',  // 添加边框
+          }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+              <Typography variant="h6" sx={{ color: '#1976d2', fontWeight: 'bold' }}>
+                已选择: {selectedDish.name}
+              </Typography>
+              <IconButton 
+                size="small" 
+                onClick={() => {
+                  setSelectedDish(null);
+                  setFoodAmounts({});
+                }}
+                sx={{ 
+                  color: '#757575',
+                  '&:hover': { color: '#f44336', backgroundColor: '#f5f5f5' }
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Box>
+            {selectedDish.foods && selectedDish.foods.length > 0 ? (
+              <Box>
+                <Typography variant="subtitle1" gutterBottom sx={{ color: '#555', fontWeight: 500, mt: 2 }}>
+                  主要食材列表:
+                </Typography>
+                <List dense sx={{ 
+                  border: '1px solid #f0f0f0', 
+                  borderRadius: 1, 
+                  p: 1,
+                  backgroundColor: '#fafafa'
+                }}>
+                  {selectedDish.foods.map(foodId => {
                     const food = foodsData[foodId];
-                    return food ? `${food.name} 100克` : '未知食材';
-                  }).join(', ')
-                }
+                    if (!food) return null;
+                    
+                    return (
+                      <ListItem key={`food-${foodId}`} sx={{ py: 1 }}>
+                        <Grid container alignItems="center" spacing={2}>
+                          <Grid item xs={6}>
+                            <Typography variant="body1" sx={{ fontWeight: 500 }}>{food.name}</Typography>
+                          </Grid>
+                          <Grid item xs={6}>
+                            <TextField
+                              type="number"
+                              size="small"
+                              label="克数"
+                              value={foodAmounts[foodId] || 100}
+                              onChange={(e) => {
+                                const newValue = parseInt(e.target.value) || 0;
+                                setFoodAmounts(prev => ({
+                                  ...prev,
+                                  [foodId]: newValue
+                                }));
+                              }}
+                              InputProps={{
+                                endAdornment: <InputAdornment position="end">克</InputAdornment>,
+                              }}
+                              fullWidth
+                              sx={{
+                                '& .MuiOutlinedInput-root': {
+                                  borderRadius: 1,
+                                  backgroundColor: '#ffffff'
+                                }
+                              }}
+                            />
+                          </Grid>
+                        </Grid>
+                      </ListItem>
+                    );
+                  })}
+                </List>
+                
+                {/* 营养成分总计 */}
+                <Box sx={{ 
+                  mt: 3, 
+                  p: 2, 
+                  borderTop: '1px solid #e0e0e0',
+                  backgroundColor: '#f0f7ff',
+                  borderRadius: '0 0 8px 8px'
+                }}>
+                  <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
+                    营养成分总计:
+                  </Typography>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6} sm={3}>
+                      <Typography variant="body2" color="text.secondary">热量:</Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#ff6d00' }}>
+                        {calculateTotalNutrition().calories.toFixed(1)} 千卡
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6} sm={3}>
+                      <Typography variant="body2" color="text.secondary">蛋白质:</Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#2196f3' }}>
+                        {calculateTotalNutrition().protein.toFixed(1)} 克
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6} sm={3}>
+                      <Typography variant="body2" color="text.secondary">碳水化合物:</Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#4caf50' }}>
+                        {calculateTotalNutrition().carbs.toFixed(1)} 克
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6} sm={3}>
+                      <Typography variant="body2" color="text.secondary">脂肪:</Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#f44336' }}>
+                        {calculateTotalNutrition().fat.toFixed(1)} 克
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Box>
+            ) : (
+              <Typography variant="body1" color="text.secondary">
+                该菜肴没有食材信息
               </Typography>
             )}
           </Box>
-        ) : null}
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button onClick={onClose} sx={{ mr: 1 }}>取消</Button>
-          <Button 
-            onClick={handleAddDish} 
-            variant="contained" 
-            disabled={!selectedDish || !dishAmount}
-          >
-            添加到食谱
-          </Button>
-        </Box>
-      </DialogActions>
+          
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+            <Button 
+              onClick={onClose} 
+              sx={{ 
+                border: '1px solid #e0e0e0',
+                '&:hover': { backgroundColor: '#f5f5f5' },
+                mr: 2
+              }}
+            >
+              取消
+            </Button>
+            <Button 
+              onClick={handleAddDish} 
+              variant="contained" 
+              color="primary" 
+              disabled={!selectedDish}
+              sx={{
+                backgroundColor: '#1976d2',
+                '&:hover': { backgroundColor: '#1565c0' },
+                '&.Mui-disabled': { backgroundColor: '#e0e0e0', color: '#9e9e9e' }
+              }}
+            >
+              添加到食谱
+            </Button>
+          </Box>
+        </DialogActions>
+      ) : null}
     </Dialog>
   );
 };
