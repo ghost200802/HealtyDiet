@@ -498,8 +498,6 @@ const Diet = ({ user }) => {
           setError('处理食谱项目时出错: ' + error.message);
         }
       };
-      
-      // 执行处理
       processItems();
       
       // 添加到食谱中
@@ -523,11 +521,31 @@ const Diet = ({ user }) => {
         return;
       }
 
-      // 将dietItems转换为optimizeDietByUserData函数所需的格式
-      const simplifiedDiet = dietItems.map(item => ({
-        foodId: item.foodId,
-        amount: item.amount
-      }));
+      // 创建一个映射来跟踪每个食物ID的原始项目
+      const foodMap = {};
+      
+      // 将相同foodId的食物合并，同时保存原始项目的引用
+      dietItems.forEach((item, index) => {
+        const foodId = item.foodId;
+        if (!foodMap[foodId]) {
+          foodMap[foodId] = {
+            mergedItem: {
+              foodId: foodId,
+              amount: item.amount
+            },
+            originalItems: [{ index, amount: item.amount, dishId: item.dishId }]
+          };
+        } else {
+          // 累加相同食物的数量
+          foodMap[foodId].mergedItem.amount += item.amount;
+          foodMap[foodId].originalItems.push({ index, amount: item.amount, dishId: item.dishId });
+        }
+      });
+      
+      // 创建合并后的简化食谱数据
+      const simplifiedDiet = Object.values(foodMap).map(entry => entry.mergedItem);
+      
+      console.log('合并后的食谱数据:', simplifiedDiet);
 
       // 调用优化函数
       const optimizedDiet = await optimizeDietByUserData(simplifiedDiet, user, dailyNeeds);
@@ -540,53 +558,73 @@ const Diet = ({ user }) => {
       console.log('优化后的食谱得分:', scoreResult.score);
       console.log('优化后的食谱得分详情:', scoreResult.detail);
       
-      // 转换为食谱项目格式
+      // 转换为食谱项目格式并按比例分配回原始项目
       const processItems = async () => {
         try {
-          // 使用头部导入的服务
+          // 创建更新后的食谱项目数组
+          const updatedDietItems = [...dietItems];
           
-          // 并行处理所有项目
-          const itemPromises = optimizedDiet.map(async (item) => {
-            // 获取食物详细信息
-            const food = await getFoodById(item.foodId);
-            // 计算营养信息
-            const nutritionInfo = await calculateFoodNutrition(item.foodId, item.amount);
+          // 处理每个优化后的食物
+          for (const optimizedItem of optimizedDiet) {
+            const foodId = optimizedItem.foodId;
+            const originalEntries = foodMap[foodId];
             
-            return {
-              foodId: item.foodId,
-              foodName: food.name,
-              amount: item.amount,
-              calories: nutritionInfo.calories,
-              protein: nutritionInfo.protein,
-              carbs: nutritionInfo.carbs,
-              fat: nutritionInfo.fat,
-              fiber: nutritionInfo.fiber || 0,
-              category: food.category || food.type,
-              subType: food.subCategory || food.subType
-            };
-          });
+            if (originalEntries) {
+              const originalTotalAmount = originalEntries.originalItems.reduce((sum, item) => sum + item.amount, 0);
+              const optimizedAmount = optimizedItem.amount;
+              const changeRatio = optimizedAmount / originalTotalAmount;
+              
+              // 按比例更新每个原始项目
+              for (const originalItem of originalEntries.originalItems) {
+                const newAmount = Math.round(originalItem.amount * changeRatio / 10) * 10; // 按10g为单位调整
+                const index = originalItem.index;
+                
+                // 更新dietItems中的对应项目
+                if (updatedDietItems[index]) {
+                  // 获取食物详细信息
+                  const food = await getFoodById(foodId);
+                  // 计算新的营养信息
+                  const nutritionInfo = await calculateFoodNutrition(foodId, newAmount);
+                  
+                  updatedDietItems[index] = {
+                    ...updatedDietItems[index],
+                    amount: newAmount,
+                    calories: nutritionInfo.calories,
+                    protein: nutritionInfo.protein,
+                    carbs: nutritionInfo.carbs,
+                    fat: nutritionInfo.fat,
+                    fiber: nutritionInfo.fiber || 0,
+                    // 确保保留dishId，以维持dish和food的层级关系
+                    dishId: updatedDietItems[index].dishId
+                  };
+                }
+              }
+            }
+          }
           
-          // 等待所有项目处理完成
-          const processedItems = await Promise.all(itemPromises);
-          setDietItems(processedItems);
-        } catch (error) {
-          console.error('处理食谱项目时出错:', error);
-          setError('处理食谱项目时出错: ' + error.message);
+          // 更新食谱项目
+          setDietItems(updatedDietItems);
+          console.log('更新后的食谱项目:', updatedDietItems);
+          
+          setSuccess('已根据用户数据优化食谱');
+          
+          // 3秒后清除成功消息
+          setTimeout(() => setSuccess(''), 3000);
+        } catch (err) {
+          console.error('处理食谱项目时出错:', err);
+          setError('处理食谱项目时出错: ' + err.message);
         }
       };
       
       // 执行处理
-      processItems();
+      await processItems();
       
-      setSuccess('已根据用户数据优化食谱');
-      
-      // 3秒后清除成功消息
-      setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       console.error('自动优化食谱失败:', err);
       setError(err.message || '自动优化食谱失败，请重试');
     }
   };
+
 
   // 生成购物清单
   const handleGenerateShoppingList = () => {
