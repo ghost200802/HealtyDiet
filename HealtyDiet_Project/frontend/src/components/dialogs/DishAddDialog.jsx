@@ -302,9 +302,23 @@ const DishAddDialog = ({
       onClose={onClose}
       maxWidth="lg"
       fullWidth
+      PaperProps={{
+        sx: {
+          height: '90vh',
+          maxHeight: '90vh',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden'
+        }
+      }}
     >
       <DialogTitle>添加菜肴</DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ 
+        position: 'relative', 
+        overflow: 'auto',
+        flex: 1,
+        pb: selectedDish ? 10 : 2 
+      }}>
         <Box sx={{ mb: 2 }}>
           <TextField
             fullWidth
@@ -382,12 +396,18 @@ const DishAddDialog = ({
         </Grid>
       </DialogContent>
       {selectedDish ? (
-        <DialogActions sx={{ 
-          flexDirection: 'column', 
-          alignItems: 'stretch',
+        <Box sx={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 10,
+          backgroundColor: '#f5f5f5',
+          borderTop: '1px solid #e0e0e0',
           p: 2,
-          backgroundColor: '#f5f5f5',  // 添加浅灰色背景
-          borderTop: '1px solid #e0e0e0',  // 添加顶部边框
+          boxShadow: '0 -4px 10px rgba(0, 0, 0, 0.1)',
+          display: 'flex',
+          flexDirection: 'column',
           '& > :not(:first-of-type)': { mt: 2 }
         }}>
           <Box sx={{ 
@@ -539,7 +559,7 @@ const DishAddDialog = ({
               添加到食谱
             </Button>
           </Box>
-        </DialogActions>
+        </Box>
       ) : null}
     </Dialog>
   );
