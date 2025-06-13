@@ -227,10 +227,13 @@ const Diet = ({ user }) => {
       // 使用已导入的calculateDietItem函数计算食谱项目的营养素含量（同步调用）
       const newItem = calculateDietItem(selectedFood.id, amount);
       
-      // 检查是否已存在该食物，如果存在则更新数量
-      const existingItemIndex = dietItems.findIndex(item => item.foodId === selectedFood.id);
+      // 检查是否已存在该食物，且不属于任何菜肴（没有dishId）
+      const existingItemIndex = dietItems.findIndex(item => 
+        item.foodId === selectedFood.id && !item.dishId
+      );
       
       if (existingItemIndex !== -1) {
+        // 只有当现有食物不属于任何菜肴时，才更新其数量
         const updatedItems = [...dietItems];
         const oldAmount = updatedItems[existingItemIndex].amount;
         const newAmount = oldAmount + amount;
@@ -246,6 +249,7 @@ const Diet = ({ user }) => {
         // 3秒后清除成功消息
         setTimeout(() => setSuccess(''), 3000);
       } else {
+        // 如果食物不存在或者已存在但属于某个菜肴，则添加为新项目
         setDietItems([...dietItems, newItem]);
         
         setFoodAddDialogOpen(false);
@@ -328,9 +332,10 @@ const Diet = ({ user }) => {
     try {
       const updatedItems = [...dietItems];
       const foodId = updatedItems[index].foodId;
+      const dishId = updatedItems[index].dishId; // 保存原始的dishId
       
-      // 使用NutritionService计算更新后的营养素含量（同步调用）
-      const updatedItem = calculateDietItem(foodId, newAmount);
+      // 使用NutritionService计算更新后的营养素含量（同步调用），传递dishId参数
+      const updatedItem = calculateDietItem(foodId, newAmount, dishId);
       updatedItems[index] = updatedItem;
       setDietItems(updatedItems);
     } catch (error) {
