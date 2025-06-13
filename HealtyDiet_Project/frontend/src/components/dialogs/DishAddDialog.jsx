@@ -26,6 +26,7 @@ import {
   searchDishesByName, 
   searchDishesByFood 
 } from '../../services/DishService';
+import { getFoodsByIds } from '../../services/FoodService';
 
 /**
  * 添加菜肴到食谱的弹出式对话框组件
@@ -45,6 +46,7 @@ const DishAddDialog = ({
   const [dishAmount, setDishAmount] = useState('');
   const [dishTypes, setDishTypes] = useState(['全部']);
   const [loading, setLoading] = useState(false);
+  const [foodsData, setFoodsData] = useState({});
   
   // 初始化菜谱数据和类型
   useEffect(() => {
@@ -67,6 +69,26 @@ const DishAddDialog = ({
         });
         
         setDishTypes(Array.from(types));
+        
+        // 收集所有菜肴的食物ID
+        const allFoodIds = new Set();
+        dishesData.forEach(dish => {
+          if (dish.foods && Array.isArray(dish.foods)) {
+            dish.foods.forEach(foodId => allFoodIds.add(foodId));
+          }
+        });
+        
+        // 获取所有食物数据
+        if (allFoodIds.size > 0) {
+          const foodsArray = await getFoodsByIds(Array.from(allFoodIds));
+          const foodsMap = {};
+          foodsArray.forEach(food => {
+            if (food && food.id) {
+              foodsMap[food.id] = food;
+            }
+          });
+          setFoodsData(foodsMap);
+        }
       } catch (error) {
         console.error('获取菜谱数据失败:', error);
       } finally {
@@ -147,12 +169,18 @@ const DishAddDialog = ({
       fat: 0
     };
     
-    if (dish.ingredients && Array.isArray(dish.ingredients)) {
-      dish.ingredients.forEach(ingredient => {
-        totalNutrition.calories += (ingredient.calories || 0) * (ingredient.amount || 0) / 100;
-        totalNutrition.protein += (ingredient.protein || 0) * (ingredient.amount || 0) / 100;
-        totalNutrition.carbs += (ingredient.carbs || 0) * (ingredient.amount || 0) / 100;
-        totalNutrition.fat += (ingredient.fat || 0) * (ingredient.amount || 0) / 100;
+    // 使用foods字段获取食物信息并计算营养成分
+    if (dish.foods && Array.isArray(dish.foods)) {
+      dish.foods.forEach(foodId => {
+        const food = foodsData[foodId];
+        if (food) {
+          // 假设每种食物默认100克
+          const amount = 100;
+          totalNutrition.calories += (food.calories || 0) * amount / 100;
+          totalNutrition.protein += (food.protein || 0) * amount / 100;
+          totalNutrition.carbs += (food.carbs || 0) * amount / 100;
+          totalNutrition.fat += (food.fat || 0) * amount / 100;
+        }
       });
     }
     
@@ -173,16 +201,32 @@ const DishAddDialog = ({
           <Typography variant="h6" component="div">
             {dish.name}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            热量: {totalNutrition.calories.toFixed(1)} 千卡
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            蛋白质: {totalNutrition.protein.toFixed(1)}g | 碳水: {totalNutrition.carbs.toFixed(1)}g | 脂肪: {totalNutrition.fat.toFixed(1)}g
-          </Typography>
-          {dish.ingredients && (
+          {totalNutrition.calories === 0 && totalNutrition.protein === 0 && totalNutrition.carbs === 0 && totalNutrition.fat === 0 ? (
+            <Typography variant="body2" color="text.secondary">
+              暂无营养信息
+            </Typography>
+          ) : (
+            <>
+              <Typography variant="body2" color="text.secondary">
+                热量: {totalNutrition.calories.toFixed(1)} 千卡
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                蛋白质: {totalNutrition.protein.toFixed(1)}g | 碳水: {totalNutrition.carbs.toFixed(1)}g | 脂肪: {totalNutrition.fat.toFixed(1)}g
+              </Typography>
+            </>
+          )}
+          {dish.foods && dish.foods.length > 0 ? (
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              主要食材: {dish.ingredients.slice(0, 3).map(ing => ing.name).join(', ')}
-              {dish.ingredients.length > 3 ? '...' : ''}
+              主要食材: {
+                dish.foods.map(foodId => {
+                  const food = foodsData[foodId];
+                  return food ? food.name : '未知食材';
+                }).join(', ')
+              }
+            </Typography>
+          ) : (
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              暂无食材信息
             </Typography>
           )}
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
@@ -294,9 +338,14 @@ const DishAddDialog = ({
               variant="outlined"
               sx={{ mb: 2 }}
             />
-            {selectedDish.ingredients && (
+            {selectedDish.foods && selectedDish.foods.length > 0 && (
               <Typography variant="body2" color="text.secondary">
-                包含食材: {selectedDish.ingredients.map(ing => `${ing.name} ${ing.amount}克`).join(', ')}
+                包含食材: {
+                  selectedDish.foods.map(foodId => {
+                    const food = foodsData[foodId];
+                    return food ? `${food.name} 100克` : '未知食材';
+                  }).join(', ')
+                }
               </Typography>
             )}
           </Box>
