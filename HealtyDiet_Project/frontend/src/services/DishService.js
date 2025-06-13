@@ -4,10 +4,66 @@ import axios from 'axios';
 const dishCache = {
   // 菜谱ID到菜谱对象的映射
   dishes: {},
+  // 菜谱名称索引 - 用于模糊匹配菜谱名称
+  nameIndex: {},
+  // 食物名称索引 - 用于通过食物名称查找菜谱
+  foodIndex: {},
   // 缓存过期时间（毫秒）
   expirationTime: 60 * 60 * 1000, // 默认60分钟
   // 缓存时间戳
   timestamp: Date.now()
+};
+
+/**
+ * 将字符串转换为小写并移除空格，用于索引
+ * @param {string} str 输入字符串
+ * @returns {string} 处理后的字符串
+ */
+const normalizeString = (str) => {
+  if (!str || typeof str !== 'string') return '';
+  return str.toLowerCase().replace(/\s+/g, '');
+};
+
+/**
+ * 更新名称索引
+ * @param {Object} dish 菜谱对象
+ */
+const updateNameIndex = (dish) => {
+  if (!dish || !dish.id || !dish.name) return;
+  
+  const normalizedName = normalizeString(dish.name);
+  
+  // 将菜谱名称的每个字符作为索引
+  for (let i = 0; i < normalizedName.length; i++) {
+    const char = normalizedName.substring(i);
+    if (!dishCache.nameIndex[char]) {
+      dishCache.nameIndex[char] = new Set();
+    }
+    dishCache.nameIndex[char].add(dish.id);
+  }
+};
+
+/**
+ * 更新食物索引
+ * @param {Object} dish 菜谱对象
+ */
+const updateFoodIndex = (dish) => {
+  if (!dish || !dish.id || !dish.ingredients || !Array.isArray(dish.ingredients)) return;
+  
+  dish.ingredients.forEach(ingredient => {
+    if (!ingredient || !ingredient.name) return;
+    
+    const normalizedFoodName = normalizeString(ingredient.name);
+    
+    // 将食物名称的每个字符作为索引
+    for (let i = 0; i < normalizedFoodName.length; i++) {
+      const char = normalizedFoodName.substring(i);
+      if (!dishCache.foodIndex[char]) {
+        dishCache.foodIndex[char] = new Set();
+      }
+      dishCache.foodIndex[char].add(dish.id);
+    }
+  });
 };
 
 /**
@@ -17,6 +73,10 @@ const dishCache = {
 const addDishToCache = (dish) => {
   if (!dish || !dish.id) return;
   dishCache.dishes[dish.id] = dish;
+  
+  // 更新名称索引和食物索引
+  updateNameIndex(dish);
+  updateFoodIndex(dish);
 };
 
 /**
@@ -28,6 +88,10 @@ const addDishesToCache = (dishes) => {
   dishes.forEach(dish => {
     if (dish && dish.id) {
       dishCache.dishes[dish.id] = dish;
+      
+      // 更新名称索引和食物索引
+      updateNameIndex(dish);
+      updateFoodIndex(dish);
     }
   });
 };
@@ -54,6 +118,8 @@ const getDishFromCache = (id) => {
  */
 const clearCache = () => {
   dishCache.dishes = {};
+  dishCache.nameIndex = {};
+  dishCache.foodIndex = {};
   dishCache.timestamp = Date.now();
 };
 
@@ -250,6 +316,58 @@ const getDishesByIdsSync = (ids) => {
   return cachedDishes;
 };
 
+/**
+ * 通过名称模糊匹配菜谱
+ * @param {string} query 搜索关键词
+ * @returns {Array<Object>} 匹配的菜谱对象数组
+ */
+const searchDishesByName = (query) => {
+  if (!query || typeof query !== 'string') {
+    return [];
+  }
+  
+  // 检查缓存是否过期
+  if (Date.now() - dishCache.timestamp > dishCache.expirationTime) {
+    clearCache();
+    return [];
+  }
+  
+  const normalizedQuery = normalizeString(query);
+  if (!normalizedQuery) return [];
+  
+  // 获取匹配的菜谱ID
+  const matchedIds = dishCache.nameIndex[normalizedQuery] || new Set();
+  
+  // 转换为菜谱对象数组
+  return Array.from(matchedIds).map(id => dishCache.dishes[id]).filter(Boolean);
+};
+
+/**
+ * 通过食物名称模糊匹配菜谱
+ * @param {string} foodName 食物名称
+ * @returns {Array<Object>} 包含该食物的菜谱对象数组
+ */
+const searchDishesByFood = (foodName) => {
+  if (!foodName || typeof foodName !== 'string') {
+    return [];
+  }
+  
+  // 检查缓存是否过期
+  if (Date.now() - dishCache.timestamp > dishCache.expirationTime) {
+    clearCache();
+    return [];
+  }
+  
+  const normalizedFoodName = normalizeString(foodName);
+  if (!normalizedFoodName) return [];
+  
+  // 获取匹配的菜谱ID
+  const matchedIds = dishCache.foodIndex[normalizedFoodName] || new Set();
+  
+  // 转换为菜谱对象数组
+  return Array.from(matchedIds).map(id => dishCache.dishes[id]).filter(Boolean);
+};
+
 export {
   getDishById,
   getDishesByIds,
@@ -258,6 +376,8 @@ export {
   searchDishes,
   getDishByIdSync,
   getDishesByIdsSync,
+  searchDishesByName,
+  searchDishesByFood,
   clearCache,
   setCacheExpirationTime
 };
