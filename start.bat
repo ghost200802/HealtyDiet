@@ -1,5 +1,7 @@
 @echo off
 
+git pull
+
 REM 启动后端服务
 cd HealtyDiet_Project\backend
 start "后端服务" npm run start
