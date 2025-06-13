@@ -335,8 +335,16 @@ const searchDishesByName = (query) => {
   const normalizedQuery = normalizeString(query);
   if (!normalizedQuery) return [];
   
-  // 获取匹配的菜谱ID
-  const matchedIds = dishCache.nameIndex[normalizedQuery] || new Set();
+  // 获取所有匹配的菜谱ID
+  const matchedIds = new Set();
+  
+  // 遍历所有索引键，查找包含搜索词的键
+  Object.keys(dishCache.nameIndex).forEach(key => {
+    if (key.includes(normalizedQuery)) {
+      // 将匹配键对应的所有菜谱ID添加到结果集
+      dishCache.nameIndex[key].forEach(id => matchedIds.add(id));
+    }
+  });
   
   // 转换为菜谱对象数组
   return Array.from(matchedIds).map(id => dishCache.dishes[id]).filter(Boolean);
@@ -361,8 +369,16 @@ const searchDishesByFood = (foodName) => {
   const normalizedFoodName = normalizeString(foodName);
   if (!normalizedFoodName) return [];
   
-  // 获取匹配的菜谱ID
-  const matchedIds = dishCache.foodIndex[normalizedFoodName] || new Set();
+  // 获取所有匹配的菜谱ID
+  const matchedIds = new Set();
+  
+  // 遍历所有索引键，查找包含搜索词的键
+  Object.keys(dishCache.foodIndex).forEach(key => {
+    if (key.includes(normalizedFoodName)) {
+      // 将匹配键对应的所有菜谱ID添加到结果集
+      dishCache.foodIndex[key].forEach(id => matchedIds.add(id));
+    }
+  });
   
   // 转换为菜谱对象数组
   return Array.from(matchedIds).map(id => dishCache.dishes[id]).filter(Boolean);

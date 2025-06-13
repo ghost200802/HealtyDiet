@@ -13,6 +13,7 @@ import {
   Tune as TuneIcon,
   ShoppingCart as ShoppingCartIcon,
   Delete as DeleteIcon,
+  Restaurant as RestaurantIcon,
 } from '@mui/icons-material';
 
 /**
@@ -24,6 +25,7 @@ const DietHeader = ({
   onSave, 
   onLoad, 
   onAdd,
+  onAddDish,
   onAutoGenerate,
   onAutoOptimize,
   onGenerateShoppingList,
@@ -151,6 +153,23 @@ const DietHeader = ({
             }}
           >
             添加食物
+          </Button>
+          <Button
+            variant="outlined"
+            color="success"
+            startIcon={<RestaurantIcon />}
+            onClick={onAddDish}
+            sx={{ 
+              minWidth: '120px',
+              borderRadius: 1.5,
+              transition: 'all 0.2s',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: '0 4px 8px rgba(46,125,50,0.1)'
+              }
+            }}
+          >
+            添加菜肴
           </Button>
           <Button
             variant="outlined"

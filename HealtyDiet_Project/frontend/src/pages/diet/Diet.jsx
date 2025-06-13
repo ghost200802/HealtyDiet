@@ -19,6 +19,7 @@ import DietDialog from '@/components/dialogs/DietDialog';
 import ShoppingListDialog from '@/components/dialogs/ShoppingListDialog';
 import FoodDetailDialog from '@/components/dialogs/FoodDetailDialog';
 import FoodAddDialog from '@/components/dialogs/FoodAddDialog';
+import DishAddDialog from '@/components/dialogs/DishAddDialog';
 
 // 导入工具函数和服务
 import { calculateTotalNutrition, calculateDietItem, calculateFoodNutrition } from '@/services/NutritionService';
@@ -28,6 +29,8 @@ import dailyNeeds from '@data/needs/DailyNeeds.json';
 import { calculateDietScoreWithUserData } from '@/services/DietScoreService';
 // 导入FoodService
 import { getAllFoods as getFoodsFromService, getFoodById } from '@/services/FoodService';
+// 导入DishService
+import { getAllDishes as getDishesFromService } from '@/services/DishService';
 
 // 导入存储服务
 import { DIET_PAGE_STATE_KEY, saveToLocalStorage, getFromLocalStorage } from '@/services/StorageService';
@@ -36,6 +39,7 @@ const Diet = ({ user }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [foods, setFoods] = useState([]);
+  const [dishes, setDishes] = useState([]);
   const [diets, setDiets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -52,8 +56,10 @@ const Diet = ({ user }) => {
   // 对话框状态
   const [dietDialogOpen, setDietDialogOpen] = useState(false);
   const [foodAddDialogOpen, setFoodAddDialogOpen] = useState(false);
+  const [dishAddDialogOpen, setDishAddDialogOpen] = useState(false);
   const [foodDetailDialogOpen, setFoodDetailDialogOpen] = useState(false);
   const [foodToView, setFoodToView] = useState(null);
+  const [dishToView, setDishToView] = useState(null);
   const [shoppingListDialogOpen, setShoppingListDialogOpen] = useState(false);
   
   // 按文件保存食谱选项 - 默认为true，始终按文件保存
@@ -116,33 +122,37 @@ const Diet = ({ user }) => {
     }
   }, [dietItems, dietName, user]);
   
-  // 获取所有食物和用户的食谱
+  // 获取所有食物和菜谱数据以及用户的食谱
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         setError('');
         
-        // 优先从FoodService中获取食物数据
+        // 获取食物数据
         let foodsData;
-        
         try {
-          // 尝试从FoodService获取数据
           foodsData = await getFoodsFromService();
           console.log('成功从FoodService获取食物数据:', foodsData.length);
         } catch (foodServiceError) {
           console.error('从FoodService获取数据失败，尝试从DietService获取:', foodServiceError);
-          // 如果从FoodService获取失败，则从DietService获取
           foodsData = await getAllFoods();
         }
-        
         setFoods(foodsData);
-        console.log('设置foods状态:', foodsData.length);
         
         // 提取食物分类
         const uniqueCategories = ['全部', ...new Set(foodsData.map(food => food.category))];
         setCategories(uniqueCategories);
         setFilteredFoods(foodsData);
+        
+        // 获取菜谱数据
+        try {
+          const dishesData = await getDishesFromService();
+          console.log('成功从DishService获取菜谱数据:', dishesData.length);
+          setDishes(dishesData);
+        } catch (dishServiceError) {
+          console.error('获取菜谱数据失败:', dishServiceError);
+        }
         
         // 如果用户已登录，获取用户的食谱
         if (user && user.id) {
@@ -246,6 +256,63 @@ const Diet = ({ user }) => {
       }
     } catch (error) {
       setError(`添加食物失败: ${error.message}`);
+    }
+  };
+  
+  // 添加菜肴到食谱
+  const handleAddDish = (selectedDish, amount) => {
+    if (!selectedDish || !amount || isNaN(amount) || amount <= 0) {
+      setError('请选择菜肴并输入有效的数量');
+      return;
+    }
+    
+    try {
+      // 将菜肴中的食材添加到食谱中
+      if (selectedDish.ingredients && Array.isArray(selectedDish.ingredients)) {
+        const newItems = [];
+        
+        // 遍历菜肴中的所有食材
+        selectedDish.ingredients.forEach(ingredient => {
+          // 计算实际添加的食材数量（根据菜肴份数调整）
+          const actualAmount = ingredient.amount * amount;
+          
+          // 使用calculateDietItem函数计算食谱项目的营养素含量
+          const newItem = calculateDietItem(ingredient.foodId, actualAmount);
+          
+          if (newItem) {
+            // 检查是否已存在该食物
+            const existingItemIndex = dietItems.findIndex(item => item.foodId === ingredient.foodId);
+            
+            if (existingItemIndex !== -1) {
+              // 如果已存在，更新数量
+              const updatedItems = [...dietItems];
+              const oldAmount = updatedItems[existingItemIndex].amount;
+              const newAmount = oldAmount + actualAmount;
+              
+              // 计算更新后的营养素含量
+              const updatedItem = calculateDietItem(ingredient.foodId, newAmount);
+              updatedItems[existingItemIndex] = updatedItem;
+              setDietItems(updatedItems);
+            } else {
+              // 如果不存在，添加到新项目列表
+              newItems.push(newItem);
+            }
+          }
+        });
+        
+        // 将新项目添加到食谱中
+        if (newItems.length > 0) {
+          setDietItems([...dietItems, ...newItems]);
+        }
+        
+        setDishAddDialogOpen(false);
+        setSuccess(`菜肴 ${selectedDish.name} 已添加到食谱`);
+        
+        // 3秒后清除成功消息
+        setTimeout(() => setSuccess(''), 3000);
+      }
+    } catch (error) {
+      setError(`添加菜肴失败: ${error.message}`);
     }
   };
   
@@ -562,6 +629,7 @@ const Diet = ({ user }) => {
         onSave={handleSaveDiet}
         onLoad={() => setDietDialogOpen(true)}
         onAdd={() => setFoodAddDialogOpen(true)}
+        onAddDish={() => setDishAddDialogOpen(true)}
         onAutoGenerate={handleAutoGenerate}
         onAutoOptimize={handleAutoOptimize}
         onGenerateShoppingList={handleGenerateShoppingList}
@@ -635,6 +703,18 @@ const Diet = ({ user }) => {
         open={shoppingListDialogOpen}
         onClose={() => setShoppingListDialogOpen(false)}
         items={dietItems}
+      />
+      
+      {/* 菜肴添加对话框 */}
+      <DishAddDialog
+        open={dishAddDialogOpen}
+        onClose={() => setDishAddDialogOpen(false)}
+        onAddDish={handleAddDish}
+        onViewDishDetail={(dish) => {
+          setDishToView(dish);
+          // 这里可以添加查看菜肴详情的逻辑
+        }}
+        initialDishes={dishes} // 传递已获取的菜谱数据
       />
     </Container>
   );
