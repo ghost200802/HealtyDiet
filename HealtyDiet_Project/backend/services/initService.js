@@ -10,6 +10,7 @@ const ensureDataFilesExist = () => {
   fs.ensureDirSync(pathService.dietsDir);
   fs.ensureDirSync(pathService.usersDir);
   fs.ensureDirSync(pathService.plansDir); // 确保plans目录存在
+  fs.ensureDirSync(pathService.dishesDir); // 确保dishes目录存在
 
   // 读取食物类型
   const foodTypes = foodTypeService.readFoodTypes();
@@ -32,6 +33,12 @@ const ensureDataFilesExist = () => {
   // 确保用户文件存在
   if (!fs.existsSync(pathService.usersFile)) {
     fs.writeJsonSync(pathService.usersFile, { users: [] });
+  }
+  
+  // 确保菜谱文件存在
+  if (!fs.existsSync(pathService.dishesFile)) {
+    // 如果文件不存在，创建一个空的菜谱对象
+    fs.writeJsonSync(pathService.dishesFile, {});
   }
 };
 

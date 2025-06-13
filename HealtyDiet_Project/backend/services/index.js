@@ -3,6 +3,7 @@ const foodTypeService = require('@services/foodTypeService');
 const foodService = require('@services/foodService');
 const dietService = require('@services/dietService');
 const planService = require('@services/planService'); // 添加planService
+const dishService = require('@services/dishService'); // 添加dishService
 const initService = require('@services/initService');
 
 module.exports = {
@@ -23,5 +24,8 @@ module.exports = {
   dietsData: dietService,
   
   // 食谱规划服务
-  plansData: planService
+  plansData: planService,
+  
+  // 菜谱数据服务
+  dishesData: dishService
 };

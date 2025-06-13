@@ -6,6 +6,7 @@ const foodsDir = path.join(dataDir, 'foods');
 const dietsDir = path.join(dataDir, 'diets');
 const usersDir = path.join(dataDir, 'users');
 const plansDir = path.join(dataDir, 'plan'); // 添加plans目录路径
+const dishesDir = path.join(dataDir, 'dishs'); // 添加dishes目录路径
 
 // 食物类型文件路径
 const foodTypesFile = path.join(__dirname, '..', '..', '..', 'Docs', 'FoodsTypes');
@@ -13,6 +14,7 @@ const foodTypesFile = path.join(__dirname, '..', '..', '..', 'Docs', 'FoodsTypes
 // 数据文件路径
 const dietsFile = path.join(dietsDir, 'diets.json');
 const usersFile = path.join(usersDir, 'users.json');
+const dishesFile = path.join(dishesDir, 'dishs.json'); // 添加dishes文件路径
 
 // 获取食物类型文件路径
 const getFoodTypeFilePath = (type) => {
@@ -36,9 +38,11 @@ module.exports = {
   dietsDir,
   usersDir,
   plansDir, // 导出plans目录路径
+  dishesDir, // 导出dishes目录路径
   foodTypesFile,
   dietsFile,
   usersFile,
+  dishesFile, // 导出dishes文件路径
   getFoodTypeFilePath,
   getAllFoodTypeFilePaths
 };
