@@ -20,7 +20,7 @@ import {
   Collapse,
   CircularProgress
 } from '@mui/material';
-import { Visibility as VisibilityIcon, ExpandLess, ExpandMore } from '@mui/icons-material';
+import { Visibility as VisibilityIcon, ExpandLess, ExpandMore, Close as CloseIcon } from '@mui/icons-material';
 
 /**
  * 添加食物到食谱的弹出式对话框组件
@@ -111,6 +111,19 @@ const FoodAddDialog = ({
     setFoodAmount('');
   };
 
+  // 自定义关闭处理函数
+  const handleClose = () => {
+    // 重置所有选择状态
+    setSelectedFood(null);
+    setFoodAmount('');
+    setSearchQuery('');
+    setSelectedCategory('全部');
+    setSelectedSubCategory(null);
+    
+    // 调用原始的 onClose 函数
+    onClose();
+  };
+
   // 渲染食物卡片
   const renderFoodCard = (food) => (
     <Card 
@@ -154,12 +167,26 @@ const FoodAddDialog = ({
   return (
     <Dialog
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       maxWidth="lg"
       fullWidth
+      PaperProps={{
+        sx: {
+          height: '90vh',
+          maxHeight: '90vh',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden'
+        }
+      }}
     >
       <DialogTitle>添加食物</DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ 
+        position: 'relative', 
+        overflow: 'auto',
+        flex: 1,
+        pb: 10 
+      }}>
         <Box sx={{ mb: 2 }}>
           <TextField
             fullWidth
@@ -259,17 +286,47 @@ const FoodAddDialog = ({
           </Grid>
         </Grid>
       </DialogContent>
-      <DialogActions sx={{ 
-        flexDirection: 'column', 
-        alignItems: 'stretch',
+      <Box sx={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 10,
+        backgroundColor: '#f5f5f5',
+        borderTop: '1px solid #e0e0e0',
         p: 2,
+        boxShadow: '0 -4px 10px rgba(0, 0, 0, 0.1)',
+        display: 'flex',
+        flexDirection: 'column',
         '& > :not(:first-of-type)': { mt: 2 }
       }}>
-        {selectedFood ? (
-          <Box sx={{ bgcolor: 'background.paper', borderRadius: 1, p: 2, mb: 2 }}>
-            <Typography variant="h6" gutterBottom>
-              已选择: {selectedFood.name}
-            </Typography>
+        {selectedFood && (
+          <Box sx={{ 
+            bgcolor: '#ffffff', 
+            borderRadius: 2, 
+            p: 3, 
+            mb: 2,
+            boxShadow: '0 3px 10px rgba(0, 0, 0, 0.1)',  // 添加阴影
+            border: '1px solid #e0e0e0',  // 添加边框
+          }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+              <Typography variant="h6" sx={{ color: '#1976d2', fontWeight: 'bold' }}>
+                已选择: {selectedFood.name}
+              </Typography>
+              <IconButton 
+                size="small" 
+                onClick={() => {
+                  setSelectedFood(null);
+                  setFoodAmount('');
+                }}
+                sx={{ 
+                  color: '#757575',
+                  '&:hover': { color: '#f44336', backgroundColor: '#f5f5f5' }
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Box>
             <TextField
               label="数量 (克)"
               type="number"
@@ -280,27 +337,78 @@ const FoodAddDialog = ({
               }}
               fullWidth
               variant="outlined"
-              sx={{ mb: 2 }}
+              sx={{ 
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  '&:hover fieldset': {
+                    borderColor: '#1976d2',
+                  },
+                }
+              }}
             />
-            <Typography variant="body2" color="text.secondary">
-              热量: {selectedFood.calories * (parseFloat(foodAmount) / 100 || 0).toFixed(1)} 千卡 | 
-              蛋白质: {selectedFood.protein * (parseFloat(foodAmount) / 100 || 0).toFixed(1)}g | 
-              碳水: {selectedFood.carbs * (parseFloat(foodAmount) / 100 || 0).toFixed(1)}g | 
-              脂肪: {selectedFood.fat * (parseFloat(foodAmount) / 100 || 0).toFixed(1)}g
-            </Typography>
+            <Box sx={{ 
+              p: 2, 
+              bgcolor: '#f8f8f8', 
+              borderRadius: 1,
+              border: '1px solid #e0e0e0'
+            }}>
+              <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold', color: '#555' }}>
+                营养成分:
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={6} sm={3}>
+                  <Typography variant="body2" color="text.secondary">热量:</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#ff9800' }}>
+                    {(selectedFood.calories * (parseFloat(foodAmount) / 100 || 0)).toFixed(1)} 千卡
+                  </Typography>
+                </Grid>
+                <Grid item xs={6} sm={3}>
+                  <Typography variant="body2" color="text.secondary">蛋白质:</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#4caf50' }}>
+                    {(selectedFood.protein * (parseFloat(foodAmount) / 100 || 0)).toFixed(1)} 克
+                  </Typography>
+                </Grid>
+                <Grid item xs={6} sm={3}>
+                  <Typography variant="body2" color="text.secondary">碳水:</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#2196f3' }}>
+                    {(selectedFood.carbs * (parseFloat(foodAmount) / 100 || 0)).toFixed(1)} 克
+                  </Typography>
+                </Grid>
+                <Grid item xs={6} sm={3}>
+                  <Typography variant="body2" color="text.secondary">脂肪:</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#f44336' }}>
+                    {(selectedFood.fat * (parseFloat(foodAmount) / 100 || 0)).toFixed(1)} 克
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Box>
           </Box>
-        ) : null}
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button onClick={onClose} sx={{ mr: 1 }}>取消</Button>
+        )}
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+          <Button 
+            onClick={handleClose} 
+            sx={{ 
+              border: '1px solid #e0e0e0',
+              '&:hover': { backgroundColor: '#f5f5f5' },
+              mr: 2
+            }}
+          >
+            取消
+          </Button>
           <Button 
             onClick={handleAddFood} 
             variant="contained" 
             disabled={!selectedFood || !foodAmount}
+            sx={{
+              backgroundColor: '#1976d2',
+              '&:hover': { backgroundColor: '#1565c0' },
+              '&.Mui-disabled': { backgroundColor: '#e0e0e0', color: '#9e9e9e' }
+            }}
           >
             添加到食谱
           </Button>
         </Box>
-      </DialogActions>
+      </Box>
     </Dialog>
   );
 };

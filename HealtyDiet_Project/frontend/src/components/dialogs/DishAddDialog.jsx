@@ -296,10 +296,22 @@ const DishAddDialog = ({
     );
   };
 
+  // 自定义关闭处理函数
+  const handleClose = () => {
+    // 重置所有选择状态
+    setSelectedDish(null);
+    setFoodAmounts({});
+    setSearchQuery('');
+    setSelectedType('全部');
+    
+    // 调用原始的 onClose 函数
+    onClose();
+  };
+
   return (
     <Dialog
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       maxWidth="lg"
       fullWidth
       PaperProps={{
@@ -317,7 +329,7 @@ const DishAddDialog = ({
         position: 'relative', 
         overflow: 'auto',
         flex: 1,
-        pb: selectedDish ? 10 : 2 
+        pb: 10 
       }}>
         <Box sx={{ mb: 2 }}>
           <TextField
@@ -395,21 +407,21 @@ const DishAddDialog = ({
           </Grid>
         </Grid>
       </DialogContent>
-      {selectedDish ? (
-        <Box sx={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          zIndex: 10,
-          backgroundColor: '#f5f5f5',
-          borderTop: '1px solid #e0e0e0',
-          p: 2,
-          boxShadow: '0 -4px 10px rgba(0, 0, 0, 0.1)',
-          display: 'flex',
-          flexDirection: 'column',
-          '& > :not(:first-of-type)': { mt: 2 }
-        }}>
+      <Box sx={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 10,
+        backgroundColor: '#f5f5f5',
+        borderTop: '1px solid #e0e0e0',
+        p: 2,
+        boxShadow: '0 -4px 10px rgba(0, 0, 0, 0.1)',
+        display: 'flex',
+        flexDirection: 'column',
+        '& > :not(:first-of-type)': { mt: 2 }
+      }}>
+        {selectedDish && (
           <Box sx={{ 
             bgcolor: '#ffffff', 
             borderRadius: 2, 
@@ -533,34 +545,33 @@ const DishAddDialog = ({
               </Typography>
             )}
           </Box>
-          
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-            <Button 
-              onClick={onClose} 
-              sx={{ 
-                border: '1px solid #e0e0e0',
-                '&:hover': { backgroundColor: '#f5f5f5' },
-                mr: 2
-              }}
-            >
-              取消
-            </Button>
-            <Button 
-              onClick={handleAddDish} 
-              variant="contained" 
-              color="primary" 
-              disabled={!selectedDish}
-              sx={{
-                backgroundColor: '#1976d2',
-                '&:hover': { backgroundColor: '#1565c0' },
-                '&.Mui-disabled': { backgroundColor: '#e0e0e0', color: '#9e9e9e' }
-              }}
-            >
-              添加到食谱
-            </Button>
-          </Box>
+        )}
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+          <Button 
+            onClick={handleClose} 
+            sx={{ 
+              border: '1px solid #e0e0e0',
+              '&:hover': { backgroundColor: '#f5f5f5' },
+              mr: 2
+            }}
+          >
+            取消
+          </Button>
+          <Button 
+            onClick={handleAddDish} 
+            variant="contained" 
+            color="primary" 
+            disabled={!selectedDish}
+            sx={{
+              backgroundColor: '#1976d2',
+              '&:hover': { backgroundColor: '#1565c0' },
+              '&.Mui-disabled': { backgroundColor: '#e0e0e0', color: '#9e9e9e' }
+            }}
+          >
+            添加到食谱
+          </Button>
         </Box>
-      ) : null}
+      </Box>
     </Dialog>
   );
 };
