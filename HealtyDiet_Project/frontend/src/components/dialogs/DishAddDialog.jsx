@@ -25,8 +25,8 @@ import {
   searchDishes, 
   searchDishesByName, 
   searchDishesByFood 
-} from '../../services/DishService';
-import { getFoodsByIds } from '../../services/FoodService';
+} from '@/services/DishService';
+import { getFoodsByIds } from '@/services/FoodService';
 
 /**
  * 添加菜肴到食谱的弹出式对话框组件

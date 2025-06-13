@@ -6,8 +6,8 @@ import {
 } from '@mui/material';
 
 // 导入拆分后的组件
-import DietCard from './DietCard';
-import AddDietCard from './AddDietCard';
+import DietCard from '@/components/diet/DietCard';
+import AddDietCard from '@/components/diet/AddDietCard';
 
 // 星期几的中文名称
 const WEEKDAYS = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];

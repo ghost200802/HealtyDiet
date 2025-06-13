@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getFoodsByIds } from './FoodService';
+import { getFoodsByIds } from '@/services/FoodService';
 
 // 菜谱缓存对象
 const dishCache = {
