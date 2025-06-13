@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getFoodsByIds } from './FoodService';
 
 // 菜谱缓存对象
 const dishCache = {
@@ -8,6 +9,8 @@ const dishCache = {
   nameIndex: {},
   // 食物名称索引 - 用于通过食物名称查找菜谱
   foodIndex: {},
+  // 食物ID到食物对象的映射 - 用于通过食物ID获取食物名称
+  foodsData: {},
   // 缓存过期时间（毫秒）
   expirationTime: 60 * 60 * 1000, // 默认60分钟
   // 缓存时间戳
@@ -48,22 +51,46 @@ const updateNameIndex = (dish) => {
  * @param {Object} dish 菜谱对象
  */
 const updateFoodIndex = (dish) => {
-  if (!dish || !dish.id || !dish.ingredients || !Array.isArray(dish.ingredients)) return;
+  if (!dish || !dish.id) return;
   
-  dish.ingredients.forEach(ingredient => {
-    if (!ingredient || !ingredient.name) return;
-    
-    const normalizedFoodName = normalizeString(ingredient.name);
-    
-    // 将食物名称的每个字符作为索引
-    for (let i = 0; i < normalizedFoodName.length; i++) {
-      const char = normalizedFoodName.substring(i);
-      if (!dishCache.foodIndex[char]) {
-        dishCache.foodIndex[char] = new Set();
+  // 检查dish.foods是否存在且为数组
+  if (dish.foods && Array.isArray(dish.foods)) {
+    // 遍历foods数组（存储的是食物ID）
+    dish.foods.forEach(foodId => {
+      // 从foodsData中获取食物名称
+      const food = dishCache.foodsData && dishCache.foodsData[foodId];
+      if (food && food.name) {
+        const normalizedFoodName = normalizeString(food.name);
+        
+        // 将食物名称的每个字符作为索引
+        for (let i = 0; i < normalizedFoodName.length; i++) {
+          const char = normalizedFoodName.substring(i);
+          if (!dishCache.foodIndex[char]) {
+            dishCache.foodIndex[char] = new Set();
+          }
+          dishCache.foodIndex[char].add(dish.id);
+        }
       }
-      dishCache.foodIndex[char].add(dish.id);
-    }
-  });
+    });
+  }
+  
+  // 兼容旧版本：检查dish.ingredients是否存在且为数组
+  if (dish.ingredients && Array.isArray(dish.ingredients)) {
+    dish.ingredients.forEach(ingredient => {
+      if (!ingredient || !ingredient.name) return;
+      
+      const normalizedFoodName = normalizeString(ingredient.name);
+      
+      // 将食物名称的每个字符作为索引
+      for (let i = 0; i < normalizedFoodName.length; i++) {
+        const char = normalizedFoodName.substring(i);
+        if (!dishCache.foodIndex[char]) {
+          dishCache.foodIndex[char] = new Set();
+        }
+        dishCache.foodIndex[char].add(dish.id);
+      }
+    });
+  }
 };
 
 /**
@@ -120,6 +147,7 @@ const clearCache = () => {
   dishCache.dishes = {};
   dishCache.nameIndex = {};
   dishCache.foodIndex = {};
+  dishCache.foodsData = {};
   dishCache.timestamp = Date.now();
 };
 
@@ -213,6 +241,24 @@ const getAllDishes = async () => {
     const response = await axios.get('/api/dishes');
     const dishes = response.data;
     
+    // 收集所有菜肴的食物ID
+    const allFoodIds = new Set();
+    dishes.forEach(dish => {
+      if (dish.foods && Array.isArray(dish.foods)) {
+        dish.foods.forEach(foodId => allFoodIds.add(foodId));
+      }
+    });
+    
+    // 获取所有食物数据
+    if (allFoodIds.size > 0) {
+      const foodsArray = await getFoodsByIds(Array.from(allFoodIds));
+      foodsArray.forEach(food => {
+        if (food && food.id) {
+          dishCache.foodsData[food.id] = food;
+        }
+      });
+    }
+    
     // 添加到缓存
     addDishesToCache(dishes);
     
@@ -232,6 +278,24 @@ const getDishesByType = async (type) => {
   try {
     const response = await axios.get(`/api/dishes/type/${type}`);
     const dishes = response.data;
+    
+    // 收集所有菜肴的食物ID
+    const allFoodIds = new Set();
+    dishes.forEach(dish => {
+      if (dish.foods && Array.isArray(dish.foods)) {
+        dish.foods.forEach(foodId => allFoodIds.add(foodId));
+      }
+    });
+    
+    // 获取所有食物数据
+    if (allFoodIds.size > 0) {
+      const foodsArray = await getFoodsByIds(Array.from(allFoodIds));
+      foodsArray.forEach(food => {
+        if (food && food.id) {
+          dishCache.foodsData[food.id] = food;
+        }
+      });
+    }
     
     // 添加到缓存
     addDishesToCache(dishes);
@@ -256,6 +320,24 @@ const searchDishes = async (query) => {
     
     const response = await axios.get(`/api/dishes/search/${query}`);
     const dishes = response.data;
+    
+    // 收集所有菜肴的食物ID
+    const allFoodIds = new Set();
+    dishes.forEach(dish => {
+      if (dish.foods && Array.isArray(dish.foods)) {
+        dish.foods.forEach(foodId => allFoodIds.add(foodId));
+      }
+    });
+    
+    // 获取所有食物数据
+    if (allFoodIds.size > 0) {
+      const foodsArray = await getFoodsByIds(Array.from(allFoodIds));
+      foodsArray.forEach(food => {
+        if (food && food.id) {
+          dishCache.foodsData[food.id] = food;
+        }
+      });
+    }
     
     // 添加到缓存
     addDishesToCache(dishes);
