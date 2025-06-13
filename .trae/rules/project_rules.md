@@ -1,3 +1,39 @@
+回答优先使用中文
+
+技术实现
+    后端：
+        - 采用Nodejs + Express框架
+        - 使用模块别名(@services, @routes)
+        - RESTful API设计
+        - 文件系统存储(fs-extra)
+        - JWT认证(jsonwebtoken)
+
+    前端：
+        - React + Vite构建
+        - 使用@别名代替相对路径
+        - Material-UI组件库构建界面
+        - Grid系统实现响应式布局
+        - Chart.js实现数据可视化
+        
+        数据组织：
+        - 前端函数间的数据传递以极简格式进行组织
+          - Foods 使用简化格式的食谱数据（[{foodId, amount}]数组格式）
+          - 如函数中需要详细数据，可自行调用前端的FoodService获取数据（优先使用同步方法）
+
+        组件结构：
+        - 复用src/components/下的组件
+        - 按功能模块组织目录结构
+        
+        数据处理：
+        - 自定义hooks处理业务逻辑
+        - 服务层与API交互
+        - 本地存储用户数据
+        
+        状态管理：
+        - React状态管理
+        - 表单处理使用Formik+Yup
+
+
 项目路径
     根目录：
         - HealtyDiet_Project/：主项目代码
@@ -48,31 +84,3 @@
             - foods/：食物数据（按类别分类）
             - needs/：营养需求数据
             - users/：用户数据
-
-技术实现
-    后端：
-        - 采用Nodejs + Express框架
-        - 使用模块别名(@services, @routes)
-        - RESTful API设计
-        - 文件系统存储(fs-extra)
-        - JWT认证(jsonwebtoken)
-
-    前端：
-        - React + Vite构建
-        - 使用@别名代替相对路径
-        - Material-UI组件库构建界面
-        - Grid系统实现响应式布局
-        - Chart.js实现数据可视化
-        
-        组件结构：
-        - 复用src/components/下的组件
-        - 按功能模块组织目录结构
-        
-        数据处理：
-        - 自定义hooks处理业务逻辑
-        - 服务层与API交互
-        - 本地存储用户数据
-        
-        状态管理：
-        - React状态管理
-        - 表单处理使用Formik+Yup
