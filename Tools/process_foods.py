@@ -75,6 +75,12 @@ def main():
                         else:
                             food['alias'] = []
                             
+                        # 处理tags标签字段，将逗号分隔的标签转换为列表
+                        if 'tags' in food and food['tags'] is not None:
+                            food['tags'] = [tag.strip() for tag in str(food['tags']).split(',') if tag.strip()]
+                        else:
+                            food['tags'] = []
+                            
                         food['vitamins'] = {
                             "A": food.pop('vitaminA', 0),
                             "C": food.pop('vitaminC', 0),
@@ -90,6 +96,11 @@ def main():
                     
                     # 构建输出文件路径
                     output_file = os.path.join(output_dir, file_name)
+                    
+                    # 如果文件已存在，先删除它
+                    if os.path.exists(output_file):
+                        os.remove(output_file)
+                        print(f"已删除现有的 {output_file} 文件")
                     
                     # 将食物列表转换为以id为key的字典
                     foods_by_id = {}

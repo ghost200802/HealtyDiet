@@ -60,12 +60,15 @@ def main():
     print("\n生成的 JSON 数据:")
     print(json_str)
     
-    # 询问是否保存到文件
-    save = input("\n是否保存到 foodTypes.json 文件? (y/n): ")
-    if save.lower() == 'y':
-        with open(food_types_json, 'w', encoding='utf-8') as f:
-            f.write(json_str)
-        print(f"数据已保存到 {food_types_json}")
+    # 如果文件存在，先删除
+    if os.path.exists(food_types_json):
+        os.remove(food_types_json)
+        print(f"已删除现有的 {food_types_json} 文件")
+    
+    # 直接保存到文件，不询问
+    with open(food_types_json, 'w', encoding='utf-8') as f:
+        f.write(json_str)
+    print(f"数据已保存到 {food_types_json}")
 
 if __name__ == "__main__":
     main()
