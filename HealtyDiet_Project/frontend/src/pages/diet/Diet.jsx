@@ -339,6 +339,33 @@ const Diet = ({ user }) => {
     }
   };
   
+  // 从食谱中移除整个菜肴
+  const handleRemoveDish = (dishId, itemIndices) => {
+    try {
+      // 创建一个新的dietItems数组，排除要删除的项目
+      const updatedItems = dietItems.filter((_, index) => !itemIndices.includes(index));
+      setDietItems(updatedItems);
+      
+      // 如果dishes存在，找到对应的菜肴名称
+      let dishName = '未知菜肴';
+      if (dishes) {
+        const numericDishId = parseInt(dishId, 10);
+        const dish = dishes.find(d => d.id === numericDishId);
+        if (dish) {
+          dishName = dish.name;
+        }
+      }
+      
+      setSuccess(`菜肴 ${dishName} 已从食谱中移除`);
+      
+      // 3秒后清除成功消息
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (error) {
+      console.error('移除菜肴时出错:', error);
+      setError(`移除菜肴时出错: ${error.message}`);
+    }
+  };
+  
   // 保存食谱
   const handleSaveDiet = async () => {
     try {
@@ -658,6 +685,7 @@ const Diet = ({ user }) => {
         dishes={dishes} // 传递dishes参数
         onAmountChange={handleAmountChange}
         onRemoveFood={handleRemoveFood}
+        onRemoveDish={handleRemoveDish} // 添加删除整个菜肴的回调函数
         onViewFoodDetail={(food) => {
           setFoodToView(food);
           setFoodDetailDialogOpen(true);

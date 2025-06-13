@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Paper,
   Typography,
@@ -17,7 +17,9 @@ import {
 import {
   Delete as DeleteIcon,
   Visibility as VisibilityIcon,
-  Restaurant as RestaurantIcon
+  Restaurant as RestaurantIcon,
+  ExpandMore as ExpandMoreIcon,
+  ExpandLess as ExpandLessIcon
 } from '@mui/icons-material';
 
 /**
@@ -29,8 +31,20 @@ const DietItemsTable = ({
   onAmountChange, 
   onRemoveFood, 
   onViewFoodDetail,
-  dishes // 添加dishes参数，用于获取菜肴名称
+  dishes, // 添加dishes参数，用于获取菜肴名称
+  onRemoveDish // 添加删除整个菜肴的回调函数
 }) => {
+  // 添加折叠状态管理
+  const [collapsedDishes, setCollapsedDishes] = useState({});
+  
+  // 切换菜肴的折叠状态
+  const toggleDishCollapse = (dishId) => {
+    setCollapsedDishes(prev => ({
+      ...prev,
+      [dishId]: !prev[dishId]
+    }));
+  };
+  
   // 按菜肴分组食物
   const groupedItems = useMemo(() => {
     // 初始化分组
@@ -91,8 +105,8 @@ const DietItemsTable = ({
   // 渲染食物行
   const renderFoodRow = (item, index) => (
     <TableRow key={`${item.foodId}-${index}`}>
-      <TableCell>{item.foodName}</TableCell>
-      <TableCell align="right">
+      <TableCell><Typography color="text.secondary">{item.foodName}</Typography></TableCell>
+      <TableCell align="center">
         <TextField
           type="number"
           value={item.amount}
@@ -107,11 +121,11 @@ const DietItemsTable = ({
           inputProps={{ min: 0, step: 0.1 }}
         />
       </TableCell>
-      <TableCell align="right">{item.calories.toFixed(1)}</TableCell>
-      <TableCell align="right">{item.protein.toFixed(1)}</TableCell>
-      <TableCell align="right">{item.carbs.toFixed(1)}</TableCell>
-      <TableCell align="right">{item.fat.toFixed(1)}</TableCell>
-      <TableCell align="right">
+      <TableCell align="center">{item.calories.toFixed(1)}</TableCell>
+      <TableCell align="center">{item.protein.toFixed(1)}</TableCell>
+      <TableCell align="center">{item.carbs.toFixed(1)}</TableCell>
+      <TableCell align="center">{item.fat.toFixed(1)}</TableCell>
+      <TableCell align="center">
         <IconButton 
           size="small" 
           color="primary"
@@ -138,32 +152,77 @@ const DietItemsTable = ({
   
   // 渲染菜肴组
   const renderDishGroup = (dishId, group) => {
+    const isCollapsed = collapsedDishes[dishId] || false;
+    
     return (
       <React.Fragment key={dishId || 'ungrouped'}>
         {/* 菜肴标题行 */}
         {dishId !== 'null' && (
           <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-            <TableCell colSpan={7}>
+            <TableCell>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <RestaurantIcon sx={{ mr: 1 }} />
-                <Typography variant="subtitle1" component="span">
+                <Typography variant="subtitle1" component="span" sx={{ fontWeight: 'bold' }}>
                   {group.name}
                 </Typography>
-                <Box sx={{ ml: 2, display: 'flex', flexGrow: 1, justifyContent: 'flex-end' }}>
-                  <Typography variant="body2" color="text.secondary">
-                    热量: {group.totalCalories.toFixed(1)} 千卡 | 
-                    蛋白质: {group.totalProtein.toFixed(1)} 克 | 
-                    碳水: {group.totalCarbs.toFixed(1)} 克 | 
-                    脂肪: {group.totalFat.toFixed(1)} 克
-                  </Typography>
-                </Box>
               </Box>
+            </TableCell>
+            <TableCell align="center">
+              <Typography variant="body2" color="text.primary" sx={{ fontWeight: 'medium' }}>
+                总计
+              </Typography>
+            </TableCell>
+            <TableCell align="center">
+              <Typography variant="body2" color="text.primary" sx={{ fontWeight: 'medium' }}>
+                {group.totalCalories.toFixed(1)}
+              </Typography>
+            </TableCell>
+            <TableCell align="center">
+              <Typography variant="body2" color="text.primary" sx={{ fontWeight: 'medium' }}>
+                {group.totalProtein.toFixed(1)}
+              </Typography>
+            </TableCell>
+            <TableCell align="center">
+              <Typography variant="body2" color="text.primary" sx={{ fontWeight: 'medium' }}>
+                {group.totalCarbs.toFixed(1)}
+              </Typography>
+            </TableCell>
+            <TableCell align="center">
+              <Typography variant="body2" color="text.primary" sx={{ fontWeight: 'medium' }}>
+                {group.totalFat.toFixed(1)}
+              </Typography>
+            </TableCell>
+            <TableCell align="center">
+              <IconButton 
+                size="small" 
+                onClick={() => toggleDishCollapse(dishId)}
+                sx={{ mr: 1 }}
+              >
+                {isCollapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+              </IconButton>
+              
+              <IconButton 
+                size="small" 
+                color="error"
+                onClick={() => {
+                  // 获取该菜肴中所有食物的索引
+                  const itemIndices = group.items.map(item => item.index);
+                  // 调用删除菜肴的回调函数
+                  if (onRemoveDish && typeof onRemoveDish === 'function') {
+                    onRemoveDish(dishId, itemIndices);
+                  }
+                }}
+              >
+                <DeleteIcon />
+              </IconButton>
             </TableCell>
           </TableRow>
         )}
         
-        {/* 食物行 */}
-        {group.items.map((item) => renderFoodRow(item, item.index))}
+        {/* 食物行 - 根据折叠状态显示或隐藏 */}
+        {(dishId === 'null' || !isCollapsed) && (
+          group.items.map((item) => renderFoodRow(item, item.index))
+        )}
         
         {/* 分隔线 */}
         {dishId !== 'null' && (
@@ -188,16 +247,25 @@ const DietItemsTable = ({
         </Typography>
       ) : (
         <TableContainer>
-          <Table>
+          <Table size="medium" sx={{ tableLayout: 'fixed' }}>
+            <colgroup>
+              <col style={{ width: '20%' }} />
+              <col style={{ width: '10%' }} />
+              <col style={{ width: '12%' }} />
+              <col style={{ width: '12%' }} />
+              <col style={{ width: '12%' }} />
+              <col style={{ width: '12%' }} />
+              <col style={{ width: '22%' }} />
+            </colgroup>
             <TableHead>
               <TableRow>
                 <TableCell>食物名称</TableCell>
-                <TableCell align="right">数量 (克)</TableCell>
-                <TableCell align="right">热量 (千卡)</TableCell>
-                <TableCell align="right">蛋白质 (克)</TableCell>
-                <TableCell align="right">碳水 (克)</TableCell>
-                <TableCell align="right">脂肪 (克)</TableCell>
-                <TableCell align="right">操作</TableCell>
+                <TableCell align="center">数量 (克)</TableCell>
+                <TableCell align="center">热量 (千卡)</TableCell>
+                <TableCell align="center">蛋白质 (克)</TableCell>
+                <TableCell align="center">碳水 (克)</TableCell>
+                <TableCell align="center">脂肪 (克)</TableCell>
+                <TableCell align="center">操作</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -209,6 +277,24 @@ const DietItemsTable = ({
               {Object.keys(groupedItems)
                 .filter(dishId => dishId !== 'null')
                 .map(dishId => renderDishGroup(dishId, groupedItems[dishId]))}
+              
+              {/* 添加一个隐藏的表格行，用于保持表格结构一致 */}
+              <TableRow style={{ display: 'none' }}>
+                <TableCell>隐藏行</TableCell>
+                <TableCell align="right">0</TableCell>
+                <TableCell align="right">0</TableCell>
+                <TableCell align="right">0</TableCell>
+                <TableCell align="right">0</TableCell>
+                <TableCell align="right">0</TableCell>
+                <TableCell align="right">
+                  <IconButton size="small" sx={{ visibility: 'hidden' }}>
+                    <VisibilityIcon />
+                  </IconButton>
+                  <IconButton size="small" sx={{ visibility: 'hidden' }}>
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
