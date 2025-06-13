@@ -51,9 +51,10 @@ export const calculateFoodNutrition = (foodId, amount, nutrients = ['calories', 
  * 计算食谱项目的营养素含量
  * @param {string} foodId - 食物ID
  * @param {number} amount - 食物重量(克)
+ * @param {string} dishId - 菜肴ID（可选）
  * @returns {Object} - 食谱项目对象，包含食物ID、名称、重量和营养素含量
  */
-export const calculateDietItem = (foodId, amount) => {
+export const calculateDietItem = (foodId, amount, dishId = null) => {
   if (!foodId) {
     throw new Error('食物ID不能为空');
   }
@@ -75,6 +76,7 @@ export const calculateDietItem = (foodId, amount) => {
     foodId: foodId,
     foodName: food.name,
     amount: amount,
+    dishId: dishId, // 添加菜肴ID字段
     ...nutrition
   };
 };

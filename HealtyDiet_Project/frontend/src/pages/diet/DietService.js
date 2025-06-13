@@ -21,7 +21,8 @@ export const saveDiet = async ({ name, user, dietItems, totalNutrition, diets, s
     userId: user.id,
     items: dietItems.map(item => ({
       foodId: item.foodId,
-      amount: item.amount
+      amount: item.amount,
+      dishId: item.dishId || null // 添加dishId字段，如果不存在则为null
     })),
     nutrition: {
       calories: totalNutrition.calories,

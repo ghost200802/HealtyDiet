@@ -260,44 +260,43 @@ const Diet = ({ user }) => {
   };
   
   // 添加菜肴到食谱
-  const handleAddDish = (selectedDish, foodsList) => {
-    if (!selectedDish) {
-      setError('请选择菜肴');
-      return;
-    }
-    
-    if (!foodsList || !Array.isArray(foodsList) || foodsList.length === 0) {
-      setError('菜肴必须包含食材列表');
-      return;
-    }
-    
+  const handleAddDish = (selectedDish, dishFoods) => {
     try {
+      if (!selectedDish || !dishFoods || !Array.isArray(dishFoods)) {
+        throw new Error('菜肴数据无效');
+      }
+      
+      console.log('添加菜肴:', selectedDish.name);
+      console.log('菜肴食物:', dishFoods);
+      
+      // 新的食谱项目
       const newItems = [];
       
-      // 遍历foods列表中的所有食材
-      foodsList.forEach(foodItem => {
-        if (foodItem && foodItem.foodId && foodItem.amount) {
-          // 使用calculateDietItem函数计算食谱项目的营养素含量
-          const newItem = calculateDietItem(foodItem.foodId, foodItem.amount);
+      // 遍历菜肴中的食物
+      dishFoods.forEach(({ foodId, amount }) => {
+        // 检查食物是否已存在于食谱中
+        const existingItemIndex = dietItems.findIndex(item => 
+          item.foodId === foodId && item.dishId === selectedDish.id
+        );
+        
+        if (existingItemIndex >= 0) {
+          // 如果食物已存在，更新数量
+          const updatedItems = [...dietItems];
+          const newAmount = updatedItems[existingItemIndex].amount + amount;
           
-          if (newItem) {
-            // 检查是否已存在该食物
-            const existingItemIndex = dietItems.findIndex(item => item.foodId === foodItem.foodId);
-            
-            if (existingItemIndex !== -1) {
-              // 如果已存在，更新数量
-              const updatedItems = [...dietItems];
-              const oldAmount = updatedItems[existingItemIndex].amount;
-              const newAmount = oldAmount + foodItem.amount;
-              
-              // 计算更新后的营养素含量
-              const updatedItem = calculateDietItem(foodItem.foodId, newAmount);
-              updatedItems[existingItemIndex] = updatedItem;
-              setDietItems(updatedItems);
-            } else {
-              // 如果不存在，添加到新项目列表
-              newItems.push(newItem);
-            }
+          // 使用NutritionService计算更新后的营养素含量
+          const updatedItem = calculateDietItem(foodId, newAmount, selectedDish.id);
+          updatedItems[existingItemIndex] = updatedItem;
+          
+          setDietItems(updatedItems);
+        } else {
+          // 如果食物不存在，添加新项目
+          try {
+            // 使用NutritionService计算营养素含量
+            const newItem = calculateDietItem(foodId, amount, selectedDish.id);
+            newItems.push(newItem);
+          } catch (error) {
+            console.error(`添加食物(ID:${foodId})失败:`, error);
           }
         }
       });
@@ -370,7 +369,7 @@ const Diet = ({ user }) => {
     try {
       // 处理所有食谱项目（同步调用）
       const items = diet.items.map(item => {
-        return calculateDietItem(item.foodId, item.amount);
+        return calculateDietItem(item.foodId, item.amount, item.dishId);
       });
       
       // 过滤掉null值
@@ -656,6 +655,7 @@ const Diet = ({ user }) => {
       <DietItemsTable 
         dietItems={dietItems}
         foods={foods}
+        dishes={dishes} // 传递dishes参数
         onAmountChange={handleAmountChange}
         onRemoveFood={handleRemoveFood}
         onViewFoodDetail={(food) => {
